@@ -1,18 +1,18 @@
+/* eslint-disable no-console */
 import mongoose from "mongoose";
 import app from "./app";
 import { Server } from "http";
+import env from "./app/config/env";
 
 let server: Server;
 
 const main = async () => {
   try {
-    await mongoose.connect(
-      "mongodb+srv://tuhinphotos0:uan7yBr8NCuZ6jRq@freecluster.zfjeifc.mongodb.net/tour-management-system?retryWrites=true&w=majority&appName=FreeCluster"
-    );
+    await mongoose.connect(env.db_url);
     console.log("✅ Server has been connected successfully with Database");
 
-    server = app.listen(5000, () =>
-      console.log("Server has been connected with the port of 5000")
+    server = app.listen(env.port, () =>
+      console.log("Server has been connected with the port of ", env.port)
     );
   } catch (error) {
     console.error(error);

@@ -223,9 +223,6 @@ We welcome contributions! Follow these steps:
 
     Open a Pull Request
 
-🪪 License
-
-This project is licensed under the MIT License.
 📧 Contact
 
 Next Level Team

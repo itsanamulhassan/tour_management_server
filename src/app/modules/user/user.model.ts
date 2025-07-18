@@ -1,6 +1,10 @@
 import { model, Schema } from "mongoose";
 import { AddressProps, AuthProviderProps, CreateUserProps } from "./user.types";
-import { authProviderEnum, userActivityStatusEnum } from "./user.schema";
+import {
+  authProviderEnum,
+  userActivityStatusEnum,
+  userRoleStatusEnum,
+} from "./user.schema";
 
 const addressSchema = new Schema<AddressProps>(
   {
@@ -52,11 +56,12 @@ const userSchema = new Schema<CreateUserProps>(
     email: {
       type: String,
       lowercase: true,
-      unique: true,
+      unique: [true, "Duplicate email found"],
       required: [true, "Email is required"],
     },
     password: {
       type: String,
+      required: false,
     },
     phone: {
       type: String,
@@ -77,6 +82,11 @@ const userSchema = new Schema<CreateUserProps>(
     isVerified: {
       type: String,
       default: true,
+    },
+    role: {
+      type: String,
+      enum: userRoleStatusEnum,
+      default: "USER",
     },
     auths: [authProviderSchema],
   },

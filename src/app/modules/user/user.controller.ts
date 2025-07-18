@@ -1,21 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import { CreateUserProps } from "./user.types";
-import { Users } from "./user.model";
 import { StatusCodes } from "http-status-codes";
+import userServices from "./user.service";
 
 // ✅ Create a new user
-export const createUser = async (
-  req: Request,
-  res: Response,
-  nextF: NextFunction
-) => {
+const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { email, name } = req.body as CreateUserProps;
-    const user = await Users.create({
-      name,
-      email,
-    });
-
+    const user = await userServices.createUser(req.body);
     res.status(StatusCodes.CREATED).json({
       success: true,
       message: "User created successfully.",
@@ -23,10 +13,12 @@ export const createUser = async (
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    return res.status(400).json({
-      success: false,
-      message: "Registration failed",
-      error: error.message || error.toString() || error,
-    });
+    next(error);
   }
 };
+
+const userControllers = {
+  createUser,
+};
+
+export default userControllers;

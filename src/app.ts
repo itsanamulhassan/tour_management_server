@@ -1,6 +1,9 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import appRouter from "./app/routes";
 import cors from "cors";
+import { StatusCodes } from "http-status-codes";
+import env from "./app/configurations/env";
+import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 const app = express();
 
 app.use(express.json());
@@ -13,5 +16,5 @@ app.use("/", (_req: Request, res: Response) => {
     message: "Welcome to Tour Management System",
   });
 });
-
+app.use(globalErrorHandler);
 export default app;

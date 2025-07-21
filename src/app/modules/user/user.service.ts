@@ -6,8 +6,15 @@ const createUser = async (payload: Partial<CreateUserProps>) => {
   return await Users.create(payload);
 };
 
+const retrieveUsers = async () => {
+  const users = await Users.find();
+
+  return users;
+};
+
 const userServices = {
   createUser,
+  retrieveUsers,
 };
 
 export default userServices;

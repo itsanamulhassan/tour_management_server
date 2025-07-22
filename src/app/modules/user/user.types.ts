@@ -5,13 +5,13 @@ import {
   addressSchema,
   authProviderEnum,
   authProviderSchema,
-  createUserSchema,
   userActivityStatusEnum,
   userRoleStatusEnum,
+  userSchemas,
 } from "./user.schema";
 
 // ✅ Type representing a user creation payload
-export type CreateUserProps = z.infer<typeof createUserSchema>;
+export type CreateUserProps = z.infer<typeof userSchemas.createUserSchema>;
 
 // ✅ Type representing an address sub-document
 export type AddressProps = z.infer<typeof addressSchema>;

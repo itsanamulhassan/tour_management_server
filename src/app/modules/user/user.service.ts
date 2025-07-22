@@ -11,7 +11,7 @@ const createUser = async (payload: Partial<CreateUserProps>) => {
   const isUserExist = await Users.findOne({ email });
   if (isUserExist) {
     throw new AppError(
-      resMessage("user").alreadyExists,
+      resMessage("alreadyExists", "user"),
       StatusCodes.BAD_REQUEST
     );
   }

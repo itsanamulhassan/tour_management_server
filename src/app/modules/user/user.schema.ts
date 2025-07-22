@@ -35,7 +35,7 @@ export const authProviderSchema = z.object({
 });
 
 // ✅ Main user creation schema
-export const createUserSchema = z.object({
+const createUserSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   email: z
     .email({ message: "Invalid email address" })
@@ -75,3 +75,7 @@ export const createUserSchema = z.object({
   booking: z.array(z.string()).optional(),
   guides: z.array(z.string()).optional(),
 });
+
+export const userSchemas = {
+  createUserSchema,
+};

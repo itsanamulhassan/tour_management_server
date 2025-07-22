@@ -10,24 +10,7 @@ import AppError from "../../errorHelper/appError";
 
 // ✅ Create a new user
 const createUser = safeAsync(async (req: Request, res: Response) => {
-  const { email, ...rest } = req.body as CreateUserProps;
-
-  const isUserExist = await Users.findOne({ email });
-  if (isUserExist) {
-    throw new AppError(
-      resMessage("user").alreadyExists,
-      StatusCodes.BAD_REQUEST
-    );
-  }
-  const authProvider: AuthProviderProps = {
-    provider: "CREDENTIAL",
-    providerId: email,
-  };
-  const user = await userServices.createUser({
-    email,
-    ...rest,
-    auths: [authProvider],
-  });
+  const user = await userServices.createUser(req.body);
   resHandler(res, {
     status: StatusCodes.CREATED,
     success: true,

@@ -1,8 +1,33 @@
+import { StatusCodes } from "http-status-codes";
+import AppError from "../../errorHelper/appError";
+import resMessage from "../../utils/resMessage";
 import { Users } from "./user.model";
-import { CreateUserProps } from "./user.types";
+import { AuthProviderProps, CreateUserProps } from "./user.types";
+import bcryptjs from "bcryptjs";
 
 const createUser = async (payload: Partial<CreateUserProps>) => {
-  return await Users.create(payload);
+  const { email, password, ...rest } = payload as CreateUserProps;
+
+  const isUserExist = await Users.findOne({ email });
+  if (isUserExist) {
+    throw new AppError(
+      resMessage("user").alreadyExists,
+      StatusCodes.BAD_REQUEST
+    );
+  }
+
+  const hashPassword = await bcryptjs.hash(password as string, 10);
+
+  const authProvider: AuthProviderProps = {
+    provider: "CREDENTIAL",
+    providerId: email,
+  };
+  return await Users.create({
+    email,
+    ...rest,
+    auths: [authProvider],
+    password: hashPassword,
+  });
 };
 
 const retrieveUsers = async () => {

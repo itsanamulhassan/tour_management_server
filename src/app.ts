@@ -1,20 +1,32 @@
 import express, { Request, Response } from "express";
-import appRouter from "./app/routes";
 import cors from "cors";
+import appRouter from "./app/routes";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import invalidRoute from "./app/middlewares/invalidRoute";
+
 const app = express();
 
+// Parse incoming JSON requests
 app.use(express.json());
+
+// Enable CORS
 app.use(cors());
 
-app.use("/api/v1/", appRouter);
-
-app.use("/test", (_req: Request, res: Response) => {
+// Root route
+app.get("/", (_req: Request, res: Response) => {
   res.status(200).json({
+    success: true,
     message: "Welcome to Tour Management System",
   });
 });
-app.use(globalErrorHandler);
+
+// API routes
+app.use("/api/v1", appRouter);
+
+// Invalid route handler (404)
 app.use(invalidRoute);
+
+// Global error handler (500, validation errors, etc.)
+app.use(globalErrorHandler);
+
 export default app;

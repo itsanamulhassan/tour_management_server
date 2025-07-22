@@ -55,7 +55,7 @@ export const createUserSchema = z.object({
   avatar: z.url({ message: "Avatar must be a valid URL" }).optional(),
 
   // Embedded address object
-  address: addressSchema,
+  address: addressSchema.optional(),
 
   // Status flags
   isDeleted: z.boolean().default(false).optional(),
@@ -65,7 +65,8 @@ export const createUserSchema = z.object({
   // Linked authentication providers
   auths: z
     .array(authProviderSchema)
-    .min(1, { message: "At least one auth provider is required" }),
+    .min(1, { message: "At least one auth provider is required" })
+    .default([]),
 
   // User role
   role: z.enum(userRoleStatusEnum).default("USER"),

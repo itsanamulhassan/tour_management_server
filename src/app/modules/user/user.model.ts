@@ -62,6 +62,7 @@ const userSchema = new Schema<CreateUserProps>(
     password: {
       type: String,
       required: false,
+      select: false,
     },
     phone: {
       type: String,

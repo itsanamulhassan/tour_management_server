@@ -3,34 +3,46 @@ import { StatusCodes } from "http-status-codes";
 import userServices from "./user.service";
 import safeAsync from "../../utils/safeAsync";
 import resHandler from "../../utils/resHandler";
+import resMessage from "../../utils/resMessage";
 import { Users } from "./user.model";
+import { AuthProviderProps, CreateUserProps } from "./user.types";
+import AppError from "../../errorHelper/appError";
 
 // ✅ Create a new user
-const createUser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const user = await userServices.createUser(req.body);
-    res.status(StatusCodes.CREATED).json({
-      success: true,
-      message: "User created successfully.",
-      data: user,
-    });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    next(error);
+const createUser = safeAsync(async (req: Request, res: Response) => {
+  const { email, ...rest } = req.body as CreateUserProps;
+
+  const isUserExist = await Users.findOne({ email });
+  if (isUserExist) {
+    throw new AppError(
+      resMessage("user").alreadyExists,
+      StatusCodes.BAD_REQUEST
+    );
   }
-};
+  const authProvider: AuthProviderProps = {
+    provider: "CREDENTIAL",
+    providerId: email,
+  };
+  const user = await userServices.createUser({
+    email,
+    ...rest,
+    auths: [authProvider],
+  });
+  resHandler(res, {
+    status: StatusCodes.CREATED,
+    success: true,
+    message: resMessage("user").create,
+    data: user,
+  });
+});
 
 const retrieveUsers = safeAsync(async (_req: Request, res: Response) => {
   const users = await userServices.retrieveUsers();
-  const totalUsers = await Users.countDocuments();
   resHandler(res, {
     status: StatusCodes.OK,
     success: true,
-    message: "Users has been retrieved successfully",
+    message: resMessage("user").create,
     data: users,
-    meta: {
-      total: totalUsers,
-    },
   });
 });
 

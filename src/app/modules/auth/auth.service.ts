@@ -2,15 +2,16 @@ import { CreateUserProps } from "../user/user.types";
 import { Users } from "../user/user.model";
 import AppError from "../../errorHelper/appError";
 import { StatusCodes } from "http-status-codes";
-import resMessage from "../../utils/resMessage";
+import message from "../../utils/message";
 import bcrypt from "bcryptjs";
+import { jwt } from "../../utils/jwt";
 const credentialSignIn = async (payload: Partial<CreateUserProps>) => {
-  const { email, password: inputPassword } = payload;
+  const { email: inputEmail, password: inputPassword } = payload;
 
-  const user = await Users.findOne({ email }).select("+password");
+  const user = await Users.findOne({ email: inputEmail }).select("+password");
 
   if (!user || !user.password) {
-    throw new AppError(resMessage("notFound", "user"), StatusCodes.BAD_REQUEST);
+    throw new AppError(message("notFound", "user"), StatusCodes.BAD_REQUEST);
   }
 
   const isMatch = await bcrypt.compare(inputPassword as string, user.password);
@@ -18,10 +19,14 @@ const credentialSignIn = async (payload: Partial<CreateUserProps>) => {
     throw new AppError("Invalid credentials", StatusCodes.UNAUTHORIZED);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { password, ...userWithoutPassword } = user.toObject();
-
-  return userWithoutPassword;
+  const { _id, email, role } = user.toObject();
+  const credential = {
+    credentialId: _id,
+    email,
+    role,
+  };
+  const accessToken = jwt.signToken(credential);
+  return accessToken;
 };
 
 export const authServices = {

@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import userServices from "./user.service";
 import safeAsync from "../../utils/safeAsync";
 import resHandler from "../../utils/resHandler";
-import resMessage from "../../utils/resMessage";
+import message from "../../utils/message";
 
 // ✅ Create a new user
 const createUser = safeAsync(async (req: Request, res: Response) => {
@@ -11,7 +11,7 @@ const createUser = safeAsync(async (req: Request, res: Response) => {
   resHandler(res, {
     status: StatusCodes.CREATED,
     success: true,
-    message: resMessage("create", "user"),
+    message: message("create", "user"),
     data: user,
   });
 });
@@ -21,7 +21,7 @@ const retrieveUsers = safeAsync(async (_req: Request, res: Response) => {
   resHandler(res, {
     status: StatusCodes.OK,
     success: true,
-    message: resMessage("create", "user"),
+    message: message("create", "user"),
     data: users,
   });
 });

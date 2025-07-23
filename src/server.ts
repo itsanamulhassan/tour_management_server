@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import app from "./app";
 import { Server } from "http";
 import env from "./app/configurations/env";
+import initializeDefaultUser from "./app/utils/initializeDefaultUser";
 
 let server: Server;
 
@@ -18,7 +19,11 @@ const main = async () => {
     console.error(error);
   }
 };
-main();
+
+(async () => {
+  await main();
+  await initializeDefaultUser();
+})();
 
 // Catch unhandled promise rejections that were never .catch()-ed
 // This ensures the server shuts down gracefully instead of crashing unpredictably

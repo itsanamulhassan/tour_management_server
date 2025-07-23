@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import resHandler from "../utils/resHandler";
-import resMessage from "../utils/resMessage";
+import message from "../utils/message";
 
 const invalidRoute = (req: Request, res: Response) => {
   resHandler(res, {
     success: false,
     status: StatusCodes.NOT_FOUND,
-    message: resMessage("notFound", "route", "--> " + req.path + " <--"),
+    message: message("notFound", "route", "--> " + req.path + " <--"),
   });
 };
 

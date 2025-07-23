@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import safeAsync from "../../utils/safeAsync";
 import resHandler from "../../utils/resHandler";
 import { StatusCodes } from "http-status-codes";
-import resMessage from "../../utils/resMessage";
+import message from "../../utils/message";
 import { authServices } from "./auth.service";
 
 const credentialSignIn = safeAsync(async (req: Request, res: Response) => {
@@ -10,8 +10,10 @@ const credentialSignIn = safeAsync(async (req: Request, res: Response) => {
   resHandler(res, {
     success: true,
     status: StatusCodes.OK,
-    message: resMessage("signIn", "user"),
-    data: credential,
+    message: message("signIn", "user"),
+    data: {
+      accessToken: credential,
+    },
   });
 });
 

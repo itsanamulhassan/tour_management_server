@@ -59,7 +59,7 @@ const createUserSchema = z.object({
 
   // Status flags
   isDeleted: z.boolean().default(false).optional(),
-  isActive: z.enum(userActivityStatusEnum).default("ACTIVE"),
+  activityStatus: z.enum(userActivityStatusEnum).default("ACTIVE"),
   isVerified: z.boolean().default(true).optional(),
 
   // Linked authentication providers
@@ -75,7 +75,10 @@ const createUserSchema = z.object({
   booking: z.array(z.string()).optional(),
   guides: z.array(z.string()).optional(),
 });
-
+const updateUserSchema = createUserSchema.omit({
+  email: true,
+});
 export const userSchemas = {
   createUserSchema,
+  updateUserSchema,
 };

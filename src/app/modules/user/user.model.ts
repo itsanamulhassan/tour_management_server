@@ -75,10 +75,11 @@ const userSchema = new Schema<CreateUserProps>(
       type: Boolean,
       default: false,
     },
-    isActive: {
+    activityStatus: {
       type: String,
       enum: userActivityStatusEnum,
       default: "ACTIVE",
+      uppercase: true,
     },
     isVerified: {
       type: String,
@@ -88,6 +89,7 @@ const userSchema = new Schema<CreateUserProps>(
       type: String,
       enum: userRoleStatusEnum,
       default: "USER",
+      uppercase: true,
     },
     auths: [authProviderSchema],
   },

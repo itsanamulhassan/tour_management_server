@@ -12,6 +12,8 @@ import {
 
 // ✅ Type representing a user creation payload
 export type CreateUserProps = z.infer<typeof userSchemas.createUserSchema>;
+// ✅ Type representing a user updating payload
+export type UpdateUserProps = z.infer<typeof userSchemas.updateUserSchema>;
 
 // ✅ Type representing an address sub-document
 export type AddressProps = z.infer<typeof addressSchema>;

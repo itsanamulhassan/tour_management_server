@@ -5,9 +5,17 @@ import { Users } from "./user.model";
 import { AuthProviderProps, CreateUserProps } from "./user.types";
 import bcryptjs from "bcryptjs";
 import env from "../../configurations/env";
+import { Request } from "express";
 
 const createUser = async (payload: Partial<CreateUserProps>) => {
   const { email, password, ...rest } = payload as CreateUserProps;
+
+  if (["ADMIN", "SUPERADMIN"].includes(rest.role)) {
+    throw new AppError(
+      message("unauthorized", rest.role),
+      StatusCodes.FORBIDDEN
+    );
+  }
 
   const isUserExist = await Users.findOne({ email });
   if (isUserExist) {
@@ -40,9 +48,45 @@ const retrieveUsers = async () => {
   return users;
 };
 
+const updateUser = async (req: Request) => {
+  const {
+    params: { id: userId },
+    user: { role },
+    body,
+  } = req as Request;
+
+  console.log(req, "req");
+
+  const isUserExist = await Users.findById(userId);
+  if (!isUserExist) {
+    throw new AppError(message("notFound", "user"), StatusCodes.NOT_FOUND);
+  }
+
+  if (["USER", "GUIDE"].includes(role)) {
+    if (
+      body.role ||
+      (role === "ADMIN" && body.role === "SUPERADMIN") ||
+      ["INACTIVE", "BLOCKED"].includes(body.activityStatus) ||
+      body.isDeleted ||
+      !body.isVerified
+    ) {
+      throw new AppError(message("forbidden", role), StatusCodes.FORBIDDEN);
+    }
+  }
+  if (body.password) {
+    body.password = await bcryptjs.hash(body.password, env.bcrypt_salt_round);
+  }
+  const updateUser = await Users.findByIdAndUpdate(userId, body, {
+    new: true,
+    runValidators: true,
+  });
+  return updateUser;
+};
+
 const userServices = {
   createUser,
   retrieveUsers,
+  updateUser,
 };
 
 export default userServices;

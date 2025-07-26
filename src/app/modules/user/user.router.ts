@@ -12,10 +12,18 @@ userRouter.post(
   schemaValidator(userSchemas.createUserSchema),
   userControllers.createUser
 );
+// ✅ Get all the users
 userRouter.get(
   "/all",
-  auth.authorizeRole("ADMIN"),
+  auth.authorizeRole("ADMIN", "SUPERADMIN"),
   userControllers.retrieveUsers
+);
+// ✅ Update user by ID
+userRouter.patch(
+  "/update/:id",
+  auth.authorizeRole("ADMIN", "SUPERADMIN", "GUIDE", "USER"),
+  schemaValidator(userSchemas.updateUserSchema),
+  userControllers.updateUser
 );
 
 export default userRouter;

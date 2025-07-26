@@ -18,6 +18,7 @@ const authorizeRole = (...roles: UserRoleStatusEnumProps[]) =>
     if (!roles.includes(verify.role)) {
       throw new AppError(message("unauthorized", "user"), 403);
     }
+    req.user = verify;
     next();
   });
 

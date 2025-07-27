@@ -11,7 +11,7 @@ const authorizeRole = (...roles: UserRoleStatusEnumProps[]) =>
     if (!token) {
       throw new AppError(message("notFound", "token"), 403);
     }
-    const verify = jwt.verifyToken(token);
+    const verify = jwt.verifyAccessToken(token);
     if (!verify) {
       throw new AppError(message("expired", "token"), 403);
     }

@@ -55,8 +55,6 @@ const updateUser = async (req: Request) => {
     body,
   } = req as Request;
 
-  console.log(req, "req");
-
   const isUserExist = await Users.findById(userId);
   if (!isUserExist) {
     throw new AppError(message("notFound", "user"), StatusCodes.NOT_FOUND);

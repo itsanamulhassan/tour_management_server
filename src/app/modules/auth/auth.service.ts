@@ -25,8 +25,10 @@ const credentialSignIn = async (payload: Partial<CreateUserProps>) => {
     email,
     role,
   };
-  const accessToken = jwt.signToken(credential);
-  return accessToken;
+  const accessToken = jwt.signAccessToken(credential);
+  const refreshToken = jwt.signRefreshToken(credential);
+
+  return { accessToken, refreshToken, user };
 };
 
 export const authServices = {

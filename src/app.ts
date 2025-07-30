@@ -3,8 +3,11 @@ import cors from "cors";
 import appRouter from "./app/routes";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import invalidRoute from "./app/middlewares/invalidRoute";
+import cookieParser from "cookie-parser";
 
 const app = express();
+
+app.use(cookieParser());
 
 // Parse incoming JSON requests
 app.use(express.json());

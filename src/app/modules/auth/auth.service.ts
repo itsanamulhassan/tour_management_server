@@ -31,6 +31,12 @@ const credentialSignIn = async (payload: Partial<CreateUserProps>) => {
   return { accessToken, refreshToken, user };
 };
 
+const retrieveLatestAccessToken = async (refreshToken: string) => {
+  const accessToken = await jwt.createAccessTokenWithRefreshToken(refreshToken);
+  return { accessToken };
+};
+
 export const authServices = {
   credentialSignIn,
+  retrieveLatestAccessToken,
 };

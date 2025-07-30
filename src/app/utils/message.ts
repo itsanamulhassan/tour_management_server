@@ -1,4 +1,4 @@
-type MessageType =
+export type MessageType =
   | "create"
   | "update"
   | "delete"
@@ -11,7 +11,9 @@ type MessageType =
   | "unauthorized"
   | "forbidden"
   | "badRequest"
-  | "expired";
+  | "expired"
+  | "inactive"
+  | "blocked";
 
 const message = (
   type: MessageType,
@@ -35,6 +37,8 @@ const message = (
     forbidden: `${entityCapitalized} access is forbidden. You are not allowed to view or modify this resource.`,
     badRequest: `${entityCapitalized} request is invalid. Please check your input and try again.`,
     expired: `${entityCapitalized} has expired. Please request a new one or try again later.`,
+    blocked: `${entityCapitalized} has blocked. Please request a new one or try again later.`,
+    inactive: `${entityCapitalized} has deactivated. Please request a new one or try again later.`,
   };
 
   return `${messages[type]} ${note}`.trim();

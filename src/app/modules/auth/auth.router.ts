@@ -5,10 +5,14 @@ import { authSchemas } from "./auth.schema";
 
 const authRouter = Router();
 
-authRouter.get(
+authRouter.post(
   "/signin",
   schemaValidator(authSchemas.credentialSignInSchema),
   authControllers.credentialSignIn
+);
+authRouter.post(
+  "/refresh_access_token",
+  authControllers.retrieveLatestAccessToken
 );
 
 export default authRouter;

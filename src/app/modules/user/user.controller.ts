@@ -27,10 +27,6 @@ const retrieveUsers = safeAsync(async (_req: Request, res: Response) => {
 });
 
 const updateUser = safeAsync(async (req: Request, res: Response) => {
-  console.log(
-    { body: req.body, token: req.user, id: req.params.id },
-    "con req"
-  );
   const users = await userServices.updateUser(req);
   resHandler(res, {
     status: StatusCodes.OK,

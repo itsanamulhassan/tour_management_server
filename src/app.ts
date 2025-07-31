@@ -6,12 +6,14 @@ import invalidRoute from "./app/middlewares/invalidRoute";
 import cookieParser from "cookie-parser";
 import passport from "passport";
 import expressSession from "express-session";
+import env from "./app/configurations/env";
+import "./app/configurations/passport";
 
 const app = express();
 
 app.use(
   expressSession({
-    secret: "",
+    secret: env.express_session_secret,
     resave: false,
     saveUninitialized: false,
   })

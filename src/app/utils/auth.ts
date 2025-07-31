@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import {
-  CreateUserProps,
   UserActivityStatusEnumProps,
   UserRoleStatusEnumProps,
 } from "../modules/user/user.types";
@@ -9,7 +8,6 @@ import AppError from "../errorHelper/appError";
 import message, { MessageType } from "./message";
 import { jwt } from "./jwt";
 import { Users } from "../modules/user/user.model";
-import { Types } from "mongoose";
 import { StatusCodes } from "http-status-codes";
 
 const authorizeRole = (...roles: UserRoleStatusEnumProps[]) =>
@@ -26,9 +24,7 @@ const authorizeRole = (...roles: UserRoleStatusEnumProps[]) =>
       throw new AppError(message("unauthorized", "user"), 403);
     }
 
-    const user = (await Users.findOne({ email: verify?.email })) as Partial<
-      CreateUserProps & { _id: Types.ObjectId }
-    >;
+    const user = await Users.findOne({ email: verify?.email });
     if (!user) {
       throw new AppError(message("notFound", "user"), StatusCodes.BAD_REQUEST);
     }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { CreateUserProps } from "../user/user.types";
+import { authProviderEnumProps, CreateUserProps } from "../user/user.types";
 import { Users } from "../user/user.model";
 import AppError from "../../errorHelper/appError";
 import { StatusCodes } from "http-status-codes";
@@ -9,21 +9,35 @@ import { jwt } from "../../utils/jwt";
 import { ResetPasswordProps } from "./auth.types";
 import env from "../../configurations/env";
 import { Types } from "mongoose";
-const credentialSignIn = async (payload: Partial<CreateUserProps>) => {
+const credentialSignIn = async (
+  payload: Partial<CreateUserProps>,
+  provider: authProviderEnumProps = "CREDENTIAL"
+) => {
   const { email: inputEmail, password: inputPassword } = payload;
 
   const user = await Users.findOne({ email: inputEmail }).select("+password");
-
-  if (!user || !user.password) {
+  if (!user) {
     throw new AppError(message("notFound", "user"), StatusCodes.BAD_REQUEST);
   }
 
-  const isMatch = await bcrypt.compare(inputPassword as string, user.password);
-  if (!isMatch) {
-    throw new AppError(
-      message("badRequest", "sign in"),
-      StatusCodes.UNAUTHORIZED
+  if (provider === "CREDENTIAL") {
+    if (!user.password) {
+      throw new AppError(
+        message("notFound", "password"),
+        StatusCodes.BAD_REQUEST
+      );
+    }
+
+    const isMatch = await bcrypt.compare(
+      inputPassword as string,
+      user.password
     );
+    if (!isMatch) {
+      throw new AppError(
+        message("badRequest", "sign in"),
+        StatusCodes.UNAUTHORIZED
+      );
+    }
   }
 
   const { _id, email, role } = user.toObject();

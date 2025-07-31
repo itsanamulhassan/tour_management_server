@@ -82,7 +82,7 @@ const userSchema = new Schema<CreateUserProps>(
       uppercase: true,
     },
     isVerified: {
-      type: String,
+      type: Boolean,
       default: true,
     },
     role: {

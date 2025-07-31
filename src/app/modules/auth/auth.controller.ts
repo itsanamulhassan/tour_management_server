@@ -7,7 +7,9 @@ import { authServices } from "./auth.service";
 import AppError from "../../errorHelper/appError";
 import { cookies } from "../../utils/cookies";
 import { ResetPasswordProps } from "./auth.types";
-import { Types } from "mongoose";
+import { JwtPayload } from "jsonwebtoken";
+import { CreateUserProps } from "../user/user.types";
+import env from "../../configurations/env";
 
 const credentialSignIn = safeAsync(async (req: Request, res: Response) => {
   const { accessToken, refreshToken, user } =
@@ -71,7 +73,7 @@ const resetPassword = safeAsync(async (req: Request, res: Response) => {
   const passwords = req.body as ResetPasswordProps;
   await authServices.resetPassword(
     passwords,
-    req.user.credentialId as Types.ObjectId
+    (req?.user as JwtPayload)?.credentialId
   );
   resHandler(res, {
     success: true,
@@ -80,9 +82,28 @@ const resetPassword = safeAsync(async (req: Request, res: Response) => {
   });
 });
 
+const googleStrategyCallback = safeAsync(
+  async (req: Request, res: Response) => {
+    const user = req.user as Partial<CreateUserProps>;
+    let redirect = (req.query.state || "") as string;
+    if (redirect.startsWith("/")) {
+      redirect = redirect.slice(1);
+    }
+
+    const { accessToken, refreshToken } = await authServices.credentialSignIn(
+      user,
+      "GOOGLE"
+    );
+    cookies.setCookies(res, { accessToken, refreshToken });
+
+    res.redirect(env.frontend_base_url + "/" + redirect);
+  }
+);
+
 export const authControllers = {
   credentialSignIn,
   retrieveLatestAccessToken,
   signOut,
   resetPassword,
+  googleStrategyCallback,
 };

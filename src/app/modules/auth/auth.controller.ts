@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import safeAsync from "../../utils/safeAsync";
 import resHandler from "../../utils/resHandler";
 import { StatusCodes } from "http-status-codes";
@@ -6,6 +6,8 @@ import message from "../../utils/message";
 import { authServices } from "./auth.service";
 import AppError from "../../errorHelper/appError";
 import { cookies } from "../../utils/cookies";
+import { ResetPasswordProps } from "./auth.types";
+import { Types } from "mongoose";
 
 const credentialSignIn = safeAsync(async (req: Request, res: Response) => {
   const { accessToken, refreshToken, user } =
@@ -48,11 +50,39 @@ const retrieveLatestAccessToken = safeAsync(
       success: true,
       message: message("create", "access token"),
       status: StatusCodes.CREATED,
+      data: {
+        accessToken,
+      },
     });
   }
 );
 
+const signOut = safeAsync(async (_req: Request, res: Response) => {
+  cookies.removeCookies(res, { accessToken: true, refreshToken: true });
+
+  resHandler(res, {
+    success: true,
+    message: message("signOut", "user"),
+    status: StatusCodes.OK,
+  });
+});
+
+const resetPassword = safeAsync(async (req: Request, res: Response) => {
+  const passwords = req.body as ResetPasswordProps;
+  await authServices.resetPassword(
+    passwords,
+    req.user.credentialId as Types.ObjectId
+  );
+  resHandler(res, {
+    success: true,
+    message: message("update", "password"),
+    status: StatusCodes.OK,
+  });
+});
+
 export const authControllers = {
   credentialSignIn,
   retrieveLatestAccessToken,
+  signOut,
+  resetPassword,
 };

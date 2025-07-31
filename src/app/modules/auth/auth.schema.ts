@@ -12,6 +12,19 @@ const credentialSignInSchema = z.object({
       "Password must be 6 - 32 characters long, include at least 1 uppercase letter and 1 special character",
   }),
 });
+
+const resetPasswordSchema = z.object({
+  previousPassword: z.string().regex(passwordRegex, {
+    message:
+      "Previous password must be 6 - 32 characters long, include at least 1 uppercase letter and 1 special character",
+  }),
+  latestPassword: z.string().regex(passwordRegex, {
+    message:
+      "Latest password must be 6 - 32 characters long, include at least 1 uppercase letter and 1 special character",
+  }),
+});
+
 export const authSchemas = {
   credentialSignInSchema,
+  resetPasswordSchema,
 };

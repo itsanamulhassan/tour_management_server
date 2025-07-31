@@ -23,7 +23,7 @@ const signRefreshToken = (payload: JwtPayload): string => {
 
 const createAccessTokenWithRefreshToken = async (refreshToken: string) => {
   const { email } = jwt.verifyRefreshToken(refreshToken);
-  const user = (await Users.findOne({ email }).select("+password")) as Partial<
+  const user = (await Users.findOne({ email })) as Partial<
     CreateUserProps & { _id: Types.ObjectId }
   >;
   if (!user) {

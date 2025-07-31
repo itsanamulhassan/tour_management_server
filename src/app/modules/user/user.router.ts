@@ -1,7 +1,7 @@
 import { Router } from "express";
 import userControllers from "./user.controller";
 import schemaValidator from "../../middlewares/validateRequest";
-import { userSchemas } from "./user.schema";
+import { userRoleStatusEnum, userSchemas } from "./user.schema";
 import { auth } from "../../utils/auth";
 
 const userRouter = Router();
@@ -21,8 +21,8 @@ userRouter.get(
 // ✅ Update user by ID
 userRouter.patch(
   "/update/:id",
-  auth.authorizeRole("ADMIN", "SUPERADMIN", "GUIDE", "USER"),
   schemaValidator(userSchemas.updateUserSchema),
+  auth.authorizeRole(...userRoleStatusEnum),
   userControllers.updateUser
 );
 

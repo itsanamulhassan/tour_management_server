@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { SetCookiesProps } from "../types/utils";
+import { RemoveCookiesProps, SetCookiesProps } from "../types/utils";
 
 const setCookies = (res: Response, payload: SetCookiesProps): void => {
   if (payload?.accessToken) {
@@ -16,6 +16,24 @@ const setCookies = (res: Response, payload: SetCookiesProps): void => {
   }
 };
 
+const removeCookies = (res: Response, payload: RemoveCookiesProps): void => {
+  if (payload?.accessToken) {
+    res.clearCookie("tour_management_access_token", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
+  }
+  if (payload?.refreshToken) {
+    res.clearCookie("tour_management_refresh_token", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
+  }
+};
+
 export const cookies = {
   setCookies,
+  removeCookies,
 };

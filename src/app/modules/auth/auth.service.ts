@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { CreateUserProps } from "../user/user.types";
 import { Users } from "../user/user.model";
 import AppError from "../../errorHelper/appError";
@@ -5,6 +6,9 @@ import { StatusCodes } from "http-status-codes";
 import message from "../../utils/message";
 import bcrypt from "bcryptjs";
 import { jwt } from "../../utils/jwt";
+import { ResetPasswordProps } from "./auth.types";
+import env from "../../configurations/env";
+import { Types } from "mongoose";
 const credentialSignIn = async (payload: Partial<CreateUserProps>) => {
   const { email: inputEmail, password: inputPassword } = payload;
 
@@ -16,7 +20,10 @@ const credentialSignIn = async (payload: Partial<CreateUserProps>) => {
 
   const isMatch = await bcrypt.compare(inputPassword as string, user.password);
   if (!isMatch) {
-    throw new AppError("Invalid credentials", StatusCodes.UNAUTHORIZED);
+    throw new AppError(
+      message("badRequest", "sign in"),
+      StatusCodes.UNAUTHORIZED
+    );
   }
 
   const { _id, email, role } = user.toObject();
@@ -35,8 +42,28 @@ const retrieveLatestAccessToken = async (refreshToken: string) => {
   const accessToken = await jwt.createAccessTokenWithRefreshToken(refreshToken);
   return { accessToken };
 };
+const resetPassword = async (
+  { latestPassword, previousPassword }: ResetPasswordProps,
+  userId: Types.ObjectId
+) => {
+  const user = await Users.findById(userId).select("+password");
+
+  const isMatch = await bcrypt.compare(
+    previousPassword,
+    user!.password as string
+  );
+  if (!isMatch) {
+    throw new AppError(
+      message("badRequest", "reset password"),
+      StatusCodes.BAD_REQUEST
+    );
+  }
+  user!.password = await bcrypt.hash(latestPassword, env.bcrypt_salt_round);
+  user!.save();
+};
 
 export const authServices = {
   credentialSignIn,
   retrieveLatestAccessToken,
+  resetPassword,
 };

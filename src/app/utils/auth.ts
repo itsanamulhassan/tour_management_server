@@ -1,9 +1,16 @@
 import { NextFunction, Request, Response } from "express";
-import { UserRoleStatusEnumProps } from "../modules/user/user.types";
+import {
+  CreateUserProps,
+  UserActivityStatusEnumProps,
+  UserRoleStatusEnumProps,
+} from "../modules/user/user.types";
 import safeAsync from "./safeAsync";
 import AppError from "../errorHelper/appError";
-import message from "./message";
+import message, { MessageType } from "./message";
 import { jwt } from "./jwt";
+import { Users } from "../modules/user/user.model";
+import { Types } from "mongoose";
+import { StatusCodes } from "http-status-codes";
 
 const authorizeRole = (...roles: UserRoleStatusEnumProps[]) =>
   safeAsync(async (req: Request, _res: Response, next: NextFunction) => {
@@ -17,6 +24,29 @@ const authorizeRole = (...roles: UserRoleStatusEnumProps[]) =>
     }
     if (!roles.includes(verify.role)) {
       throw new AppError(message("unauthorized", "user"), 403);
+    }
+
+    const user = (await Users.findOne({ email: verify?.email })) as Partial<
+      CreateUserProps & { _id: Types.ObjectId }
+    >;
+    if (!user) {
+      throw new AppError(message("notFound", "user"), StatusCodes.BAD_REQUEST);
+    }
+    if (
+      ["BLOCKED", "INACTIVE"].includes(
+        user.activityStatus as UserActivityStatusEnumProps
+      )
+    ) {
+      throw new AppError(
+        message(
+          user.activityStatus?.toLowerCase() as MessageType,
+          "access token"
+        ),
+        StatusCodes.BAD_REQUEST
+      );
+    }
+    if (user.isDeleted) {
+      throw new AppError(message("delete", "user"), StatusCodes.BAD_REQUEST);
     }
     req.user = verify;
     next();

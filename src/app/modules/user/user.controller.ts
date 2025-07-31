@@ -21,7 +21,7 @@ const retrieveUsers = safeAsync(async (_req: Request, res: Response) => {
   resHandler(res, {
     status: StatusCodes.OK,
     success: true,
-    message: message("create", "user"),
+    message: message("get", "user"),
     data: users,
   });
 });

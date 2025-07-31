@@ -4,9 +4,20 @@ import appRouter from "./app/routes";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import invalidRoute from "./app/middlewares/invalidRoute";
 import cookieParser from "cookie-parser";
+import passport from "passport";
+import expressSession from "express-session";
 
 const app = express();
 
+app.use(
+  expressSession({
+    secret: "",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(cookieParser());
 
 // Parse incoming JSON requests

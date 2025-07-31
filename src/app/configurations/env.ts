@@ -13,6 +13,11 @@ interface LoadEnvVariableProps {
   bcrypt_salt_round: number;
   super_admin_email: string;
   super_admin_password: string;
+  google_client_id: string;
+  google_client_secret: string;
+  google_callback_url: string;
+  express_session_secret: string;
+  frontend_base_url: string;
 }
 
 const loadEnvVariables = (): LoadEnvVariableProps => {
@@ -27,6 +32,11 @@ const loadEnvVariables = (): LoadEnvVariableProps => {
     "BCRYPT_SALT_ROUND",
     "SUPER_ADMIN_EMAIL",
     "SUPER_ADMIN_PASSWORD",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "GOOGLE_CALLBACK_URL",
+    "EXPRESS_SESSION_SECRET",
+    "FRONTEND_BASE_URL",
   ];
   requiredEnvVariables.forEach((key: string) => {
     if (!process.env[key]) {
@@ -44,6 +54,11 @@ const loadEnvVariables = (): LoadEnvVariableProps => {
     bcrypt_salt_round: Number(process.env.BCRYPT_SALT_ROUND) as number,
     super_admin_email: process.env.SUPER_ADMIN_EMAIL as string,
     super_admin_password: process.env.SUPER_ADMIN_PASSWORD as string,
+    google_client_id: process.env.GOOGLE_CLIENT_ID as string,
+    google_client_secret: process.env.GOOGLE_CLIENT_SECRET as string,
+    google_callback_url: process.env.GOOGLE_CALLBACK_URL as string,
+    express_session_secret: process.env.EXPRESS_SESSION_SECRET as string,
+    frontend_base_url: process.env.FRONTEND_BASE_URL as string,
   };
 };
 

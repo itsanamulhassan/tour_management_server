@@ -1,59 +1,18 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { authProviderEnumProps, CreateUserProps } from "../user/user.types";
 import { Users } from "../user/user.model";
 import AppError from "../../errorHelper/appError";
 import { StatusCodes } from "http-status-codes";
 import message from "../../utils/message";
 import bcrypt from "bcryptjs";
-import { jwt } from "../../utils/jwt";
 import { ResetPasswordProps } from "./auth.types";
 import env from "../../configurations/env";
 import { Types } from "mongoose";
-const credentialSignIn = async (
-  payload: Partial<CreateUserProps>,
-  provider: authProviderEnumProps = "CREDENTIAL"
-) => {
-  const { email: inputEmail, password: inputPassword } = payload;
-
-  const user = await Users.findOne({ email: inputEmail }).select("+password");
-  if (!user) {
-    throw new AppError(message("notFound", "user"), StatusCodes.BAD_REQUEST);
-  }
-
-  if (provider === "CREDENTIAL") {
-    if (!user.password) {
-      throw new AppError(
-        message("notFound", "password"),
-        StatusCodes.BAD_REQUEST
-      );
-    }
-
-    const isMatch = await bcrypt.compare(
-      inputPassword as string,
-      user.password
-    );
-    if (!isMatch) {
-      throw new AppError(
-        message("badRequest", "sign in"),
-        StatusCodes.UNAUTHORIZED
-      );
-    }
-  }
-
-  const { _id, email, role } = user.toObject();
-  const credential = {
-    credentialId: _id,
-    email,
-    role,
-  };
-  const accessToken = jwt.signAccessToken(credential);
-  const refreshToken = jwt.signRefreshToken(credential);
-
-  return { accessToken, refreshToken, user };
-};
+import { token } from "../../utils/token";
 
 const retrieveLatestAccessToken = async (refreshToken: string) => {
-  const accessToken = await jwt.createAccessTokenWithRefreshToken(refreshToken);
+  const accessToken = await token.createAccessTokenWithRefreshToken(
+    refreshToken
+  );
   return { accessToken };
 };
 const resetPassword = async (
@@ -77,7 +36,6 @@ const resetPassword = async (
 };
 
 export const authServices = {
-  credentialSignIn,
   retrieveLatestAccessToken,
   resetPassword,
 };

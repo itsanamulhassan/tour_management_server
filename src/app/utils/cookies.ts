@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { RemoveCookiesProps, SetCookiesProps } from "../types/utils";
+import { RemoveCookiesProps, SetCookiesProps } from "../types/utils.types";
 
 const setCookies = (res: Response, payload: SetCookiesProps): void => {
   if (payload?.accessToken) {

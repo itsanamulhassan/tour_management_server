@@ -19,10 +19,10 @@ const createUser = async (payload: Partial<CreateUserProps>) => {
 
   const isUserExist = await Users.findOne({ email });
   if (isUserExist) {
-    throw new AppError(
-      message("alreadyExists", "user"),
-      StatusCodes.BAD_REQUEST
-    );
+    // throw new AppError(
+    //   message("alreadyExists", "user"),
+    //   StatusCodes.BAD_REQUEST
+    // );
   }
 
   const hashPassword = await bcryptjs.hash(
@@ -53,7 +53,7 @@ const updateUser = async (req: Request) => {
     params: { id: userId },
     user: { role },
     body,
-  } = req as Request;
+  } = req as Request & { user: { role: string } };
 
   const isUserExist = await Users.findById(userId);
   if (!isUserExist) {

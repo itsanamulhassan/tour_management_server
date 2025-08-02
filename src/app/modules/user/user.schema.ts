@@ -21,64 +21,82 @@ export const authProviderEnum = ["GOOGLE", "FACEBOOK", "CREDENTIAL"] as const;
 
 // ✅ User address schema
 export const addressSchema = z.object({
-  street: z.string().optional(), // Optional street line
-  city: z.string().min(1, { message: "City is required" }),
-  division: z.string().min(1, { message: "Division is required" }),
-  postalCode: z.string().optional(), // Optional postal code
-  country: z.string().min(1, { message: "Country is required" }),
+  street: z.string({ error: "Street must be a string." }).optional(), // Optional street line
+  city: z
+    .string({ error: "City must be a string." })
+    .min(1, { error: "City is required." }),
+  division: z
+    .string({ error: "Division must be a string." })
+    .min(1, { error: "Division is required." }),
+  postalCode: z.string({ error: "Postal code must be a string." }).optional(), // Optional postal code
+  country: z
+    .string({ error: "Country must be a string." })
+    .min(1, { error: "Country is required." }),
 });
 
 // ✅ Auth provider sub-document schema
 export const authProviderSchema = z.object({
   provider: z.enum(authProviderEnum),
-  providerId: z.string().min(1, { message: "Provider ID is required" }),
+  providerId: z
+    .string({ error: "Authentication provided id must be a string." })
+    .min(1, { error: "Provider ID is required." }),
 });
 
 // ✅ Main user creation schema
-const createUserSchema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
+const createUser = z.object({
+  name: z
+    .string({ error: "Name must be a string." })
+    .min(1, { error: "Name is required." }),
   email: z
-    .email({ message: "Invalid email address" })
-    .min(1, { message: "Email is required" })
+    .email({ error: "Invalid email address." })
+    .min(1, { error: "Email is required." })
     .lowercase(),
 
   // Password is optional (e.g. social login), but if provided, must match regex
   password: z
     .string()
     .regex(passwordRegex, {
-      message:
-        "Password must be 6 - 32 characters long, include at least 1 uppercase letter and 1 special character",
+      error:
+        "Password must be 6 - 32 characters long, include at least 1 uppercase letter and 1 special character.",
     })
     .optional(),
 
-  phone: z.string().optional(),
-  avatar: z.url({ message: "Avatar must be a valid URL" }).optional(),
+  phone: z.string({ error: "Phone must be a string." }).optional(),
+  avatar: z.url({ error: "Avatar must be a valid URL." }).optional(),
 
   // Embedded address object
   address: addressSchema.optional(),
 
   // Status flags
-  isDeleted: z.boolean().default(false).optional(),
+  isDeleted: z
+    .boolean({ error: "Verify status must be a boolean." })
+    .default(false)
+    .optional(),
   activityStatus: z.enum(userActivityStatusEnum).default("ACTIVE"),
-  isVerified: z.boolean().default(true).optional(),
+  isVerified: z
+    .boolean({ error: "Verify status must be a boolean." })
+    .default(true)
+    .optional(),
 
   // Linked authentication providers
   auths: z
     .array(authProviderSchema)
-    .min(1, { message: "At least one auth provider is required" })
+    .min(1, { error: "At least one auth provider is required." })
     .default([]),
 
   // User role
   role: z.enum(userRoleStatusEnum).default("USER"),
 
   // References to bookings or guides
-  booking: z.array(z.string()).optional(),
-  guides: z.array(z.string()).optional(),
+  booking: z
+    .array(z.string({ error: "Booking id must be a string" }))
+    .optional(),
+  guides: z.array(z.string({ error: "Guide id must be a string" })).optional(),
 });
-const updateUserSchema = createUserSchema.omit({
+const updateUser = createUser.omit({
   email: true,
 });
 export const userSchemas = {
-  createUserSchema,
-  updateUserSchema,
+  createUser,
+  updateUser,
 };

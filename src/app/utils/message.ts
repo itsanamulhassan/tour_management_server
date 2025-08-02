@@ -13,7 +13,8 @@ export type MessageType =
   | "badRequest"
   | "expired"
   | "inactive"
-  | "blocked";
+  | "blocked"
+  | "validation";
 
 const message = (
   type: MessageType,
@@ -39,6 +40,7 @@ const message = (
     expired: `${entityCapitalized} has expired. Please request a new one or try again later.`,
     blocked: `${entityCapitalized} has blocked. Please request a new one or try again later.`,
     inactive: `${entityCapitalized} has deactivated. Please request a new one or try again later.`,
+    validation: `${entityCapitalized} validation failed. Please check the provided information.`, // ✅ New message
   };
 
   return `${messages[type]} ${note}`.trim();

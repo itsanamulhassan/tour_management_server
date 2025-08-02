@@ -9,7 +9,7 @@ const userRouter = Router();
 // ✅ Create a new user
 userRouter.post(
   "/register",
-  schemaValidator(userSchemas.createUserSchema),
+  schemaValidator(userSchemas.createUser),
   userControllers.createUser
 );
 // ✅ Get all the users
@@ -21,7 +21,7 @@ userRouter.get(
 // ✅ Update user by ID
 userRouter.patch(
   "/update/:id",
-  schemaValidator(userSchemas.updateUserSchema),
+  schemaValidator(userSchemas.updateUser),
   auth.authorizeRole(...userRoleStatusEnum),
   userControllers.updateUser
 );

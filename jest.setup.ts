@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import env from "./src/app/configurations/env"; // Import environment variables (like db_url)
+import env from "./src/app/configurations/env";
 
 // ✅ Run before all tests: Connect to MongoDB
 beforeAll(async () => {

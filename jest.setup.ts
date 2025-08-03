@@ -20,5 +20,5 @@ beforeAll(async () => {
 
 // ✅ Run after all tests: Close the MongoDB connection
 afterAll(async () => {
-  await mongoose.connection.close();
+  await mongoose.disconnect();
 });

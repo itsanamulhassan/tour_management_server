@@ -18,6 +18,8 @@ interface LoadEnvVariableProps {
   google_callback_url: string;
   express_session_secret: string;
   frontend_base_url: string;
+  access_cookie_name: string;
+  refresh_cookie_name: string;
 }
 
 const loadEnvVariables = (): LoadEnvVariableProps => {
@@ -37,6 +39,8 @@ const loadEnvVariables = (): LoadEnvVariableProps => {
     "GOOGLE_CALLBACK_URL",
     "EXPRESS_SESSION_SECRET",
     "FRONTEND_BASE_URL",
+    "ACCESS_COOKIE_NAME",
+    "REFRESH_COOKIE_NAME",
   ];
   requiredEnvVariables.forEach((key: string) => {
     if (!process.env[key]) {
@@ -59,6 +63,8 @@ const loadEnvVariables = (): LoadEnvVariableProps => {
     google_callback_url: process.env.GOOGLE_CALLBACK_URL as string,
     express_session_secret: process.env.EXPRESS_SESSION_SECRET as string,
     frontend_base_url: process.env.FRONTEND_BASE_URL as string,
+    access_cookie_name: process.env.ACCESS_COOKIE_NAME as string,
+    refresh_cookie_name: process.env.REFRESH_COOKIE_NAME as string,
   };
 };
 

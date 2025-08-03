@@ -18,7 +18,7 @@ divisionRouter.get(
   divisionControllers.retrieveDivisions
 );
 divisionRouter.patch(
-  "/update",
+  "/update/:id",
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
   schemaValidator(divisionSchema.updateDivision),
   divisionControllers.updateDivision

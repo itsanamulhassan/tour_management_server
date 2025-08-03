@@ -19,7 +19,7 @@ const createDivision = async (payload: CreateDivisionProps) => {
 };
 const updateDivision = async (req: Request) => {
   const {
-    params: { _id: divisionId },
+    params: { id: divisionId },
     body: payload,
   } = req as Request;
   const isDivisionExist = await Divisions.exists({ _id: divisionId });

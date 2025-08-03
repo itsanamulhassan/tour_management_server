@@ -7,6 +7,7 @@ import { divisionServices } from "./division.service";
 
 const createDivision = safeAsync(async (req: Request, res: Response) => {
   const division = await divisionServices.createDivision(req.body);
+
   resHandler(res, {
     status: StatusCodes.CREATED,
     message: message("create", "division"),

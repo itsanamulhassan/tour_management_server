@@ -16,12 +16,8 @@ const divisionSchema = new Schema<CreateDivisionProps>(
       trim: true,
       lowercase: true,
     },
-    thumbnail: {
-      type: String,
-    },
-    description: {
-      type: String,
-    },
+    thumbnail: String,
+    description: String,
   },
   {
     timestamps: true,
@@ -29,20 +25,27 @@ const divisionSchema = new Schema<CreateDivisionProps>(
   }
 );
 
-divisionSchema.pre("save", async function (next) {
+// ✅ Helper function for slug generation
+const generateSlug = (name: string) =>
+  name.toLowerCase().replace(/\s+/g, "_") + "_division";
+
+// ✅ Run BEFORE validation to ensure slug is set
+divisionSchema.pre("validate", function (next) {
   if (this.name) {
-    const slug = this.name.toLowerCase().split(" ").join("_");
-    this.slug = slug;
+    this.slug = generateSlug(this.name);
   }
   next();
 });
-divisionSchema.pre("findOneAndUpdate", async function (next) {
-  const payload = this.getUpdate() as Partial<CreateDivisionProps>;
-  if (payload.name) {
-    const slug = payload.name.toLowerCase().split(" ").join("_");
-    payload.slug = slug;
+
+// ✅  Update slug automatically on findOneAndUpdate
+divisionSchema.pre("findOneAndUpdate", function (next) {
+  const division = this.getUpdate() as Partial<CreateDivisionProps>;
+
+  if (division.name) {
+    division.slug = generateSlug(division.name);
   }
-  this.setUpdate(payload);
+  this.setUpdate(division);
+
   next();
 });
 

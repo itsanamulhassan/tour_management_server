@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 import { CreateDivisionProps } from "./division.types";
 
-const createDivision = new Schema<CreateDivisionProps>(
+const divisionSchema = new Schema<CreateDivisionProps>(
   {
     name: {
       type: String,
@@ -29,7 +29,24 @@ const createDivision = new Schema<CreateDivisionProps>(
   }
 );
 
+divisionSchema.pre("save", async function (next) {
+  if (this.name) {
+    const slug = this.name.toLowerCase().split(" ").join("_");
+    this.slug = slug;
+  }
+  next();
+});
+divisionSchema.pre("findOneAndUpdate", async function (next) {
+  const payload = this.getUpdate() as Partial<CreateDivisionProps>;
+  if (payload.name) {
+    const slug = payload.name.toLowerCase().split(" ").join("_");
+    payload.slug = slug;
+  }
+  this.setUpdate(payload);
+  next();
+});
+
 export const Divisions = model<CreateDivisionProps>(
   "Divisions",
-  createDivision
+  divisionSchema
 );

@@ -1,5 +1,6 @@
 import { createDefaultPreset } from "ts-jest";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const tsJestTransformCfg = createDefaultPreset().transform;
 
 /** @type {import("jest").Config} **/

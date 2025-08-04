@@ -24,10 +24,7 @@ const updateDivision = async (req: Request) => {
   } = req as Request;
   const isDivisionExist = await Divisions.exists({ _id: divisionId });
   if (!isDivisionExist) {
-    throw new AppError(
-      message("notFound", "division"),
-      StatusCodes.BAD_REQUEST
-    );
+    throw new AppError(message("notFound", "division"), StatusCodes.NOT_FOUND);
   }
   const isDuplicateExist = await Divisions.findOne({
     name: payload.name,
@@ -50,10 +47,7 @@ const deleteDivision = async (req: Request) => {
   const divisionId = req.params.id;
   const isDivisionExist = await Divisions.exists({ _id: divisionId });
   if (!isDivisionExist) {
-    throw new AppError(
-      message("notFound", "division"),
-      StatusCodes.BAD_REQUEST
-    );
+    throw new AppError(message("notFound", "division"), StatusCodes.NOT_FOUND);
   }
 
   await Divisions.findByIdAndDelete(divisionId);
@@ -62,10 +56,7 @@ const deleteDivision = async (req: Request) => {
 const retrieveDivisions = async (_req: Request) => {
   const divisions = await Divisions.find({});
   if (!divisions) {
-    throw new AppError(
-      message("notFound", "division"),
-      StatusCodes.BAD_REQUEST
-    );
+    throw new AppError(message("notFound", "division"), StatusCodes.NOT_FOUND);
   }
   return divisions;
 };
@@ -73,10 +64,7 @@ const retrieveDivision = async (req: Request) => {
   const divisionId = req.params.id;
   const isDivisionExist = await Divisions.findById(divisionId);
   if (!isDivisionExist) {
-    throw new AppError(
-      message("notFound", "division"),
-      StatusCodes.BAD_REQUEST
-    );
+    throw new AppError(message("notFound", "division"), StatusCodes.NOT_FOUND);
   }
 
   return isDivisionExist;

@@ -18,7 +18,7 @@ const createDivision = safeAsync(async (req: Request, res: Response) => {
 const updateDivision = safeAsync(async (req: Request, res: Response) => {
   const division = await divisionServices.updateDivision(req);
   resHandler(res, {
-    status: StatusCodes.CREATED,
+    status: StatusCodes.OK,
     message: message("update", "division"),
     success: true,
     data: division,

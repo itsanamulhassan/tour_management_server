@@ -2,16 +2,19 @@ import request from "supertest";
 import { StatusCodes } from "http-status-codes";
 import app from "../../../app";
 
-describe("User Authentication", () => {
+describe("🔐 User Authentication & Profile Management API", () => {
+  // 🔹 Test user payload
   const payload = {
     name: "Anamul Hassan",
     email: "test1111@gmail.com",
     password: "Anamul2025!",
   };
+
   let accessToken: string;
   let userId: string;
-  // ✅ Register as regular user
-  describe("POST /api/v1/users/register", () => {
+
+  describe("👤 User Registration & Sign-in", () => {
+    // ✅ Test: Register new user
     it("should register a new user", async () => {
       const res = await request(app)
         .post("/api/v1/users/register")
@@ -27,6 +30,7 @@ describe("User Authentication", () => {
       );
     });
 
+    // ❌ Test: Duplicate registration
     it("should fail to register an existing user", async () => {
       const res = await request(app)
         .post("/api/v1/users/register")
@@ -39,19 +43,26 @@ describe("User Authentication", () => {
       );
     });
 
+    // ✅ Test: Sign in with correct credentials
     it("should sign in an existing user", async () => {
       const res = await request(app).post("/api/v1/auth/signin").send({
         email: payload.email,
         password: payload.password,
       });
+
       accessToken = res?.body?.data?.accessToken;
+
       expect(res.statusCode).toBe(StatusCodes.OK);
       expect(res.body).toHaveProperty("success", true);
+      expect(accessToken).toBeDefined();
     });
+  });
 
-    it("should update user information by id", async () => {
+  describe("✏️ User Update API", () => {
+    // ✅ Test: Update user profile
+    it("should update user information by ID", async () => {
       const res = await request(app)
-        .patch("/api/v1/users/update/" + userId)
+        .patch(`/api/v1/users/update/${userId}`)
         .set("Authorization", accessToken)
         .send({
           name: "Anamul Hassan Update",
@@ -63,6 +74,16 @@ describe("User Authentication", () => {
         "message",
         "User was successfully updated with the latest information."
       );
+    });
+
+    // ❌ Test: Should fail without token
+    it("should fail to update user if no token provided", async () => {
+      const res = await request(app)
+        .patch(`/api/v1/users/update/${userId}`)
+        .send({ name: "Hacker Update" });
+
+      expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED);
+      expect(res.body).toHaveProperty("success", false);
     });
   });
 });

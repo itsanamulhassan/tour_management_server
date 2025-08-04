@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import AppError from "../../errorHelper/appError";
 import message from "../../utils/message";
-import { Divisions } from "./division.model";
+import { Divisions } from "./division.models";
 import { CreateDivisionProps } from "./division.types";
 import { Request } from "express";
 

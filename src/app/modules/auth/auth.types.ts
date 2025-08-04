@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { authSchemas } from "./auth.schema";
+import { authSchemas } from "./auth.schemas";
 
 // ✅ Type representing the credential signin properties
 export type CredentialSignInProps = z.infer<

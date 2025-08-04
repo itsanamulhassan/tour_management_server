@@ -1,7 +1,7 @@
 import { Router } from "express";
-import userControllers from "./user.controller";
+import userControllers from "./user.controllers";
 import schemaValidator from "../../middlewares/validateRequest";
-import { userRoleStatusEnum, userSchemas } from "./user.schema";
+import { userRoleStatusEnum, userSchemas } from "./user.schemas";
 import { auth } from "../../utils/auth";
 
 const userRouter = Router();

@@ -3,7 +3,7 @@ import safeAsync from "../../utils/safeAsync";
 import message from "../../utils/message";
 import { StatusCodes } from "http-status-codes";
 import resHandler from "../../utils/resHandler";
-import { divisionServices } from "./division.service";
+import { divisionServices } from "./division.services";
 
 const createDivision = safeAsync(async (req: Request, res: Response) => {
   const division = await divisionServices.createDivision(req.body);

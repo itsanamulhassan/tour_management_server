@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { Users } from "../modules/user/user.model";
+import { Users } from "../modules/user/user.models";
 import {
   CreateUserProps,
   UserActivityStatusEnumProps,

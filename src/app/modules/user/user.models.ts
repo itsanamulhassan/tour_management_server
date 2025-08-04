@@ -4,7 +4,7 @@ import {
   authProviderEnum,
   userActivityStatusEnum,
   userRoleStatusEnum,
-} from "./user.schema";
+} from "./user.schemas";
 
 const addressSchema = new Schema<AddressProps>(
   {

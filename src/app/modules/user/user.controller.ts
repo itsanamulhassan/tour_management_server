@@ -8,6 +8,7 @@ import message from "../../utils/message";
 // ✅ Create a new user
 const createUser = safeAsync(async (req: Request, res: Response) => {
   const user = await userServices.createUser(req.body);
+  delete user?.password;
   resHandler(res, {
     status: StatusCodes.CREATED,
     success: true,

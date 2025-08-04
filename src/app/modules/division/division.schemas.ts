@@ -6,7 +6,8 @@ const createDivision = z.object({
     .min(1, { error: "Division name is required." }),
   slug: z
     .string({ error: "Slug must be a string" })
-    .min(1, { error: "Division slug is required." }),
+    .min(1, { error: "Division slug is required." })
+    .optional(),
   thumbnail: z.string({ error: "Thumbnail must be a string" }).optional(),
   description: z.string({ error: "Description must be a string" }).optional(),
 });

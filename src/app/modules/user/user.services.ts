@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import AppError from "../../errorHelper/appError";
 import message from "../../utils/message";
-import { Users } from "./user.model";
+import { Users } from "./user.models";
 import { AuthProviderProps, CreateUserProps } from "./user.types";
 import bcryptjs from "bcryptjs";
 import env from "../../configurations/env";

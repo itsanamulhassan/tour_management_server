@@ -8,7 +8,7 @@ import {
   userActivityStatusEnum,
   userRoleStatusEnum,
   userSchemas,
-} from "./user.schema";
+} from "./user.schemas";
 
 // ✅ Type representing a user creation payload
 export type CreateUserProps = z.infer<typeof userSchemas.createUser>;

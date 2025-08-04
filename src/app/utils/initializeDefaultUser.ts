@@ -1,4 +1,4 @@
-import { Users } from "../modules/user/user.model";
+import { Users } from "../modules/user/user.models";
 import env from "../configurations/env";
 import bcrypt from "bcryptjs";
 import AppError from "../errorHelper/appError";

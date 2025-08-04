@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import userServices from "./user.service";
+import userServices from "./user.services";
 import safeAsync from "../../utils/safeAsync";
 import resHandler from "../../utils/resHandler";
 import message from "../../utils/message";

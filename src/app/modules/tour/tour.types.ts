@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { tourSchema } from "./tour.schema";
+import { tourSchema } from "./tour.schemas";
 import { Types } from "mongoose";
 
 export type CreateTourProps = Omit<

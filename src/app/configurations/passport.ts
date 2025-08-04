@@ -7,8 +7,8 @@ import {
 import { Strategy as LocalStrategy } from "passport-local";
 import env from "./env";
 import message, { MessageType } from "../utils/message";
-import { Users } from "../modules/user/user.model";
-import { userRoleStatusEnum } from "../modules/user/user.schema";
+import { Users } from "../modules/user/user.models";
+import { userRoleStatusEnum } from "../modules/user/user.schemas";
 import {
   AuthProviderProps,
   UserActivityStatusEnumProps,

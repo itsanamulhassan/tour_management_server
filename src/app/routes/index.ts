@@ -1,7 +1,7 @@
 import { Router } from "express";
-import userRouter from "../modules/user/user.router";
-import authRouter from "../modules/auth/auth.router";
-import divisionRouter from "../modules/division/division.router";
+import userRouter from "../modules/user/user.routers";
+import authRouter from "../modules/auth/auth.routers";
+import divisionRouter from "../modules/division/division.routers";
 
 // Initialize the main router
 const appRouter = Router();

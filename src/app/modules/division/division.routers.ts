@@ -1,7 +1,7 @@
 import { Router } from "express";
 import schemaValidator from "../../middlewares/validateRequest";
-import { divisionSchema } from "./division.schema";
-import { divisionControllers } from "./division.controller";
+import { divisionSchema } from "./division.schemas";
+import { divisionControllers } from "./division.controllers";
 import { auth } from "../../utils/auth";
 
 const divisionRouter = Router();
@@ -18,7 +18,7 @@ divisionRouter.get(
   divisionControllers.retrieveDivisions
 );
 divisionRouter.patch(
-  "/update",
+  "/update/:id",
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
   schemaValidator(divisionSchema.updateDivision),
   divisionControllers.updateDivision

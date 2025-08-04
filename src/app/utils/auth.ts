@@ -7,7 +7,7 @@ import safeAsync from "./safeAsync";
 import AppError from "../errorHelper/appError";
 import message, { MessageType } from "./message";
 import { jwt } from "./jwt";
-import { Users } from "../modules/user/user.model";
+import { Users } from "../modules/user/user.models";
 import { StatusCodes } from "http-status-codes";
 
 const authorizeRole = (...roles: UserRoleStatusEnumProps[]) =>

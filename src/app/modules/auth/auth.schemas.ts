@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { passwordRegex } from "../user/user.schema";
+import { passwordRegex } from "../user/user.schemas";
 
 const credentialSignInSchema = z.object({
   email: z

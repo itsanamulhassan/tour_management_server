@@ -3,7 +3,7 @@ import safeAsync from "../../utils/safeAsync";
 import resHandler from "../../utils/resHandler";
 import { StatusCodes } from "http-status-codes";
 import message from "../../utils/message";
-import { authServices } from "./auth.service";
+import { authServices } from "./auth.services";
 import AppError from "../../errorHelper/appError";
 import { cookies } from "../../utils/cookies";
 import { ResetPasswordProps } from "./auth.types";

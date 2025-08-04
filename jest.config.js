@@ -9,5 +9,5 @@ export default {
   setupFilesAfterEnv: ["./src/jest.setup.ts"],
   preset: "ts-jest",
   testEnvironment: "node",
-  testMatch: ["**/*.test.ts"],
+  testMatch: ["**/*.tests.ts"],
 };

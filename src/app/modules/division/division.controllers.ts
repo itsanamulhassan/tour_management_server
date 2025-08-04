@@ -41,7 +41,7 @@ const retrieveDivisions = safeAsync(async (req: Request, res: Response) => {
     data: divisions,
   });
 });
-const retrievedDivision = safeAsync(async (req: Request, res: Response) => {
+const retrieveDivision = safeAsync(async (req: Request, res: Response) => {
   const division = await divisionServices.retrieveDivision(req);
   resHandler(res, {
     status: StatusCodes.OK,
@@ -55,5 +55,5 @@ export const divisionControllers = {
   updateDivision,
   deleteDivision,
   retrieveDivisions,
-  retrievedDivision,
+  retrieveDivision,
 };

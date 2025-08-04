@@ -13,21 +13,38 @@ import { StatusCodes } from "http-status-codes";
 const authorizeRole = (...roles: UserRoleStatusEnumProps[]) =>
   safeAsync(async (req: Request, _res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
+
+    // 401 Unauthorized → No token provided
     if (!token) {
-      throw new AppError(message("notFound", "token"), 403);
+      throw new AppError(
+        message("notFound", "token"),
+        StatusCodes.UNAUTHORIZED
+      );
     }
+
     const verify = jwt.verifyAccessToken(token);
+
+    // 401 Unauthorized → Invalid or expired token
     if (!verify) {
-      throw new AppError(message("expired", "token"), 403);
+      throw new AppError(message("expired", "token"), StatusCodes.UNAUTHORIZED);
     }
+
+    // 403 Forbidden → User has no permission
     if (!roles.includes(verify.role)) {
-      throw new AppError(message("unauthorized", "user"), 403);
+      throw new AppError(
+        message("unauthorized", "user"),
+        StatusCodes.FORBIDDEN
+      );
     }
 
     const user = await Users.findOne({ email: verify?.email });
+
+    // 404 Not Found → User doesn't exist
     if (!user) {
-      throw new AppError(message("notFound", "user"), StatusCodes.BAD_REQUEST);
+      throw new AppError(message("notFound", "user"), StatusCodes.NOT_FOUND);
     }
+
+    // 403 Forbidden → User is blocked or inactive
     if (
       ["BLOCKED", "INACTIVE"].includes(
         user.activityStatus as UserActivityStatusEnumProps
@@ -38,12 +55,16 @@ const authorizeRole = (...roles: UserRoleStatusEnumProps[]) =>
           user.activityStatus?.toLowerCase() as MessageType,
           "access token"
         ),
-        StatusCodes.BAD_REQUEST
+        StatusCodes.FORBIDDEN
       );
     }
+
+    // 410 Gone → User is deleted
     if (user.isDeleted) {
-      throw new AppError(message("delete", "user"), StatusCodes.BAD_REQUEST);
+      throw new AppError(message("delete", "user"), StatusCodes.GONE);
     }
+
+    // Attach user payload to request
     req.user = verify;
     next();
   });

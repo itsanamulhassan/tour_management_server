@@ -3,6 +3,7 @@ import userRouter from "../modules/user/user.routers";
 import authRouter from "../modules/auth/auth.routers";
 import divisionRouter from "../modules/division/division.routers";
 import tourTypeRouter from "../modules/tour/type/tour.type.routers";
+import tourRouter from "../modules/tour/tour.routers";
 
 // Initialize the main router
 const appRouter = Router();
@@ -24,6 +25,10 @@ const routes = [
   {
     path: "/tour_types",
     router: tourTypeRouter,
+  },
+  {
+    path: "/tours",
+    router: tourRouter,
   },
 ];
 

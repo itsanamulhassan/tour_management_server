@@ -6,7 +6,7 @@ describe("🔐 User Authentication & Profile Management API", () => {
   // 🔹 Test user payload
   const payload = {
     name: "Anamul Hassan",
-    email: "test1111@gmail.com",
+    email: "test111112111@gmail.com",
     password: "Anamul2025!",
   };
 

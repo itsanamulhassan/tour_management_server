@@ -27,6 +27,7 @@ const tourSchema = new Schema<CreateTourProps>(
     costFrom: {
       type: Number,
       min: [1, "Tour cost must be a positive number."],
+      default: 1,
     },
     description: {
       type: String,
@@ -63,7 +64,7 @@ const tourSchema = new Schema<CreateTourProps>(
       min: [1, "Minimum age must be a positive number."],
     },
     tourPlan: {
-      type: String,
+      type: [String],
       default: [],
     },
     maxGuest: {
@@ -73,5 +74,26 @@ const tourSchema = new Schema<CreateTourProps>(
   },
   { timestamps: true, versionKey: false }
 );
+
+// ✅ Helper function for slug generation
+const generateSlug = (name: string) =>
+  name.toLowerCase().replace(/\s+/g, "_") + "_division";
+
+tourSchema.pre("validate", async function (next) {
+  if (this.title) {
+    this.slug = generateSlug(this.title);
+  }
+  next();
+});
+
+tourSchema.pre("findOneAndUpdate", async function (next) {
+  const tour = this.getUpdate() as Partial<CreateTourProps>;
+
+  if (tour.title) {
+    tour.slug = generateSlug(tour.title);
+  }
+  this.setUpdate(tour);
+  next();
+});
 
 export const Tours = model<CreateTourProps>("Tours", tourSchema);

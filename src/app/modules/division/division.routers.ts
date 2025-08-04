@@ -26,7 +26,7 @@ divisionRouter.patch(
 divisionRouter.get(
   "/single/:id",
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
-  divisionControllers.retrievedDivision
+  divisionControllers.retrieveDivision
 );
 divisionRouter.delete(
   "/delete/:id",

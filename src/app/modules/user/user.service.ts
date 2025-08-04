@@ -60,16 +60,25 @@ const updateUser = async (req: Request) => {
     throw new AppError(message("notFound", "user"), StatusCodes.NOT_FOUND);
   }
 
+  // USER or GUIDE restrictions
   if (["USER", "GUIDE"].includes(role)) {
-    if (
-      body.role ||
-      (role === "ADMIN" && body.role === "SUPERADMIN") ||
+    const forbidden =
+      (body.role && body.role !== role) ||
       ["INACTIVE", "BLOCKED"].includes(body.activityStatus) ||
-      body.isDeleted ||
-      !body.isVerified
-    ) {
+      body.isDeleted === true ||
+      body.isVerified === false;
+
+    if (forbidden) {
       throw new AppError(message("forbidden", role), StatusCodes.FORBIDDEN);
     }
+  }
+
+  // ADMIN restrictions
+  if (role === "ADMIN" && body.role === "SUPERADMIN") {
+    throw new AppError(
+      message("forbidden", "ADMIN (cannot assign SUPERADMIN)"),
+      StatusCodes.FORBIDDEN
+    );
   }
   if (body.password) {
     body.password = await bcryptjs.hash(body.password, env.bcrypt_salt_round);

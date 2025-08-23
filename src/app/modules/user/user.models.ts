@@ -37,7 +37,7 @@ const authProviderSchema = new Schema<AuthProviderProps>(
     },
     providerId: {
       type: String,
-      required: [true, "Provider ID- is required"],
+      required: [true, "Provider ID is required."],
     },
   },
   {

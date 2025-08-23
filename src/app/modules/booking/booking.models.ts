@@ -1,8 +1,8 @@
-import { Schema } from "mongoose";
-import { CreateBookingProps } from "../payment/payment.types";
+import { model, Schema } from "mongoose";
 import { bookingStatusEnum } from "./booking.schemas";
+import { CreateBookingProps } from "./booking.types";
 
-const tourSchema = new Schema<CreateBookingProps>(
+const bookingSchema = new Schema<CreateBookingProps>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -26,7 +26,10 @@ const tourSchema = new Schema<CreateBookingProps>(
       type: String,
       enum: bookingStatusEnum,
       default: "PENDING",
+      uppercase: true,
     },
   },
   { timestamps: true }
 );
+
+export const Bookings = model<CreateBookingProps>("Bookings", bookingSchema);

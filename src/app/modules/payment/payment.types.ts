@@ -1,13 +1,13 @@
-import z from "zod";
-import { bookingSchemas } from "../booking/booking.schemas";
-import { Types } from "mongoose";
+// import z from "zod";
+// import { Types } from "mongoose";
+// import { paymentSchemas } from "./payment.schemas";
 
-// ✅ Type representing a booking creation payload
-export type CreateBookingProps = Omit<
-  z.infer<typeof bookingSchemas.createBooking>,
-  "user" | "payment" | "tour"
-> & {
-  tour: Types.ObjectId;
-  user: Types.ObjectId;
-  payment?: Types.ObjectId;
-};
+// // ✅ Type representing a booking creation payload
+// export type CreatePaymentProps = Omit<
+//   z.infer<typeof paymentSchemas.createPayment>,
+//   "user" | "payment" | "tour"
+// > & {
+//   tour: Types.ObjectId;
+//   user: Types.ObjectId;
+//   payment?: Types.ObjectId;
+// };

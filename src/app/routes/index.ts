@@ -34,6 +34,10 @@ const routes = [
     path: "/payments",
     router: tourRouter,
   },
+  {
+    path: "/bookings",
+    router: ,
+  },
 ];
 
 // Register all routes with the main appRouter

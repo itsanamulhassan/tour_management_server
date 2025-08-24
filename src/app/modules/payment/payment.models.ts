@@ -26,6 +26,8 @@ const paymentSchema = new Schema<CreatePaymentProps>(
     },
     transactionId: {
       type: String,
+      unique: [true, "Transaction ID must be unique."],
+      required: [true, "Transaction ID is required."],
     },
   },
   { timestamps: true }

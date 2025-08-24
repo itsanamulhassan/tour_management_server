@@ -35,12 +35,12 @@ const tourSchema = new Schema<CreateTourProps>(
     division: {
       type: Schema.Types.ObjectId,
       ref: "Divisions",
-      required: true,
+      required: [true, "Division ID is required."],
     },
     tourType: {
       type: Schema.Types.ObjectId,
       ref: "TourTypes",
-      required: true,
+      required: [true, "Type of tour is required."],
     },
     endDate: {
       type: Date,

@@ -37,7 +37,7 @@ const authProviderSchema = new Schema<AuthProviderProps>(
     },
     providerId: {
       type: String,
-      required: [true, "Provider ID- is required"],
+      required: [true, "Provider ID is required."],
     },
   },
   {
@@ -50,14 +50,14 @@ const userSchema = new Schema<CreateUserProps>(
   {
     name: {
       type: String,
-      required: [true, "User name is required"],
+      required: [true, "User name is required."],
       trim: true,
     },
     email: {
       type: String,
       lowercase: true,
-      unique: [true, "Duplicate email found"],
-      required: [true, "Email is required"],
+      unique: [true, "Duplicate email found."],
+      required: [true, "Email is required."],
     },
     password: {
       type: String,

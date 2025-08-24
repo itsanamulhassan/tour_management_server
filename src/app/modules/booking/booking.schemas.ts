@@ -2,7 +2,12 @@
 
 import z from "zod";
 
-const bookingStatusEnum = ["PENDING", "CANCEL", "COMPLETE", "FAIL"] as const;
+export const bookingStatusEnum = [
+  "PENDING",
+  "CANCEL",
+  "COMPLETE",
+  "FAIL",
+] as const;
 
 const createBooking = z.object({
   user: z

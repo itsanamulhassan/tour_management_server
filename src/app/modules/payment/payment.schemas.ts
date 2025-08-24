@@ -1,6 +1,6 @@
 import z from "zod";
 
-const paymentStatusEnum = [
+export const paymentStatusEnum = [
   "PAID",
   "UNPAID",
   "CANCEL",

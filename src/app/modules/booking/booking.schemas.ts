@@ -23,6 +23,10 @@ const createBooking = z.object({
     .min(1, { error: "Number of guest is required." }),
   status: z.enum(bookingStatusEnum).default("PENDING"),
 });
+const updateBooking = z.clone(createBooking);
+const updateBookingStatus = createBooking.pick({ status: true });
 export const bookingSchemas = {
   createBooking,
+  updateBooking,
+  updateBookingStatus,
 };

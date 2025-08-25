@@ -11,3 +11,9 @@ export type CreateBookingProps = Omit<
   user: Types.ObjectId;
   payment?: Types.ObjectId;
 };
+
+// ✅ Type representing a booking updating payload
+
+export type UpdateBookingProps = CreateBookingProps;
+// ✅ Type representing a booking status updating payload
+export type UpdateBookingStatusProps = Pick<CreateBookingProps, "status">;

@@ -1,6 +1,6 @@
 import { ErrorRequestHandler } from "express";
 import env from "../configurations/env";
-import AppError from "../errorHelper/appError";
+import AppError from "../utils/helpers/error/appError";
 import { ErrorSourceProps } from "../types/middleware.types";
 import { errorFormatter } from "../utils/errorFormatter";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

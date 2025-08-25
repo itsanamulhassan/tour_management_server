@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import { Request } from "express";
 import { CreateTourProps } from "./tour.types";
 import { Tours } from "./tour.models";
-import AppError from "../../errorHelper/appError";
+import AppError from "../../utils/helpers/error/appError";
 import message from "../../utils/message";
 
 const createTour = async (payload: CreateTourProps) => {

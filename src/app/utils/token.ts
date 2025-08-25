@@ -7,7 +7,7 @@ import {
 import { jwt } from "./jwt";
 import { StatusCodes } from "http-status-codes";
 import message, { MessageType } from "./message";
-import AppError from "../errorHelper/appError";
+import AppError from "./helpers/error/appError";
 import { CreateAccessRefreshTokenProps } from "../types/utils.types";
 
 const createAccessTokenWithRefreshToken = async (refreshToken: string) => {

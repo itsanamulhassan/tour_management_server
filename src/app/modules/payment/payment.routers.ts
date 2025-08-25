@@ -1,8 +1,8 @@
 import { Router } from "express";
 import schemaValidator from "../../middlewares/validateRequest";
 import { paymentSchemas } from "./payment.schemas";
-import { auth } from "../../utils/auth";
 import { userRoleStatusEnum } from "../user/user.schemas";
+import { auth } from "../auth/auth.helpers/auth";
 
 const paymentRouter = Router();
 

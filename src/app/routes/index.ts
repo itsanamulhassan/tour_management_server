@@ -4,6 +4,7 @@ import authRouter from "../modules/auth/auth.routers";
 import divisionRouter from "../modules/division/division.routers";
 import tourTypeRouter from "../modules/tour/type/tour.type.routers";
 import tourRouter from "../modules/tour/tour.routers";
+import bookingRouter from "../modules/booking/booking.routers";
 
 // Initialize the main router
 const appRouter = Router();
@@ -36,7 +37,7 @@ const routes = [
   },
   {
     path: "/bookings",
-    router: ,
+    router: bookingRouter,
   },
 ];
 

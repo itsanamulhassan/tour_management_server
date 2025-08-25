@@ -4,7 +4,7 @@ import resHandler from "../../utils/resHandler";
 import { StatusCodes } from "http-status-codes";
 import message from "../../utils/message";
 import { authServices } from "./auth.services";
-import AppError from "../../errorHelper/appError";
+import AppError from "../../utils/helpers/error/appError";
 import { cookies } from "../../utils/cookies";
 import { ResetPasswordProps } from "./auth.types";
 import { JwtPayload } from "jsonwebtoken";

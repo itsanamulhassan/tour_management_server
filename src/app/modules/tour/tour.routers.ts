@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { auth } from "../../utils/auth";
 import schemaValidator from "../../middlewares/validateRequest";
 import { tourSchema } from "./tour.schemas";
 import { tourControllers } from "./tour.controllers";
+import { auth } from "../auth/auth.helpers/auth";
 
 const tourRouter = Router();
 

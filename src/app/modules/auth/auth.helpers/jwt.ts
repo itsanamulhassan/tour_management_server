@@ -1,5 +1,5 @@
 import JWT, { JwtPayload, SignOptions } from "jsonwebtoken";
-import env from "../configurations/env";
+import env from "../../../configurations/env";
 
 const signAccessToken = (payload: JwtPayload): string => {
   return JWT.sign(payload, env.jwt_access_secret, {

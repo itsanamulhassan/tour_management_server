@@ -1,8 +1,8 @@
-import { Users } from "../modules/user/user.models";
-import env from "../configurations/env";
+import { Users } from "../user.models";
+import env from "../../../configurations/env";
 import bcrypt from "bcryptjs";
-import AppError from "./helpers/error/appError";
-import message from "./message";
+import AppError from "../../../utils/helpers/error/appError";
+import message from "../../../utils/message";
 import { StatusCodes } from "http-status-codes";
 
 const initializeDefaultUser = async () => {

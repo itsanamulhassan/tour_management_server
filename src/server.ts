@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import app from "./app";
 import { Server } from "http";
 import env from "./app/configurations/env";
-import initializeDefaultUser from "./app/utils/initializeDefaultUser";
+import initializeDefaultUser from "./app/modules/user/user.helpers/initializeDefaultUser";
 
 let server: Server;
 

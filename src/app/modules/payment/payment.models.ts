@@ -30,7 +30,7 @@ const paymentSchema = new Schema<CreatePaymentProps>(
       required: [true, "Transaction ID is required."],
     },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 export const Payments = model<CreatePaymentProps>("Payments", paymentSchema);

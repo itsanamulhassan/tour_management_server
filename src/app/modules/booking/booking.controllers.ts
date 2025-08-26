@@ -16,7 +16,7 @@ const createBooking = safeAsync(async (req: Request, res: Response) => {
   });
 });
 const updateBooking = safeAsync(async (req: Request, res: Response) => {
-  const booking = await bookingServices.updateBooking(req);
+  const booking = await bookingServices.updateBooking(req.body);
   resHandler(res, {
     status: StatusCodes.OK,
     message: message("update", "booking"),
@@ -25,7 +25,7 @@ const updateBooking = safeAsync(async (req: Request, res: Response) => {
   });
 });
 const updateBookingStatus = safeAsync(async (req: Request, res: Response) => {
-  const booking = await bookingServices.updateBooking(req);
+  const booking = await bookingServices.updateBooking(req.body);
   resHandler(res, {
     status: StatusCodes.OK,
     message: message("update", "booking status"),
@@ -34,7 +34,7 @@ const updateBookingStatus = safeAsync(async (req: Request, res: Response) => {
   });
 });
 const deleteBooking = safeAsync(async (req: Request, res: Response) => {
-  await bookingServices.deleteBooking(req);
+  await bookingServices.deleteBooking(req.body);
   resHandler(res, {
     status: StatusCodes.OK,
     success: true,
@@ -42,7 +42,7 @@ const deleteBooking = safeAsync(async (req: Request, res: Response) => {
   });
 });
 const retrieveBookings = safeAsync(async (req: Request, res: Response) => {
-  const tours = await bookingServices.retrieveBookings(req);
+  const tours = await bookingServices.retrieveBookings(req.body);
   resHandler(res, {
     status: StatusCodes.OK,
     success: true,
@@ -51,7 +51,7 @@ const retrieveBookings = safeAsync(async (req: Request, res: Response) => {
   });
 });
 const retrieveBooking = safeAsync(async (req: Request, res: Response) => {
-  const tour = await bookingServices.retrieveBooking(req);
+  const tour = await bookingServices.retrieveBooking(req.body);
   resHandler(res, {
     status: StatusCodes.OK,
     success: true,
@@ -60,7 +60,7 @@ const retrieveBooking = safeAsync(async (req: Request, res: Response) => {
   });
 });
 const retrieveBookingMe = safeAsync(async (req: Request, res: Response) => {
-  const tour = await bookingServices.retrieveBooking(req);
+  const tour = await bookingServices.retrieveBooking(req.body);
   resHandler(res, {
     status: StatusCodes.OK,
     success: true,

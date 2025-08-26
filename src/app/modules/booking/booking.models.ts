@@ -29,7 +29,7 @@ const bookingSchema = new Schema<CreateBookingProps>(
       uppercase: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 export const Bookings = model<CreateBookingProps>("Bookings", bookingSchema);

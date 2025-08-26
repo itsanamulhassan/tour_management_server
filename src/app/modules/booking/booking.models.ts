@@ -21,6 +21,7 @@ const bookingSchema = new Schema<CreateBookingProps>(
     guestCount: {
       type: Number,
       required: [true, "Number of guest is required."],
+      min: [1, "Number of guest must be a positive number."],
     },
     status: {
       type: String,

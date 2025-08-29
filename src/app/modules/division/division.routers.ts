@@ -2,7 +2,7 @@ import { Router } from "express";
 import schemaValidator from "../../middlewares/validateRequest";
 import { divisionSchema } from "./division.schemas";
 import { divisionControllers } from "./division.controllers";
-import { auth } from "../../utils/auth";
+import { auth } from "../auth/auth.helpers/auth";
 
 const divisionRouter = Router();
 

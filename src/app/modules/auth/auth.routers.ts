@@ -2,9 +2,9 @@ import { NextFunction, Request, Response, Router } from "express";
 import { authControllers } from "./auth.controllers";
 import schemaValidator from "../../middlewares/validateRequest";
 import { authSchemas } from "./auth.schemas";
-import { auth } from "../../utils/auth";
 import { userRoleStatusEnum } from "../user/user.schemas";
 import passport from "passport";
+import { auth } from "./auth.helpers/auth";
 
 const authRouter = Router();
 

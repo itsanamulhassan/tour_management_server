@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Users } from "../user/user.models";
-import AppError from "../../errorHelper/appError";
+import AppError from "../../utils/helpers/error/appError";
 import { StatusCodes } from "http-status-codes";
 import message from "../../utils/message";
 import bcrypt from "bcryptjs";

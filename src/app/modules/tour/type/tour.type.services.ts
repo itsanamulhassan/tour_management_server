@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import AppError from "../../../errorHelper/appError";
+import AppError from "../../../utils/helpers/error/appError";
 import { TourTypes } from "./tour.type.models";
 import { CreateTourTypeProps } from "./tour.type.types";
 import message from "../../../utils/message";

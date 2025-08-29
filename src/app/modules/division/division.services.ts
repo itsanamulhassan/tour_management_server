@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import AppError from "../../errorHelper/appError";
+import AppError from "../../utils/helpers/error/appError";
 import message from "../../utils/message";
 import { Divisions } from "./division.models";
 import { CreateDivisionProps } from "./division.types";

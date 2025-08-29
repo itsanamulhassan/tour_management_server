@@ -1,8 +1,12 @@
-import { JwtPayload } from "jsonwebtoken";
+export interface JWTCredentialProps {
+  credentialId: string;
+  email: string;
+  role: string;
+}
 declare global {
   namespace Express {
     interface Request {
-      user: JwtPayload;
+      user: JWTCredentialProps;
     }
   }
 }

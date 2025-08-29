@@ -2,8 +2,7 @@ import { Router } from "express";
 import userControllers from "./user.controllers";
 import schemaValidator from "../../middlewares/validateRequest";
 import { userRoleStatusEnum, userSchemas } from "./user.schemas";
-import { auth } from "../../utils/auth";
-
+import { auth } from "../auth/auth.helpers/auth";
 const userRouter = Router();
 
 // ✅ Create a new user

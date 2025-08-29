@@ -4,11 +4,11 @@ import {
   CreateUserProps,
   UserActivityStatusEnumProps,
 } from "../modules/user/user.types";
-import { jwt } from "./jwt";
 import { StatusCodes } from "http-status-codes";
 import message, { MessageType } from "./message";
-import AppError from "../errorHelper/appError";
+import AppError from "./helpers/error/appError";
 import { CreateAccessRefreshTokenProps } from "../types/utils.types";
+import { jwt } from "../modules/auth/auth.helpers/jwt";
 
 const createAccessTokenWithRefreshToken = async (refreshToken: string) => {
   const { email } = jwt.verifyRefreshToken(refreshToken);

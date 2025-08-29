@@ -7,6 +7,7 @@ const paymentSchema = new Schema<CreatePaymentProps>(
     amount: {
       type: Number,
       required: [true, "Payment amount is required."],
+      min: [1, "Payment amount must be a positive number."],
     },
     booking: {
       type: Schema.Types.ObjectId,
@@ -30,7 +31,7 @@ const paymentSchema = new Schema<CreatePaymentProps>(
       required: [true, "Transaction ID is required."],
     },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 export const Payments = model<CreatePaymentProps>("Payments", paymentSchema);

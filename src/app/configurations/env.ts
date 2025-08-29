@@ -20,6 +20,12 @@ interface LoadEnvVariableProps {
   frontend_base_url: string;
   access_cookie_name: string;
   refresh_cookie_name: string;
+  ssl: {
+    store_id: string;
+    store_pass: string;
+    payment_api: string;
+    validation_api: string;
+  };
 }
 
 const loadEnvVariables = (): LoadEnvVariableProps => {
@@ -41,6 +47,10 @@ const loadEnvVariables = (): LoadEnvVariableProps => {
     "FRONTEND_BASE_URL",
     "ACCESS_COOKIE_NAME",
     "REFRESH_COOKIE_NAME",
+    "SSL_STORE_ID",
+    "SSL_STORE_PASS",
+    "SSL_PAYMENT_API",
+    "SSL_VALIDATION_API",
   ];
   requiredEnvVariables.forEach((key: string) => {
     if (!process.env[key]) {
@@ -65,6 +75,12 @@ const loadEnvVariables = (): LoadEnvVariableProps => {
     frontend_base_url: process.env.FRONTEND_BASE_URL as string,
     access_cookie_name: process.env.ACCESS_COOKIE_NAME as string,
     refresh_cookie_name: process.env.REFRESH_COOKIE_NAME as string,
+    ssl: {
+      store_id: process.env.SSL_STORE_ID as string,
+      store_pass: process.env.SSL_STORE_PASS as string,
+      payment_api: process.env.SSL_PAYMENT_API as string,
+      validation_api: process.env.SSL_VALIDATION_API as string,
+    },
   };
 };
 

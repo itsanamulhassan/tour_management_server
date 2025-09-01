@@ -25,6 +25,16 @@ interface LoadEnvVariableProps {
     store_pass: string;
     payment_api: string;
     validation_api: string;
+    backend: {
+      success_url: string;
+      fail_url: string;
+      cancel_url: string;
+    };
+    frontend: {
+      success_url: string;
+      fail_url: string;
+      cancel_url: string;
+    };
   };
 }
 
@@ -51,6 +61,13 @@ const loadEnvVariables = (): LoadEnvVariableProps => {
     "SSL_STORE_PASS",
     "SSL_PAYMENT_API",
     "SSL_VALIDATION_API",
+    "SSL_VALIDATION_API",
+    "SSL_SUCCESS_BACKEND_URL",
+    "SSL_FAIL_BACKEND_URL",
+    "SSL_CANCEL_BACKEND_URL",
+    "SSL_SUCCESS_FRONTEND_URL",
+    "SSL_FAIL_FRONTEND_URL",
+    "SSL_CANCEL_FRONTEND_URL",
   ];
   requiredEnvVariables.forEach((key: string) => {
     if (!process.env[key]) {
@@ -80,6 +97,16 @@ const loadEnvVariables = (): LoadEnvVariableProps => {
       store_pass: process.env.SSL_STORE_PASS as string,
       payment_api: process.env.SSL_PAYMENT_API as string,
       validation_api: process.env.SSL_VALIDATION_API as string,
+      backend: {
+        success_url: process.env.SSL_SUCCESS_BACKEND_URL as string,
+        fail_url: process.env.SSL_FAIL_BACKEND_URL as string,
+        cancel_url: process.env.SSL_CANCEL_BACKEND_URL as string,
+      },
+      frontend: {
+        success_url: process.env.SSL_SUCCESS_FRONTEND_URL as string,
+        fail_url: process.env.SSL_FAIL_FRONTEND_URL as string,
+        cancel_url: process.env.SSL_CANCEL_FRONTEND_URL as string,
+      },
     },
   };
 };

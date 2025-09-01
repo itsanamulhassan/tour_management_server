@@ -18,15 +18,16 @@ const sslCommerzPaymentInitialization = async (
         backend: { success_url, fail_url, cancel_url },
       },
     } = env;
+    const query = "?transaction_id=" + transactionId;
     const data = {
       store_id,
       store_passwd: store_pass,
       total_amount: amount,
       currency: "BDT",
       tran_id: transactionId,
-      success_url,
-      fail_url,
-      cancel_url,
+      success_url: success_url + query,
+      fail_url: fail_url + query,
+      cancel_url: cancel_url + query,
       // ipn_url: "http://localhost:3030/ipn",
       shipping_method: "N/A",
       product_name: "Tour",

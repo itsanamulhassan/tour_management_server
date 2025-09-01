@@ -5,6 +5,7 @@ import divisionRouter from "../modules/division/division.routers";
 import tourTypeRouter from "../modules/tour/type/tour.type.routers";
 import tourRouter from "../modules/tour/tour.routers";
 import bookingRouter from "../modules/booking/booking.routers";
+import paymentRouter from "../modules/payment/payment.routers";
 
 // Initialize the main router
 const appRouter = Router();
@@ -33,7 +34,7 @@ const routes = [
   },
   {
     path: "/payments",
-    router: tourRouter,
+    router: paymentRouter,
   },
   {
     path: "/bookings",

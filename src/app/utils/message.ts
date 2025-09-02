@@ -14,7 +14,10 @@ export type MessageType =
   | "expired"
   | "inactive"
   | "blocked"
-  | "validation";
+  | "validation"
+  | "success"
+  | "fail"
+  | "cancel";
 
 const message = (
   type: MessageType,
@@ -40,7 +43,10 @@ const message = (
     expired: `${entityCapitalized} has expired. Please request a new one or try again later.`,
     blocked: `${entityCapitalized} has blocked. Please request a new one or try again later.`,
     inactive: `${entityCapitalized} has deactivated. Please request a new one or try again later.`,
-    validation: `${entityCapitalized} validation failed. Please check the provided information.`, // ✅ New message
+    validation: `${entityCapitalized} validation failed. Please check the provided information.`,
+    success: `${entityCapitalized} operation was successful. Everything is working as expected.`,
+    fail: `${entityCapitalized} operation failed. Please try again or contact support if the issue persists.`,
+    cancel: `${entityCapitalized} operation was canceled. No changes have been made.`,
   };
 
   return `${messages[type]} ${note}`.trim();

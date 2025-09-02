@@ -16,8 +16,20 @@ const successPayment = safeAsync(async (req: Request, res: Response) => {
     res.redirect(env.ssl.frontend.success_url + query);
   }
 });
-const failPayment = safeAsync(async (req: Request, res: Response) => {});
-const cancelPayment = safeAsync(async (req: Request, res: Response) => {});
+const failPayment = safeAsync(async (req: Request, res: Response) => {
+  const response = await paymentServices.failPayment(req);
+  const query = `?status=fail&message=${response.message}&amount=${response.amount}&transaction_id=${response.transactionId}`;
+  if (response.success) {
+    res.redirect(env.ssl.frontend.success_url + query);
+  }
+});
+const cancelPayment = safeAsync(async (req: Request, res: Response) => {
+  const response = await paymentServices.cancelPayment(req);
+  const query = `?status=cancel&message=${response.message}&amount=${response.amount}&transaction_id=${response.transactionId}`;
+  if (response.success) {
+    res.redirect(env.ssl.frontend.success_url + query);
+  }
+});
 
 export const paymentControllers = {
   successPayment,

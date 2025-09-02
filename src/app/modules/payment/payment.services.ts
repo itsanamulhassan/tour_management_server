@@ -31,19 +31,75 @@ const successPayment = async (req: Request) => {
     );
     return {
       success: true,
-      message: message("update", "payment & update"),
+      message: message("success", "payment"),
       transactionId,
       amount: updatePayment.amount,
     };
   });
 };
-const failPayment = async () => {
+const failPayment = async (req: Request) => {
+  const transactionId = req.query.transaction_id;
   // Update booking status --> FAIL
   // Update payment status --> FAIL
+
+  return withTransaction(async (session) => {
+    const updatePayment = (await Payments.findOneAndUpdate(
+      { transactionId },
+      {
+        status: "FAIL",
+      },
+      {
+        session,
+        runValidators: true,
+        new: true,
+      }
+    )) as MongooseResponseProps<CreatePaymentProps>;
+    await Bookings.findByIdAndUpdate(
+      updatePayment.booking,
+      {
+        status: "FAIL",
+      },
+      { session, runValidators: true, new: true }
+    );
+    return {
+      success: false,
+      message: message("fail", "payment"),
+      transactionId,
+      amount: updatePayment.amount,
+    };
+  });
 };
-const cancelPayment = async () => {
+const cancelPayment = async (req: Request) => {
+  const transactionId = req.query.transaction_id;
   // Update booking status --> CANCEL
   // Update payment status --> CANCEL
+
+  return withTransaction(async (session) => {
+    const updatePayment = (await Payments.findOneAndUpdate(
+      { transactionId },
+      {
+        status: "CANCEL",
+      },
+      {
+        session,
+        runValidators: true,
+        new: true,
+      }
+    )) as MongooseResponseProps<CreatePaymentProps>;
+    await Bookings.findByIdAndUpdate(
+      updatePayment.booking,
+      {
+        status: "CANCEL",
+      },
+      { session, runValidators: true, new: true }
+    );
+    return {
+      success: false,
+      message: message("cancel", "payment"),
+      transactionId,
+      amount: updatePayment.amount,
+    };
+  });
 };
 export const paymentServices = {
   successPayment,

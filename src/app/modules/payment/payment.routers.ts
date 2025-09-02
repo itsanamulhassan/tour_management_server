@@ -7,8 +7,9 @@ import { paymentControllers } from "./payment.controllers";
 const paymentRouter = Router();
 
 paymentRouter.post("/success", paymentControllers.successPayment);
-// paymentRouter.post("/fail");
-// paymentRouter.post("/cancel");
+paymentRouter.post("/fail", paymentControllers.failPayment);
+paymentRouter.post("/cancel", paymentControllers.cancelPayment);
+
 paymentRouter.get("/all", auth.authorizeRole("ADMIN", "SUPERADMIN"));
 paymentRouter.get("/:id", auth.authorizeRole(...userRoleStatusEnum));
 paymentRouter.get("/my_bookings", auth.authorizeRole("ADMIN", "SUPERADMIN"));

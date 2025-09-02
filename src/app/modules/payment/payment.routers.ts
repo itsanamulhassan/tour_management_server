@@ -10,6 +10,8 @@ paymentRouter.post("/success", paymentControllers.successPayment);
 paymentRouter.post("/fail", paymentControllers.failPayment);
 paymentRouter.post("/cancel", paymentControllers.cancelPayment);
 
+paymentRouter.post("/update/:id", paymentControllers.createPayment);
+
 paymentRouter.get("/all", auth.authorizeRole("ADMIN", "SUPERADMIN"));
 paymentRouter.get("/:id", auth.authorizeRole(...userRoleStatusEnum));
 paymentRouter.get("/my_bookings", auth.authorizeRole("ADMIN", "SUPERADMIN"));

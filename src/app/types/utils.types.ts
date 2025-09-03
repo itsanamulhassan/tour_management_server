@@ -15,3 +15,4 @@ export interface CreateAccessRefreshTokenProps {
   email: string;
   role: UserRoleStatusEnumProps;
 }
+export type MongooseResponseProps<T> = { _id: Types.ObjectId } & T;

@@ -20,6 +20,22 @@ interface LoadEnvVariableProps {
   frontend_base_url: string;
   access_cookie_name: string;
   refresh_cookie_name: string;
+  ssl: {
+    store_id: string;
+    store_pass: string;
+    payment_api: string;
+    validation_api: string;
+    backend: {
+      success_url: string;
+      fail_url: string;
+      cancel_url: string;
+    };
+    frontend: {
+      success_url: string;
+      fail_url: string;
+      cancel_url: string;
+    };
+  };
 }
 
 const loadEnvVariables = (): LoadEnvVariableProps => {
@@ -41,6 +57,17 @@ const loadEnvVariables = (): LoadEnvVariableProps => {
     "FRONTEND_BASE_URL",
     "ACCESS_COOKIE_NAME",
     "REFRESH_COOKIE_NAME",
+    "SSL_STORE_ID",
+    "SSL_STORE_PASS",
+    "SSL_PAYMENT_API",
+    "SSL_VALIDATION_API",
+    "SSL_VALIDATION_API",
+    "SSL_SUCCESS_BACKEND_URL",
+    "SSL_FAIL_BACKEND_URL",
+    "SSL_CANCEL_BACKEND_URL",
+    "SSL_SUCCESS_FRONTEND_URL",
+    "SSL_FAIL_FRONTEND_URL",
+    "SSL_CANCEL_FRONTEND_URL",
   ];
   requiredEnvVariables.forEach((key: string) => {
     if (!process.env[key]) {
@@ -65,6 +92,22 @@ const loadEnvVariables = (): LoadEnvVariableProps => {
     frontend_base_url: process.env.FRONTEND_BASE_URL as string,
     access_cookie_name: process.env.ACCESS_COOKIE_NAME as string,
     refresh_cookie_name: process.env.REFRESH_COOKIE_NAME as string,
+    ssl: {
+      store_id: process.env.SSL_STORE_ID as string,
+      store_pass: process.env.SSL_STORE_PASS as string,
+      payment_api: process.env.SSL_PAYMENT_API as string,
+      validation_api: process.env.SSL_VALIDATION_API as string,
+      backend: {
+        success_url: process.env.SSL_SUCCESS_BACKEND_URL as string,
+        fail_url: process.env.SSL_FAIL_BACKEND_URL as string,
+        cancel_url: process.env.SSL_CANCEL_BACKEND_URL as string,
+      },
+      frontend: {
+        success_url: process.env.SSL_SUCCESS_FRONTEND_URL as string,
+        fail_url: process.env.SSL_FAIL_FRONTEND_URL as string,
+        cancel_url: process.env.SSL_CANCEL_FRONTEND_URL as string,
+      },
+    },
   };
 };
 

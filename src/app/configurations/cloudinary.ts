@@ -19,11 +19,27 @@ Client fills a form with text + files
 
 import { v2 as cloudinary } from "cloudinary";
 import env from "./env";
+import AppError from "../utils/helpers/error/appError";
+import message from "../utils/message";
+import { StatusCodes } from "http-status-codes";
 
 cloudinary.config({
   api_key: env.cloudinary.api_key,
   api_secret: env.cloudinary.api_secret,
   cloud_name: env.cloudinary.cloud_name,
 });
+
+export const deleteCloudinaryFile = async (file: Express.Multer.File) => {
+  try {
+    await cloudinary.uploader.destroy(file.filename);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new AppError(
+        message("delete", "Cloudinary file", error.message),
+        StatusCodes.BAD_REQUEST
+      );
+    }
+  }
+};
 
 export default cloudinary;

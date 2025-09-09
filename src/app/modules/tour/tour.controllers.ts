@@ -4,9 +4,21 @@ import safeAsync from "../../utils/safeAsync";
 import { tourServices } from "./tour.services";
 import resHandler from "../../utils/resHandler";
 import message from "../../utils/message";
+import { CreateTourProps } from "./tour.types";
 
 const createTour = safeAsync(async (req: Request, res: Response) => {
-  const tour = await tourServices.createTour(req.body);
+  const thumbnails = Array.isArray(req.files)
+    ? req.files.map((file: Express.Multer.File) => ({
+        public_id: file.filename,
+        url: file.path,
+      }))
+    : [];
+  const payload = {
+    ...req.body,
+    thumbnails,
+  } as CreateTourProps;
+
+  const tour = await tourServices.createTour(payload);
 
   resHandler(res, {
     status: StatusCodes.CREATED,

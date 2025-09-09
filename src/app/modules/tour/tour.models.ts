@@ -1,5 +1,17 @@
 import { model, Schema } from "mongoose";
 import { CreateTourProps } from "./tour.types";
+import { FileSchema } from "../../types/utils.types";
+
+export const fileSchema = new Schema<FileSchema>(
+  {
+    public_id: {
+      type: String,
+      unique: [true, "File ID must be unique."],
+    },
+    url: String,
+  },
+  { _id: false }
+);
 
 const tourSchema = new Schema<CreateTourProps>(
   {
@@ -21,8 +33,7 @@ const tourSchema = new Schema<CreateTourProps>(
       default: [],
     },
     thumbnails: {
-      type: [String],
-      default: [],
+      type: [fileSchema],
     },
     costFrom: {
       type: Number,

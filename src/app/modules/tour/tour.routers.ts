@@ -3,12 +3,14 @@ import schemaValidator from "../../middlewares/validateRequest";
 import { tourSchema } from "./tour.schemas";
 import { tourControllers } from "./tour.controllers";
 import { auth } from "../auth/auth.helpers/auth";
+import { multerUpload } from "../../configurations/multer";
 
 const tourRouter = Router();
 
 tourRouter.post(
   "/create",
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
+  multerUpload.array("files"),
   schemaValidator(tourSchema.createTour),
   tourControllers.createTour
 );

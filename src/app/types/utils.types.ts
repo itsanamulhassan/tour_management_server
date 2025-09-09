@@ -16,3 +16,8 @@ export interface CreateAccessRefreshTokenProps {
   role: UserRoleStatusEnumProps;
 }
 export type MongooseResponseProps<T> = { _id: Types.ObjectId } & T;
+
+export interface FileSchema {
+  url: string;
+  public_id: string;
+}

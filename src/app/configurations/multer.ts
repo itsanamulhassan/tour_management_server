@@ -19,7 +19,7 @@ const storage = new CloudinaryStorage({
     return {
       public_id: uniqueFileName,
       folder: "tour-management-system",
-      format: "jpg",
+      resource_type: "auto",
     };
   },
 });

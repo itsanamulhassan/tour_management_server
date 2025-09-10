@@ -29,9 +29,9 @@ cloudinary.config({
   cloud_name: env.cloudinary.cloud_name,
 });
 
-export const deleteCloudinaryFile = async (file: Express.Multer.File) => {
+export const deleteCloudinaryFile = async (public_id: string) => {
   try {
-    await cloudinary.uploader.destroy(file.filename);
+    await cloudinary.uploader.destroy(public_id);
   } catch (error) {
     if (error instanceof Error) {
       throw new AppError(

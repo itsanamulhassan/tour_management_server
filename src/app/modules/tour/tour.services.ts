@@ -1,11 +1,11 @@
 import { StatusCodes } from "http-status-codes";
 import { Request } from "express";
-import { CreateTourProps } from "./tour.types";
+import { CreateTourDto } from "./tour.types";
 import { Tours } from "./tour.models";
 import AppError from "../../utils/helpers/error/appError";
 import message from "../../utils/message";
 
-const createTour = async (payload: CreateTourProps) => {
+const createTour = async (payload: CreateTourDto) => {
   const { title } = payload;
   const tourType = await Tours.exists({ title });
   if (tourType) {

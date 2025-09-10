@@ -1,13 +1,19 @@
 import { StatusCodes } from "http-status-codes";
 import AppError from "../../utils/helpers/error/appError";
 import message from "../../utils/message";
-import { Divisions } from "./division.models";
-import { CreateDivisionProps } from "./division.types";
+import { Division, DivisionDocument, Divisions } from "./division.models";
 import { Request } from "express";
+import { deleteCloudinaryFile } from "../../configurations/cloudinary";
 
-const createDivision = async (payload: CreateDivisionProps) => {
-  const { name } = payload;
-  const division = await Divisions.exists({ name });
+const createDivision = async (req: Request) => {
+  const payload = {
+    ...req.body,
+    thumbnail: {
+      url: req.file?.path,
+      public_id: req.file?.filename,
+    },
+  } as Division;
+  const division = await Divisions.exists({ name: payload?.name });
   if (division) {
     throw new AppError(
       message("alreadyExists", "division"),
@@ -20,17 +26,31 @@ const createDivision = async (payload: CreateDivisionProps) => {
 const updateDivision = async (req: Request) => {
   const {
     params: { id: divisionId },
-    body: payload,
+    body,
+    file,
   } = req as Request;
-  const isDivisionExist = await Divisions.exists({ _id: divisionId });
-  if (!isDivisionExist) {
+
+  const payload = {
+    ...body,
+    ...(file?.filename && {
+      thumbnail: { public_id: file.filename, url: file.path },
+    }),
+  } as Division;
+
+  const division = (await Divisions.exists({ _id: divisionId }).select(
+    "thumbnail"
+  )) as DivisionDocument;
+
+  if (!division) {
     throw new AppError(message("notFound", "division"), StatusCodes.NOT_FOUND);
   }
-  const isDuplicateExist = await Divisions.findOne({
+
+  const duplicate = await Divisions.findOne({
     name: payload.name,
     _id: { $ne: divisionId },
   });
-  if (isDuplicateExist) {
+
+  if (duplicate) {
     throw new AppError(
       message("alreadyExists", "division"),
       StatusCodes.BAD_REQUEST
@@ -41,6 +61,12 @@ const updateDivision = async (req: Request) => {
     payload,
     { runValidators: true, new: true }
   );
+
+  if (file?.filename && division.thumbnail?.public_id) {
+    await deleteCloudinaryFile(division.thumbnail.public_id);
+    console.log(division.thumbnail.public_id);
+  }
+
   return latestDivision;
 };
 const deleteDivision = async (req: Request) => {

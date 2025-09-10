@@ -36,7 +36,7 @@ const message = (
     signUp: `${entityCapitalized} was successfully registered. Welcome aboard!`,
     signOut: `${entityCapitalized} was successfully signed out of the system.`,
     notFound: `${entityCapitalized} was not found. It may not exist or has been removed.`,
-    alreadyExists: `${entityCapitalized} already exists. Please use a different one or log in.`,
+    alreadyExists: `${entityCapitalized} already exists. Please use a different one.`,
     unauthorized: `${entityCapitalized} access denied. You do not have the required permissions to perform this action.`,
     forbidden: `${entityCapitalized} access is forbidden. You are not allowed to view or modify this resource.`,
     badRequest: `${entityCapitalized} request is invalid. Please check your input and try again.`,

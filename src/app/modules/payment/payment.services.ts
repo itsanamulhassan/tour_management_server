@@ -2,7 +2,7 @@ import { Request } from "express";
 import { withTransaction } from "../../database/transaction";
 import { Payments } from "./payment.models";
 import { Bookings } from "../booking/booking.models";
-import { MongooseResponseProps } from "../../types/utils.types";
+import { MergeDocument } from "../../types/utils.types";
 import { CreatePaymentProps } from "./payment.types";
 import message from "../../utils/message";
 import AppError from "../../utils/helpers/error/appError";
@@ -26,7 +26,7 @@ const successPayment = async (req: Request) => {
         runValidators: true,
         new: true,
       }
-    )) as MongooseResponseProps<CreatePaymentProps>;
+    )) as MergeDocument<CreatePaymentProps>;
     await Bookings.findByIdAndUpdate(
       updatePayment.booking,
       {
@@ -58,7 +58,7 @@ const failPayment = async (req: Request) => {
         runValidators: true,
         new: true,
       }
-    )) as MongooseResponseProps<CreatePaymentProps>;
+    )) as MergeDocument<CreatePaymentProps>;
     await Bookings.findByIdAndUpdate(
       updatePayment.booking,
       {
@@ -90,7 +90,7 @@ const cancelPayment = async (req: Request) => {
         runValidators: true,
         new: true,
       }
-    )) as MongooseResponseProps<CreatePaymentProps>;
+    )) as MergeDocument<CreatePaymentProps>;
     await Bookings.findByIdAndUpdate(
       updatePayment.booking,
       {

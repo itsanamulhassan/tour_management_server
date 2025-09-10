@@ -1,8 +1,9 @@
-import { model, Schema } from "mongoose";
-import { CreateTourProps } from "./tour.types";
-import { FileSchema } from "../../types/utils.types";
+import { InferSchemaType, model, Schema } from "mongoose";
+import { CreateTourDto } from "./tour.types";
+import { generateSlug } from "../../utils/slug";
+import { FileSchemaProps, MergeDocument } from "../../types/global.types";
 
-export const fileSchema = new Schema<FileSchema>(
+export const fileSchema = new Schema<FileSchemaProps>(
   {
     public_id: {
       type: String,
@@ -13,7 +14,7 @@ export const fileSchema = new Schema<FileSchema>(
   { _id: false }
 );
 
-const tourSchema = new Schema<CreateTourProps>(
+const tourSchema = new Schema(
   {
     title: {
       type: String,
@@ -86,25 +87,23 @@ const tourSchema = new Schema<CreateTourProps>(
   { timestamps: true, versionKey: false }
 );
 
-// ✅ Helper function for slug generation
-const generateSlug = (name: string) =>
-  name.toLowerCase().replace(/\s+/g, "_") + "_division";
-
 tourSchema.pre("validate", async function (next) {
   if (this.title) {
-    this.slug = generateSlug(this.title);
+    this.slug = generateSlug(this.title, { suffix: "tour" });
   }
   next();
 });
 
 tourSchema.pre("findOneAndUpdate", async function (next) {
-  const tour = this.getUpdate() as Partial<CreateTourProps>;
+  const tour = this.getUpdate() as Partial<CreateTourDto>;
 
   if (tour.title) {
-    tour.slug = generateSlug(tour.title);
+    tour.slug = generateSlug(tour.title, { suffix: "tour" });
   }
   this.setUpdate(tour);
   next();
 });
 
-export const Tours = model<CreateTourProps>("Tours", tourSchema);
+export type Tour = InferSchemaType<typeof tourSchema>;
+export type TourDocument = MergeDocument<Tour>;
+export const Tours = model<CreateTourDto>("Tours", tourSchema);

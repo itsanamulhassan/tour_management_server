@@ -19,11 +19,11 @@ const globalErrorHandler: ErrorRequestHandler = async (
 
   if (req.file || req.files?.length) {
     if (req.file) {
-      await deleteCloudinaryFile(req.file);
+      await deleteCloudinaryFile(req.file.filename);
     } else {
       await Promise.all(
         (req.files as Express.Multer.File[])?.map((file) =>
-          deleteCloudinaryFile(file)
+          deleteCloudinaryFile(file.filename)
         )
       );
     }

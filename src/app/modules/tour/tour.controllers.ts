@@ -4,7 +4,7 @@ import safeAsync from "../../utils/safeAsync";
 import { tourServices } from "./tour.services";
 import resHandler from "../../utils/resHandler";
 import message from "../../utils/message";
-import { CreateTourProps } from "./tour.types";
+import { CreateTourDto } from "./tour.types";
 
 const createTour = safeAsync(async (req: Request, res: Response) => {
   const thumbnails = Array.isArray(req.files)
@@ -16,7 +16,7 @@ const createTour = safeAsync(async (req: Request, res: Response) => {
   const payload = {
     ...req.body,
     thumbnails,
-  } as CreateTourProps;
+  } as CreateTourDto;
 
   const tour = await tourServices.createTour(payload);
 

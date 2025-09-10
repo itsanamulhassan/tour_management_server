@@ -10,7 +10,7 @@ const divisionRouter = Router();
 divisionRouter.post(
   "/create",
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
-  multerUpload.single("file"),
+  multerUpload("divisions").single("file"),
   schemaValidator(divisionSchema.createDivision),
   divisionControllers.createDivision
 );
@@ -21,6 +21,7 @@ divisionRouter.get(
 );
 divisionRouter.patch(
   "/update/:id",
+  multerUpload("divisions").single("file"),
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
   schemaValidator(divisionSchema.updateDivision),
   divisionControllers.updateDivision

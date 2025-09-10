@@ -6,7 +6,7 @@ import { Bookings } from "./booking.models";
 import { CreateBookingProps } from "./booking.types";
 import message from "../../utils/message";
 import { Tours } from "../tour/tour.models";
-import { CreateTourProps } from "../tour/tour.types";
+import { CreateTourDto } from "../tour/tour.types";
 import { Payments } from "../payment/payment.models";
 import { transactionIdGenerator } from "../payment/payment.helpers/transactionIdGenerator";
 import { withTransaction } from "../../database/transaction";
@@ -27,7 +27,7 @@ const createBooking = async (payload: CreateBookingProps) => {
 
     const tour = (await Tours.findById(payload.tour).select(
       "costFrom"
-    )) as Partial<CreateTourProps>;
+    )) as Partial<CreateTourDto>;
 
     if (!tour?.costFrom) {
       throw new AppError(

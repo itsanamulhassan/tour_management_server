@@ -10,7 +10,7 @@ const tourRouter = Router();
 tourRouter.post(
   "/create",
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
-  multerUpload.array("files"),
+  multerUpload("tour_thumbnails").array("files"),
   schemaValidator(tourSchema.createTour),
   tourControllers.createTour
 );
@@ -22,6 +22,7 @@ tourRouter.get(
 tourRouter.patch(
   "/update/:id",
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
+  multerUpload("tour_thumbnails").array("files"),
   schemaValidator(tourSchema.updateTour),
   tourControllers.updateTour
 );

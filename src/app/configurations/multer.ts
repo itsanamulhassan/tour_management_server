@@ -1,29 +1,35 @@
+import crypto from "crypto";
+import path from "path";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import cloudinary from "./cloudinary";
 import multer from "multer";
+import { ChildFolderProps } from "../types/utils.types";
 
-const storage = new CloudinaryStorage({
-  cloudinary,
+export function multerUpload(folderName: ChildFolderProps) {
+  const storage = new CloudinaryStorage({
+    cloudinary,
+    params: async (_req, file) => {
+      // Safely extract filename and extension
+      const { name, ext } = path.parse(file.originalname);
 
-  params: (_req, file) => {
-    const fileName = file.originalname
-      .slice(-1)
-      .toLowerCase()
-      .replace(/\s+/g, "-")
-      .replace(/\./g, "-")
-      // eslint-disable-next-line no-useless-escape
-      .replace(/[^a-z0-9\-]/g, "");
-    // const extension = file.originalname.split(".").pop();
-    const uniqueFileName =
-      Math.random().toString(36).substring(2) + "-" + Date.now() + fileName;
-    return {
-      public_id: uniqueFileName,
-      folder: "tour-management-system",
-      resource_type: "auto",
-    };
-  },
-});
+      // Sanitize filename: lowercase, replace spaces, strip invalid chars
+      const safeName = name
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, "");
 
-export const multerUpload = multer({
-  storage,
-});
+      // Generate strong unique id (UUID v4 is collision-safe)
+      const uniqueId = crypto.randomUUID();
+
+      return {
+        folder: `tour-management-system/${folderName}`,
+        public_id: `${uniqueId}-${safeName}`,
+        resource_type: "auto",
+        format: ext.replace(".", ""),
+      };
+    },
+  });
+
+  return multer({ storage });
+}

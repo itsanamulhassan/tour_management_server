@@ -4,14 +4,9 @@ import message from "../../utils/message";
 import { StatusCodes } from "http-status-codes";
 import resHandler from "../../utils/resHandler";
 import { divisionServices } from "./division.services";
-import { CreateDivisionProps } from "./division.types";
 
 const createDivision = safeAsync(async (req: Request, res: Response) => {
-  const payload = {
-    ...req.body,
-    thumbnail: req.file?.path,
-  } as CreateDivisionProps;
-  const division = await divisionServices.createDivision(payload);
+  const division = await divisionServices.createDivision(req);
 
   resHandler(res, {
     status: StatusCodes.CREATED,

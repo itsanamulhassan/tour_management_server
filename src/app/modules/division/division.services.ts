@@ -64,19 +64,24 @@ const updateDivision = async (req: Request) => {
 
   if (file?.filename && division.thumbnail?.public_id) {
     await deleteCloudinaryFile(division.thumbnail.public_id);
-    console.log(division.thumbnail.public_id);
   }
 
   return latestDivision;
 };
 const deleteDivision = async (req: Request) => {
   const divisionId = req.params.id;
-  const isDivisionExist = await Divisions.exists({ _id: divisionId });
-  if (!isDivisionExist) {
+  const division = (await Divisions.exists({ _id: divisionId }).select(
+    "thumbnail"
+  )) as Partial<DivisionDocument>;
+  if (!division) {
     throw new AppError(message("notFound", "division"), StatusCodes.NOT_FOUND);
   }
 
   await Divisions.findByIdAndDelete(divisionId);
+
+  if (division.thumbnail?.public_id) {
+    await deleteCloudinaryFile(division.thumbnail.public_id);
+  }
 };
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const retrieveDivisions = async (_req: Request) => {

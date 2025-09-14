@@ -1,7 +1,10 @@
-import { model, Schema } from "mongoose";
-import { CreateDivisionProps } from "./division.types";
+import { Schema, model, InferSchemaType } from "mongoose";
+import { fileSchema } from "../tour/tour.models";
+import { generateSlug } from "../../utils/slug";
+import { CreateDivisionDto } from "./division.types";
+import { MergeDocument } from "../../types/global.types";
 
-const divisionSchema = new Schema<CreateDivisionProps>(
+const divisionSchema = new Schema(
   {
     name: {
       type: String,
@@ -11,13 +14,13 @@ const divisionSchema = new Schema<CreateDivisionProps>(
     },
     slug: {
       type: String,
-      required: [true, "Division slug is required"],
+      required: [true, "Division slug is required."],
       unique: [true, "Division slug should be unique."],
       trim: true,
       lowercase: true,
     },
-    thumbnail: String,
-    description: String,
+    thumbnail: fileSchema,
+    description: { type: String },
   },
   {
     timestamps: true,
@@ -25,31 +28,27 @@ const divisionSchema = new Schema<CreateDivisionProps>(
   }
 );
 
-// ✅ Helper function for slug generation
-const generateSlug = (name: string) =>
-  name.toLowerCase().replace(/\s+/g, "_") + "_division";
-
-// ✅ Run BEFORE validation to ensure slug is set
+// ✅  Create slug automatically on validate
 divisionSchema.pre("validate", function (next) {
   if (this.name) {
-    this.slug = generateSlug(this.name);
+    this.slug = generateSlug(this.name, { suffix: "division" });
   }
   next();
 });
 
 // ✅  Update slug automatically on findOneAndUpdate
 divisionSchema.pre("findOneAndUpdate", function (next) {
-  const division = this.getUpdate() as Partial<CreateDivisionProps>;
+  const division = this.getUpdate() as Partial<CreateDivisionDto>;
 
   if (division.name) {
-    division.slug = generateSlug(division.name);
+    division.slug = generateSlug(division.name, { suffix: "division" });
   }
   this.setUpdate(division);
 
   next();
 });
 
-export const Divisions = model<CreateDivisionProps>(
-  "Divisions",
-  divisionSchema
-);
+export type Division = InferSchemaType<typeof divisionSchema>;
+export type DivisionDocument = MergeDocument<Division>;
+
+export const Divisions = model<DivisionDocument>("Divisions", divisionSchema);

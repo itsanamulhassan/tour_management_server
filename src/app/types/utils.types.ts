@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { Document, Types } from "mongoose";
 import { UserRoleStatusEnumProps } from "../modules/user/user.types";
 
 export interface SetCookiesProps {
@@ -15,4 +15,3 @@ export interface CreateAccessRefreshTokenProps {
   email: string;
   role: UserRoleStatusEnumProps;
 }
-export type MongooseResponseProps<T> = { _id: Types.ObjectId } & T;

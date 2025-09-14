@@ -20,6 +20,13 @@ interface LoadEnvVariableProps {
   frontend_base_url: string;
   access_cookie_name: string;
   refresh_cookie_name: string;
+  cloudinary: {
+    url: string;
+    api_secret: string;
+    api_key: string;
+    cloud_name: string;
+  };
+
   ssl: {
     store_id: string;
     store_pass: string;
@@ -68,6 +75,10 @@ const loadEnvVariables = (): LoadEnvVariableProps => {
     "SSL_SUCCESS_FRONTEND_URL",
     "SSL_FAIL_FRONTEND_URL",
     "SSL_CANCEL_FRONTEND_URL",
+    "CLOUDINARY_URL",
+    "CLOUDINARY_API_SECRET",
+    "CLOUDINARY_API_KEY",
+    "CLOUDINARY_CLOUD_NAME",
   ];
   requiredEnvVariables.forEach((key: string) => {
     if (!process.env[key]) {
@@ -107,6 +118,12 @@ const loadEnvVariables = (): LoadEnvVariableProps => {
         fail_url: process.env.SSL_FAIL_FRONTEND_URL as string,
         cancel_url: process.env.SSL_CANCEL_FRONTEND_URL as string,
       },
+    },
+    cloudinary: {
+      api_key: process.env.CLOUDINARY_API_KEY as string,
+      api_secret: process.env.CLOUDINARY_API_SECRET as string,
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME as string,
+      url: process.env.CLOUDINARY_URL as string,
     },
   };
 };

@@ -6,7 +6,7 @@ import resHandler from "../../utils/resHandler";
 import { divisionServices } from "./division.services";
 
 const createDivision = safeAsync(async (req: Request, res: Response) => {
-  const division = await divisionServices.createDivision(req.body);
+  const division = await divisionServices.createDivision(req);
 
   resHandler(res, {
     status: StatusCodes.CREATED,

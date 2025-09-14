@@ -6,7 +6,7 @@ import resHandler from "../../utils/resHandler";
 import message from "../../utils/message";
 
 const createTour = safeAsync(async (req: Request, res: Response) => {
-  const tour = await tourServices.createTour(req.body);
+  const tour = await tourServices.createTour(req);
 
   resHandler(res, {
     status: StatusCodes.CREATED,

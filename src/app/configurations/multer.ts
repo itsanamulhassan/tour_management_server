@@ -3,7 +3,7 @@ import path from "path";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import cloudinary from "./cloudinary";
 import multer from "multer";
-import { ChildFolderProps } from "../types/utils.types";
+import { ChildFolderProps } from "../types/global.types";
 
 export function multerUpload(folderName: ChildFolderProps) {
   const storage = new CloudinaryStorage({

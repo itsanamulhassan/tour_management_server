@@ -1,47 +1,114 @@
 import { StatusCodes } from "http-status-codes";
 import { Request } from "express";
-import { CreateTourDto } from "./tour.types";
-import { Tours } from "./tour.models";
+import { TourDocument, Tours } from "./tour.models";
 import AppError from "../../utils/helpers/error/appError";
 import message from "../../utils/message";
+import { FileSchemaProps } from "../../types/global.types";
+import { deleteCloudinaryFile } from "../../configurations/cloudinary";
+import { TourTypes } from "./type/tour.type.models";
 
-const createTour = async (payload: CreateTourDto) => {
+const createTour = async (req: Request) => {
+  const thumbnails = Array.isArray(req.files)
+    ? req.files.map((file: Express.Multer.File) => ({
+        public_id: file.filename,
+        url: file.path,
+      }))
+    : [];
+
+  console.log(thumbnails);
+  const payload = {
+    ...req.body,
+    thumbnails,
+  };
+
+  // console.log(payload);
+  return;
   const { title } = payload;
-  const tourType = await Tours.exists({ title });
-  if (tourType) {
+  const tour = await Tours.exists({ title });
+  if (tour) {
     throw new AppError(
       message("alreadyExists", "tour"),
       StatusCodes.BAD_REQUEST
     );
+  }
+  const tourType = await TourTypes.exists({ _id: payload.tourType });
+  if (!tourType) {
+    throw new AppError(message("notFound", "tour type"), StatusCodes.NOT_FOUND);
   }
   const latestTour = await Tours.create(payload);
   return latestTour;
 };
 const updateTour = async (req: Request) => {
-  const {
-    params: { id: tourId },
-    body: payload,
-  } = req as Request;
-  const isTourExist = await Tours.exists({ _id: tourId });
-  if (!isTourExist) {
+  const newThumbnails = Array.isArray(req.files)
+    ? req.files.map((file: Express.Multer.File) => ({
+        public_id: file.filename,
+        url: file.path,
+      }))
+    : [];
+
+  const tour = (await Tours.findById(req.params.id).select(
+    "thumbnails"
+  )) as TourDocument;
+  if (!tour) {
     throw new AppError(message("notFound", "tour"), StatusCodes.NOT_FOUND);
   }
-  const isDuplicateExist = await Tours.findOne({
-    name: payload.title,
-    _id: { $ne: tourId },
+
+  // Prevent duplicate name
+  const duplicate = await Tours.findOne({
+    name: req.body.title,
+    _id: { $ne: req.params.id },
   });
-  if (isDuplicateExist) {
+  if (duplicate) {
     throw new AppError(
       message("alreadyExists", "tour"),
       StatusCodes.BAD_REQUEST
     );
   }
-  const latestTour = await Tours.findByIdAndUpdate(tourId, payload, {
+
+  let thumbnails = [...tour.thumbnails, ...newThumbnails];
+
+  const selectedThumbnails = req.body.selectedThumbnails?.length
+    ? new Set(req.body.selectedThumbnails.map(String))
+    : new Set<string>();
+
+  if (selectedThumbnails.size) {
+    const results = await Promise.all(
+      thumbnails.map(
+        async (thumbnail): Promise<FileSchemaProps | undefined> => {
+          if (selectedThumbnails.has(thumbnail.public_id)) {
+            try {
+              await deleteCloudinaryFile(thumbnail.public_id);
+            } catch (error) {
+              if (error instanceof Error) {
+                throw new AppError(
+                  message("fail", "cloudinary delete", error.message),
+                  StatusCodes.BAD_REQUEST
+                );
+              }
+            }
+            return undefined;
+          }
+          return thumbnail;
+        }
+      )
+    );
+
+    thumbnails = results.filter(
+      (thumbnail): thumbnail is FileSchemaProps => thumbnail !== undefined
+    );
+  }
+
+  const payload = {
+    ...req.body,
+    thumbnails,
+  };
+
+  return Tours.findByIdAndUpdate(req.params.id, payload, {
     runValidators: true,
     new: true,
   });
-  return latestTour;
 };
+
 const deleteTour = async (req: Request) => {
   const tourId = req.params.id;
   const isTourExist = await Tours.exists({ _id: tourId });

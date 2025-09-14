@@ -37,7 +37,7 @@ const createTour = z.object({
 });
 
 const updateTour = z.clone(createTour).extend({
-  selectedThumbnails: z.array(z.string()).optional(),
+  selectedThumbnails: z.array(z.string()).optional().default([]),
 });
 
 export const tourSchema = {

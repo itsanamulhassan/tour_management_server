@@ -15,14 +15,11 @@ const createTour = async (req: Request) => {
       }))
     : [];
 
-  console.log(thumbnails);
   const payload = {
     ...req.body,
     thumbnails,
   };
 
-  // console.log(payload);
-  return;
   const { title } = payload;
   const tour = await Tours.exists({ title });
   if (tour) {

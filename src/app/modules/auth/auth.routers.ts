@@ -5,6 +5,7 @@ import { authSchemas } from "./auth.schemas";
 import { userRoleStatusEnum } from "../user/user.schemas";
 import passport from "passport";
 import { auth } from "./auth.helpers/auth";
+import env from "../../configurations/env";
 
 const authRouter = Router();
 
@@ -25,11 +26,24 @@ authRouter.post(
   auth.authorizeRole(...userRoleStatusEnum),
   authControllers.resetPassword
 );
+authRouter.post(
+  "/change_password",
+  schemaValidator(authSchemas.changePasswordSchema),
+  auth.authorizeRole(...userRoleStatusEnum),
+  authControllers.changePassword
+);
+authRouter.post(
+  "/set_password",
+  schemaValidator(authSchemas.setPasswordSchema),
+  auth.authorizeRole(...userRoleStatusEnum),
+  authControllers.setPassword
+);
 
 authRouter.get(
   "/google",
   async (req: Request, res: Response, next: NextFunction) => {
     const redirect = (req.query.redirect || "/") as string;
+
     passport.authenticate("google", {
       scope: ["profile", "email"],
       state: redirect,
@@ -39,7 +53,7 @@ authRouter.get(
 authRouter.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "/signin",
+    failureRedirect: `${env.frontend_base_url}/signin?error=There is some issues with your account. Please contact with out support team!`,
   }),
   authControllers.googleStrategyCallback
 );

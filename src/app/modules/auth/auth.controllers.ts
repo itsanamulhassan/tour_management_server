@@ -105,6 +105,27 @@ const resetPassword = safeAsync(async (req: Request, res: Response) => {
     status: StatusCodes.OK,
   });
 });
+const changePassword = safeAsync(async (req: Request, res: Response) => {
+  const passwords = req.body as ResetPasswordProps;
+  await authServices.changePassword(
+    passwords,
+    (req?.user as JwtPayload)?.credentialId
+  );
+  resHandler(res, {
+    success: true,
+    message: message("update", "password"),
+    status: StatusCodes.OK,
+  });
+});
+
+const setPassword = safeAsync(async (req: Request, res: Response) => {
+  await authServices.setPassword(req);
+  resHandler(res, {
+    success: true,
+    message: message("update", "password"),
+    status: StatusCodes.OK,
+  });
+});
 
 const googleStrategyCallback = safeAsync(
   async (req: Request, res: Response) => {
@@ -133,4 +154,6 @@ export const authControllers = {
   signOut,
   resetPassword,
   googleStrategyCallback,
+  changePassword,
+  setPassword,
 };

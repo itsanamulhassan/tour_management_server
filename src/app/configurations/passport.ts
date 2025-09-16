@@ -85,14 +85,14 @@ passport.use(
     ) => {
       try {
         const email = profile?.emails?.[0].value;
+
         if (!email) {
           return done(null, false, { message: message("notFound", "email") });
         }
         let user = await Users.findOne({ email });
-        if (!user) {
-          return done(null, false, { message: message("notFound", "user") });
-        }
+
         if (
+          user &&
           ["BLOCKED", "INACTIVE"].includes(
             user.activityStatus as UserActivityStatusEnumProps
           )
@@ -104,7 +104,7 @@ passport.use(
             ),
           });
         }
-        if (user.isDeleted) {
+        if (user && user.isDeleted) {
           return done(null, false, { message: message("delete", email) });
         }
         if (!user) {

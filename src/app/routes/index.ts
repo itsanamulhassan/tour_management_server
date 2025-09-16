@@ -17,7 +17,7 @@ const routes = [
     router: userRouter,
   },
   {
-    path: "/auth",
+    path: "/auths",
     router: authRouter,
   },
   {

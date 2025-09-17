@@ -26,6 +26,13 @@ interface LoadEnvVariableProps {
     api_key: string;
     cloud_name: string;
   };
+  smtp: {
+    user: string;
+    port: string;
+    host: string;
+    pass: string;
+    from: string;
+  };
 
   ssl: {
     store_id: string;
@@ -79,6 +86,11 @@ const loadEnvVariables = (): LoadEnvVariableProps => {
     "CLOUDINARY_API_SECRET",
     "CLOUDINARY_API_KEY",
     "CLOUDINARY_CLOUD_NAME",
+    "SMTP_PORT",
+    "SMTP_HOST",
+    "SMTP_FROM",
+    "SMTP_USER",
+    "SMTP_PASS",
   ];
   requiredEnvVariables.forEach((key: string) => {
     if (!process.env[key]) {
@@ -124,6 +136,13 @@ const loadEnvVariables = (): LoadEnvVariableProps => {
       api_secret: process.env.CLOUDINARY_API_SECRET as string,
       cloud_name: process.env.CLOUDINARY_CLOUD_NAME as string,
       url: process.env.CLOUDINARY_URL as string,
+    },
+    smtp: {
+      from: process.env.SMTP_FROM as string,
+      user: process.env.SMTP_USER as string,
+      host: process.env.SMTP_HOST as string,
+      pass: process.env.SMTP_PASS as string,
+      port: process.env.SMTP_PORT as string,
     },
   };
 };

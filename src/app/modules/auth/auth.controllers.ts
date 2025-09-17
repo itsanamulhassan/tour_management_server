@@ -13,6 +13,7 @@ import env from "../../configurations/env";
 import passport from "passport";
 import { token } from "../../utils/token";
 import { Types } from "mongoose";
+import { validateUser } from "../user/user.helpers/validateUser";
 
 const credentialSignIn = safeAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -23,33 +24,39 @@ const credentialSignIn = safeAsync(
         user: CreateUserProps & { _id: Types.ObjectId },
         info: Record<string, string>
       ) => {
-        if (error) {
-          return next(new AppError(error, StatusCodes.BAD_REQUEST));
-        }
-        if (!user) {
-          return next(new AppError(info.message, StatusCodes.BAD_REQUEST));
-        }
-        const payload = {
-          credentialId: user._id,
-          email: user.email,
-          role: user.role,
-        };
-        const { accessToken, refreshToken } =
-          token.createAccessRefreshToken(payload);
-        cookies.setCookies(res, { accessToken, refreshToken });
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { password: unusedPassword, ...rest } = user;
+        try {
+          if (error) {
+            return next(new AppError(error, StatusCodes.BAD_REQUEST));
+          }
+          if (!user) {
+            return next(new AppError(info.message, StatusCodes.BAD_REQUEST));
+          }
+          validateUser(user);
 
-        resHandler(res, {
-          success: true,
-          status: StatusCodes.OK,
-          message: message("signIn", "user"),
-          data: {
-            accessToken,
-            refreshToken,
-            user: rest,
-          },
-        });
+          const payload = {
+            credentialId: user._id,
+            email: user.email,
+            role: user.role,
+          };
+          const { accessToken, refreshToken } =
+            token.createAccessRefreshToken(payload);
+          cookies.setCookies(res, { accessToken, refreshToken });
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { password: unusedPassword, ...rest } = user;
+
+          resHandler(res, {
+            success: true,
+            status: StatusCodes.OK,
+            message: message("signIn", "user"),
+            data: {
+              accessToken,
+              refreshToken,
+              user: rest,
+            },
+          });
+        } catch (error) {
+          next(error);
+        }
       }
     )(req, res, next);
   }

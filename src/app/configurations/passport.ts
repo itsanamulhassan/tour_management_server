@@ -7,7 +7,7 @@ import {
 import { Strategy as LocalStrategy } from "passport-local";
 import env from "./env";
 import message, { MessageType } from "../utils/message";
-import { Users } from "../modules/user/user.models";
+import { User, Users } from "../modules/user/user.models";
 import { userRoleStatusEnum } from "../modules/user/user.schemas";
 import {
   AuthProviderProps,
@@ -26,7 +26,9 @@ passport.use(
 
     async (email: string, password: string, done) => {
       try {
-        const user = await Users.findOne({ email }).select("+password");
+        const user = (
+          await Users.findOne({ email }).select("+password")
+        )?.toObject() as User;
         if (!user) {
           return done(null, false, { message: message("notFound", "user") });
         }
@@ -43,7 +45,16 @@ passport.use(
           });
         }
         if (user.isDeleted) {
-          return done(null, false, { message: message("delete", email) });
+          return done(null, false, {
+            message:
+              "This account has been deleted. Please create a new account or try again later.",
+          });
+        }
+        if (!user.isVerified) {
+          return done(null, false, {
+            message:
+              "This account has not been verified. Please verify your account or request a new verification link.",
+          });
         }
         const withoutCredential = user.auths.some(
           (provider: AuthProviderProps) => provider.provider !== "CREDENTIAL"
@@ -62,7 +73,7 @@ passport.use(
         if (!isMatch) {
           return done(message("badRequest", "sign in"));
         }
-        return done(null, user.toObject());
+        return done(null, user);
       } catch (error) {
         done(error);
       }
@@ -89,10 +100,9 @@ passport.use(
         if (!email) {
           return done(null, false, { message: message("notFound", "email") });
         }
-        let user = await Users.findOne({ email });
+        let user = (await Users.findOne({ email })) as User;
 
         if (
-          user &&
           ["BLOCKED", "INACTIVE"].includes(
             user.activityStatus as UserActivityStatusEnumProps
           )
@@ -104,8 +114,17 @@ passport.use(
             ),
           });
         }
-        if (user && user.isDeleted) {
-          return done(null, false, { message: message("delete", email) });
+        if (user.isDeleted) {
+          return done(null, false, {
+            message:
+              "This account has been deleted. Please create a new account or try again later.",
+          });
+        }
+        if (!user.isVerified) {
+          return done(null, false, {
+            message:
+              "This account has not been verified. Please verify your account or request a new verification link.",
+          });
         }
         if (!user) {
           user = await Users.create({

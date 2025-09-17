@@ -6,6 +6,7 @@ import { AuthProviderProps, CreateUserProps } from "./user.types";
 import bcryptjs from "bcryptjs";
 import env from "../../configurations/env";
 import { Request } from "express";
+import { JwtPayload } from "jsonwebtoken";
 
 const createUser = async (payload: Partial<CreateUserProps>) => {
   const { email, password, ...rest } = payload as CreateUserProps;
@@ -46,6 +47,12 @@ const retrieveUsers = async () => {
   const users = await Users.find();
 
   return users;
+};
+const retrieveMe = async (req: Request) => {
+  const credential = (req.user as JwtPayload).credentialId;
+  const user = await Users.findById(credential);
+
+  return user;
 };
 
 const updateUser = async (req: Request) => {
@@ -90,10 +97,9 @@ const updateUser = async (req: Request) => {
   return updateUser;
 };
 
-const userServices = {
+export const userServices = {
   createUser,
   retrieveUsers,
   updateUser,
+  retrieveMe,
 };
-
-export default userServices;

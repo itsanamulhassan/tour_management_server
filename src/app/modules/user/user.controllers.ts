@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import userServices from "./user.services";
 import safeAsync from "../../utils/safeAsync";
 import resHandler from "../../utils/resHandler";
 import message from "../../utils/message";
+import { userServices } from "./user.services";
 
 // ✅ Create a new user
 const createUser = safeAsync(async (req: Request, res: Response) => {
@@ -26,6 +26,15 @@ const retrieveUsers = safeAsync(async (_req: Request, res: Response) => {
     data: users,
   });
 });
+const retrieveMe = safeAsync(async (req: Request, res: Response) => {
+  const user = await userServices.retrieveMe(req);
+  resHandler(res, {
+    status: StatusCodes.OK,
+    success: true,
+    message: message("get", "user"),
+    data: user,
+  });
+});
 
 const updateUser = safeAsync(async (req: Request, res: Response) => {
   const users = await userServices.updateUser(req);
@@ -37,10 +46,9 @@ const updateUser = safeAsync(async (req: Request, res: Response) => {
   });
 });
 
-const userControllers = {
+export const userControllers = {
   createUser,
   retrieveUsers,
   updateUser,
+  retrieveMe,
 };
-
-export default userControllers;

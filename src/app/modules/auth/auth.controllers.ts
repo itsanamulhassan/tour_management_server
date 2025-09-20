@@ -6,13 +6,12 @@ import message from "../../utils/message";
 import { authServices } from "./auth.services";
 import AppError from "../../utils/helpers/error/appError";
 import { cookies } from "../../utils/cookies";
-import { ResetPasswordProps } from "./auth.types";
-import { JwtPayload } from "jsonwebtoken";
 import { CreateUserProps } from "../user/user.types";
 import env from "../../configurations/env";
 import passport from "passport";
 import { token } from "../../utils/token";
 import { Types } from "mongoose";
+import { validateUser } from "../user/user.helpers/validateUser";
 
 const credentialSignIn = safeAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -23,33 +22,39 @@ const credentialSignIn = safeAsync(
         user: CreateUserProps & { _id: Types.ObjectId },
         info: Record<string, string>
       ) => {
-        if (error) {
-          return next(new AppError(error, StatusCodes.BAD_REQUEST));
-        }
-        if (!user) {
-          return next(new AppError(info.message, StatusCodes.BAD_REQUEST));
-        }
-        const payload = {
-          credentialId: user._id,
-          email: user.email,
-          role: user.role,
-        };
-        const { accessToken, refreshToken } =
-          token.createAccessRefreshToken(payload);
-        cookies.setCookies(res, { accessToken, refreshToken });
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { password: unusedPassword, ...rest } = user;
+        try {
+          if (error) {
+            return next(new AppError(error, StatusCodes.BAD_REQUEST));
+          }
+          if (!user) {
+            return next(new AppError(info.message, StatusCodes.BAD_REQUEST));
+          }
+          validateUser(user);
 
-        resHandler(res, {
-          success: true,
-          status: StatusCodes.OK,
-          message: message("signIn", "user"),
-          data: {
-            accessToken,
-            refreshToken,
-            user: rest,
-          },
-        });
+          const payload = {
+            credentialId: user._id,
+            email: user.email,
+            role: user.role,
+          };
+          const { accessToken, refreshToken } =
+            token.createAccessRefreshToken(payload);
+          cookies.setCookies(res, { accessToken, refreshToken });
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { password: unusedPassword, ...rest } = user;
+
+          resHandler(res, {
+            success: true,
+            status: StatusCodes.OK,
+            message: message("signIn", "user"),
+            data: {
+              accessToken,
+              refreshToken,
+              user: rest,
+            },
+          });
+        } catch (error) {
+          next(error);
+        }
       }
     )(req, res, next);
   }
@@ -94,23 +99,16 @@ const signOut = safeAsync(async (_req: Request, res: Response) => {
 });
 
 const resetPassword = safeAsync(async (req: Request, res: Response) => {
-  const passwords = req.body as ResetPasswordProps;
-  await authServices.resetPassword(
-    passwords,
-    (req?.user as JwtPayload)?.credentialId
-  );
+  await authServices.resetPassword(req);
   resHandler(res, {
     success: true,
     message: message("update", "password"),
     status: StatusCodes.OK,
   });
 });
+
 const changePassword = safeAsync(async (req: Request, res: Response) => {
-  const passwords = req.body as ResetPasswordProps;
-  await authServices.changePassword(
-    passwords,
-    (req?.user as JwtPayload)?.credentialId
-  );
+  await authServices.changePassword(req);
   resHandler(res, {
     success: true,
     message: message("update", "password"),
@@ -123,6 +121,14 @@ const setPassword = safeAsync(async (req: Request, res: Response) => {
   resHandler(res, {
     success: true,
     message: message("update", "password"),
+    status: StatusCodes.OK,
+  });
+});
+const forgetPassword = safeAsync(async (req: Request, res: Response) => {
+  await authServices.forgetPassword(req);
+  resHandler(res, {
+    success: true,
+    message: message("success", "sending mail"),
     status: StatusCodes.OK,
   });
 });
@@ -156,4 +162,5 @@ export const authControllers = {
   googleStrategyCallback,
   changePassword,
   setPassword,
+  forgetPassword,
 };

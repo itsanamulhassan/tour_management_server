@@ -1,4 +1,4 @@
-import { Document, Types } from "mongoose";
+import { Types } from "mongoose";
 import { UserRoleStatusEnumProps } from "../modules/user/user.types";
 
 export interface SetCookiesProps {
@@ -14,4 +14,16 @@ export interface CreateAccessRefreshTokenProps {
   credentialId: Types.ObjectId;
   email: string;
   role: UserRoleStatusEnumProps;
+}
+
+export interface SendMailProps {
+  subject: string;
+  to: string;
+  template: string;
+  data?: Record<string, unknown>;
+  attachments?: {
+    filename: string;
+    content: Buffer | string;
+    contentType: string;
+  }[];
 }

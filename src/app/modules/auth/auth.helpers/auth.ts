@@ -2,14 +2,12 @@ import { NextFunction, Request, Response } from "express";
 
 import { jwt } from "./jwt";
 import { StatusCodes } from "http-status-codes";
-import {
-  UserActivityStatusEnumProps,
-  UserRoleStatusEnumProps,
-} from "../../user/user.types";
+import { UserRoleStatusEnumProps } from "../../user/user.types";
 import safeAsync from "../../../utils/safeAsync";
 import AppError from "../../../utils/helpers/error/appError";
-import message, { MessageType } from "../../../utils/message";
+import message from "../../../utils/message";
 import { Users } from "../../user/user.models";
+import { validateUser } from "../../user/user.helpers/validateUser";
 
 const authorizeRole = (...roles: UserRoleStatusEnumProps[]) =>
   safeAsync(async (req: Request, _res: Response, next: NextFunction) => {
@@ -40,30 +38,7 @@ const authorizeRole = (...roles: UserRoleStatusEnumProps[]) =>
 
     const user = await Users.findOne({ email: verify?.email });
 
-    // 404 Not Found → User doesn't exist
-    if (!user) {
-      throw new AppError(message("notFound", "user"), StatusCodes.NOT_FOUND);
-    }
-
-    // 403 Forbidden → User is blocked or inactive
-    if (
-      ["BLOCKED", "INACTIVE"].includes(
-        user.activityStatus as UserActivityStatusEnumProps
-      )
-    ) {
-      throw new AppError(
-        message(
-          user.activityStatus?.toLowerCase() as MessageType,
-          "access token"
-        ),
-        StatusCodes.FORBIDDEN
-      );
-    }
-
-    // 410 Gone → User is deleted
-    if (user.isDeleted) {
-      throw new AppError(message("delete", "user"), StatusCodes.GONE);
-    }
+    validateUser(user);
 
     // Attach user payload to request
     req.user = verify;

@@ -1,10 +1,11 @@
 import { Request } from "express";
-import { CreateGuideDto } from "./guide.types";
+import { CreateGuideDto, UpdateGuideDto } from "./guide.types";
 import { Guides } from "./guide.model";
 import { Users } from "../user/user.models";
 import AppError from "../../utils/helpers/error/appError";
 import message from "../../utils/message";
 import { StatusCodes } from "http-status-codes";
+import { withTransaction } from "../../database/transaction";
 
 const createGuide = async (req: Request) => {
   const data = req.body as CreateGuideDto;
@@ -67,24 +68,32 @@ const updateGuide = async (req: Request) => {
   return latestGuide;
 };
 const updateGuideStatus = async (req: Request) => {
-  const guideId = req.params.id;
-  const payload = req.body;
-  const guide = await Guides.findById(guideId);
-  if (!guide) {
-    throw new AppError(message("notFound", "guide"), StatusCodes.NOT_FOUND);
-  }
-  const latestGuide = await Guides.findByIdAndUpdate(
-    guideId,
-    {
-      status: payload.status,
-    },
-    {
-      runValidators: true,
-      new: true,
+  return withTransaction(async (session) => {
+    const guideId = req.params.id;
+    const payload = req.body as UpdateGuideDto;
+
+    const guide = await Guides.findById(guideId).session(session);
+    if (!guide) {
+      throw new AppError(message("notFound", "guide"), StatusCodes.NOT_FOUND);
     }
-  );
-  return latestGuide;
+
+    const user = await Users.findById(guide.user).session(session);
+    if (!user) {
+      throw new AppError(message("notFound", "user"), StatusCodes.NOT_FOUND);
+    }
+    if (user.role !== "USER") {
+      throw new AppError(message("forbidden", "user"), StatusCodes.FORBIDDEN);
+    }
+    guide.status = payload.status;
+    if (payload.status === "APPROVED") {
+      user.role = "GUIDE";
+    }
+
+    await guide.save({ session });
+    await user.save({ session });
+  });
 };
+
 const retrieveGuides = async () => {
   const guides = await Guides.find();
   return guides;

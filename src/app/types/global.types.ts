@@ -5,4 +5,8 @@ export interface FileSchemaProps {
   public_id: string;
 }
 
-export type ChildFolderProps = "avatars" | "divisions" | "tour_thumbnails";
+export type ChildFolderProps =
+  | "avatars"
+  | "divisions"
+  | "tour_thumbnails"
+  | "guide_nid";

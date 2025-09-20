@@ -1,8 +1,8 @@
 import { model, Schema } from "mongoose";
-import { CreatePaymentProps } from "./payment.types";
+import { CreatePaymentDto } from "./payment.types";
 import { paymentStatusEnum } from "./payment.schemas";
 
-const paymentSchema = new Schema<CreatePaymentProps>(
+const paymentSchema = new Schema<CreatePaymentDto>(
   {
     amount: {
       type: Number,
@@ -34,4 +34,4 @@ const paymentSchema = new Schema<CreatePaymentProps>(
   { timestamps: true, versionKey: false }
 );
 
-export const Payments = model<CreatePaymentProps>("Payments", paymentSchema);
+export const Payments = model<CreatePaymentDto>("Payments", paymentSchema);

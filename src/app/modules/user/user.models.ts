@@ -1,5 +1,5 @@
 import { InferSchemaType, model, Schema } from "mongoose";
-import { AddressProps, AuthProviderProps, CreateUserProps } from "./user.types";
+import { AddressDto, AuthProviderDto } from "./user.types";
 import {
   authProviderEnum,
   userActivityStatusEnum,
@@ -7,7 +7,7 @@ import {
 } from "./user.schemas";
 import { MergeDocument } from "../../types/global.types";
 
-const addressSchema = new Schema<AddressProps>(
+const addressSchema = new Schema<AddressDto>(
   {
     street: { type: String },
     city: {
@@ -29,7 +29,7 @@ const addressSchema = new Schema<AddressProps>(
   { versionKey: false, _id: false }
 );
 
-const authProviderSchema = new Schema<AuthProviderProps>(
+const authProviderSchema = new Schema<AuthProviderDto>(
   {
     provider: {
       type: String,
@@ -47,7 +47,7 @@ const authProviderSchema = new Schema<AuthProviderProps>(
   }
 );
 
-const userSchema = new Schema<CreateUserProps>(
+const userSchema = new Schema(
   {
     name: {
       type: String,
@@ -102,4 +102,4 @@ const userSchema = new Schema<CreateUserProps>(
 
 export type User = InferSchemaType<typeof userSchema>;
 export type UserDocument = MergeDocument<User>;
-export const Users = model<CreateUserProps>("Users", userSchema);
+export const Users = model<User>("Users", userSchema);

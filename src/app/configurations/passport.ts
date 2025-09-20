@@ -10,8 +10,8 @@ import message, { MessageType } from "../utils/message";
 import { User, Users } from "../modules/user/user.models";
 import { userRoleStatusEnum } from "../modules/user/user.schemas";
 import {
-  AuthProviderProps,
-  UserActivityStatusEnumProps,
+  AuthProviderDto,
+  UserActivityStatusEnumDto,
 } from "../modules/user/user.types";
 import bcrypt from "bcryptjs";
 
@@ -34,7 +34,7 @@ passport.use(
         }
         if (
           ["BLOCKED", "INACTIVE"].includes(
-            user.activityStatus as UserActivityStatusEnumProps
+            user.activityStatus as UserActivityStatusEnumDto
           )
         ) {
           return done(null, false, {
@@ -57,7 +57,7 @@ passport.use(
           });
         }
         const withoutCredential = user.auths.some(
-          (provider: AuthProviderProps) => provider.provider !== "CREDENTIAL"
+          (provider: AuthProviderDto) => provider.provider !== "CREDENTIAL"
         );
         if (withoutCredential && !user.password) {
           return done(null, false, {
@@ -104,7 +104,7 @@ passport.use(
 
         if (
           ["BLOCKED", "INACTIVE"].includes(
-            user.activityStatus as UserActivityStatusEnumProps
+            user.activityStatus as UserActivityStatusEnumDto
           )
         ) {
           return done(null, false, {

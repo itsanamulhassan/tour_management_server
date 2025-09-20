@@ -6,6 +6,7 @@ import tourTypeRouter from "../modules/tour/type/tour.type.routers";
 import tourRouter from "../modules/tour/tour.routers";
 import bookingRouter from "../modules/booking/booking.routers";
 import paymentRouter from "../modules/payment/payment.routers";
+import guideRouter from "../modules/guide/guide.routers";
 
 // Initialize the main router
 const appRouter = Router();
@@ -39,6 +40,10 @@ const routes = [
   {
     path: "/bookings",
     router: bookingRouter,
+  },
+  {
+    path: "/guides",
+    router: guideRouter,
   },
 ];
 

@@ -2,14 +2,13 @@ import { Request } from "express";
 import { withTransaction } from "../../database/transaction";
 import { Payments } from "./payment.models";
 import { Bookings } from "../booking/booking.models";
-import { MergeDocument } from "../../types/utils.types";
-import { CreatePaymentProps } from "./payment.types";
+import { CreatePaymentDto } from "./payment.types";
 import message from "../../utils/message";
 import AppError from "../../utils/helpers/error/appError";
 import { StatusCodes } from "http-status-codes";
-import { CreateUserProps } from "../user/user.types";
+import { CreateUserDto } from "../user/user.types";
 import { sslServices } from "../sslCommerz/sslCommerz.services";
-import { success } from "zod";
+import { MergeDocument } from "../../types/global.types";
 
 const successPayment = async (req: Request) => {
   const transactionId = req.query.transaction_id;
@@ -26,7 +25,7 @@ const successPayment = async (req: Request) => {
         runValidators: true,
         new: true,
       }
-    )) as MergeDocument<CreatePaymentProps>;
+    )) as MergeDocument<CreatePaymentDto>;
     await Bookings.findByIdAndUpdate(
       updatePayment.booking,
       {
@@ -58,7 +57,7 @@ const failPayment = async (req: Request) => {
         runValidators: true,
         new: true,
       }
-    )) as MergeDocument<CreatePaymentProps>;
+    )) as MergeDocument<CreatePaymentDto>;
     await Bookings.findByIdAndUpdate(
       updatePayment.booking,
       {
@@ -90,7 +89,7 @@ const cancelPayment = async (req: Request) => {
         runValidators: true,
         new: true,
       }
-    )) as MergeDocument<CreatePaymentProps>;
+    )) as MergeDocument<CreatePaymentDto>;
     await Bookings.findByIdAndUpdate(
       updatePayment.booking,
       {
@@ -129,7 +128,7 @@ const updatePayment = async (req: Request) => {
   }
 
   const { address, email, name, phone } =
-    booking?.user as Partial<CreateUserProps>;
+    booking?.user as Partial<CreateUserDto>;
   const sslPayment = await sslServices.sslCommerzPaymentInitialization({
     amount: payment.amount,
     address: JSON.stringify(address),

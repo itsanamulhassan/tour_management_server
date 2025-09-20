@@ -9,7 +9,7 @@ import env from "../../configurations/env";
 import { token } from "../../utils/token";
 import { Request } from "express";
 import { JwtPayload } from "jsonwebtoken";
-import { AuthProviderProps } from "../user/user.types";
+import { AuthProviderDto } from "../user/user.types";
 import JWT from "jsonwebtoken";
 import { CreateAccessRefreshTokenProps } from "../../types/utils.types";
 import { validateUser } from "../user/user.helpers/validateUser";
@@ -55,9 +55,7 @@ const setPassword = async (req: Request) => {
   }
   if (
     user?.password &&
-    user?.auths.some(
-      (auth: AuthProviderProps) => auth.provider === "CREDENTIAL"
-    )
+    user?.auths.some((auth: AuthProviderDto) => auth.provider === "CREDENTIAL")
   ) {
     throw new AppError(
       message("alreadyExists", "password"),
@@ -70,7 +68,7 @@ const setPassword = async (req: Request) => {
       provider: "CREDENTIAL",
       providerId: user?.email,
     },
-  ] as AuthProviderProps[];
+  ] as AuthProviderDto[];
 
   const hash = await bcrypt.hash(payload.password, env.bcrypt_salt_round);
 

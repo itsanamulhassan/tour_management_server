@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { UserRoleStatusEnumProps } from "../modules/user/user.types";
+import { UserRoleStatusEnumDto } from "../modules/user/user.types";
 
 export interface SetCookiesProps {
   accessToken?: string;
@@ -13,7 +13,7 @@ export interface RemoveCookiesProps {
 export interface CreateAccessRefreshTokenProps {
   credentialId: Types.ObjectId;
   email: string;
-  role: UserRoleStatusEnumProps;
+  role: UserRoleStatusEnumDto;
 }
 
 export interface SendMailProps {

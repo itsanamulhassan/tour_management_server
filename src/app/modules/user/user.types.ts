@@ -11,21 +11,20 @@ import {
 } from "./user.schemas";
 
 // ✅ Type representing a user creation payload
-export type CreateUserProps = z.infer<typeof userSchemas.createUser>;
+export type CreateUserDto = z.infer<typeof userSchemas.createUser>;
 // ✅ Type representing a user updating payload
-export type UpdateUserProps = z.infer<typeof userSchemas.updateUser>;
+export type UpdateUserDto = z.infer<typeof userSchemas.updateUser>;
 
 // ✅ Type representing an address sub-document
-export type AddressProps = z.infer<typeof addressSchema>;
+export type AddressDto = z.infer<typeof addressSchema>;
 
 // ✅ Type representing an authentication provider entry
-export type AuthProviderProps = z.infer<typeof authProviderSchema>;
+export type AuthProviderDto = z.infer<typeof authProviderSchema>;
 
 // ✅ Type representing a user role status enum
-export type UserRoleStatusEnumProps = (typeof userRoleStatusEnum)[number];
+export type UserRoleStatusEnumDto = (typeof userRoleStatusEnum)[number];
 
 // ✅ Type representing a user activity status enum
-export type UserActivityStatusEnumProps =
-  (typeof userActivityStatusEnum)[number];
+export type UserActivityStatusEnumDto = (typeof userActivityStatusEnum)[number];
 // ✅ Type representing a authentication provider enum
-export type authProviderEnumProps = (typeof authProviderEnum)[number];
+export type authProviderEnumDto = (typeof authProviderEnum)[number];

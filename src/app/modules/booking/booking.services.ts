@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import AppError from "../../utils/helpers/error/appError";
 import { Users } from "../user/user.models";
-import { CreateUserProps } from "../user/user.types";
+import { CreateUserDto } from "../user/user.types";
 import { Bookings } from "./booking.models";
 import { CreateBookingProps } from "./booking.types";
 import message from "../../utils/message";
@@ -11,13 +11,11 @@ import { Payments } from "../payment/payment.models";
 import { transactionIdGenerator } from "../payment/payment.helpers/transactionIdGenerator";
 import { withTransaction } from "../../database/transaction";
 import { sslServices } from "../sslCommerz/sslCommerz.services";
-import { CreatePaymentProps } from "../payment/payment.types";
+import { CreatePaymentDto } from "../payment/payment.types";
 
 const createBooking = async (payload: CreateBookingProps) => {
   return withTransaction(async (session) => {
-    const user = (await Users.findById(
-      payload.user
-    )) as Partial<CreateUserProps>;
+    const user = (await Users.findById(payload.user)) as Partial<CreateUserDto>;
     if (!user?.phone) {
       throw new AppError(message("notFound", "phone"), StatusCodes.NOT_FOUND);
     }
@@ -60,8 +58,8 @@ const createBooking = async (payload: CreateBookingProps) => {
       .populate("payment");
 
     const { address, email, name, phone } =
-      updateBooking?.user as Partial<CreateUserProps>;
-    const payment = updateBooking?.payment as Partial<CreatePaymentProps>;
+      updateBooking?.user as Partial<CreateUserDto>;
+    const payment = updateBooking?.payment as Partial<CreatePaymentDto>;
 
     const sslPayment = await sslServices.sslCommerzPaymentInitialization({
       amount: bookingAmount,

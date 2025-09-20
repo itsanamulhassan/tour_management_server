@@ -6,7 +6,7 @@ import message from "../../utils/message";
 import { authServices } from "./auth.services";
 import AppError from "../../utils/helpers/error/appError";
 import { cookies } from "../../utils/cookies";
-import { CreateUserProps } from "../user/user.types";
+import { CreateUserDto } from "../user/user.types";
 import env from "../../configurations/env";
 import passport from "passport";
 import { token } from "../../utils/token";
@@ -19,7 +19,7 @@ const credentialSignIn = safeAsync(
       "local",
       async (
         error: string,
-        user: CreateUserProps & { _id: Types.ObjectId },
+        user: CreateUserDto & { _id: Types.ObjectId },
         info: Record<string, string>
       ) => {
         try {
@@ -135,7 +135,7 @@ const forgetPassword = safeAsync(async (req: Request, res: Response) => {
 
 const googleStrategyCallback = safeAsync(
   async (req: Request, res: Response) => {
-    const user = req.user as CreateUserProps & { _id: Types.ObjectId };
+    const user = req.user as CreateUserDto & { _id: Types.ObjectId };
     let redirect = (req.query.state || "") as string;
     if (redirect.startsWith("/")) {
       redirect = redirect.slice(1);

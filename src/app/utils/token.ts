@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
 import { Users } from "../modules/user/user.models";
 import {
-  CreateUserProps,
-  UserActivityStatusEnumProps,
+  CreateUserDto,
+  UserActivityStatusEnumDto,
 } from "../modules/user/user.types";
 import { StatusCodes } from "http-status-codes";
 import message, { MessageType } from "./message";
@@ -13,14 +13,14 @@ import { jwt } from "../modules/auth/auth.helpers/jwt";
 const createAccessTokenWithRefreshToken = async (refreshToken: string) => {
   const { email } = jwt.verifyRefreshToken(refreshToken);
   const user = (await Users.findOne({ email })) as Partial<
-    CreateUserProps & { _id: Types.ObjectId }
+    CreateUserDto & { _id: Types.ObjectId }
   >;
   if (!user) {
     throw new AppError(message("notFound", "user"), StatusCodes.BAD_REQUEST);
   }
   if (
     ["BLOCKED", "INACTIVE"].includes(
-      user.activityStatus as UserActivityStatusEnumProps
+      user.activityStatus as UserActivityStatusEnumDto
     )
   ) {
     throw new AppError(

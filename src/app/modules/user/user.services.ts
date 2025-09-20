@@ -2,14 +2,14 @@ import { StatusCodes } from "http-status-codes";
 import AppError from "../../utils/helpers/error/appError";
 import message from "../../utils/message";
 import { Users } from "./user.models";
-import { AuthProviderProps, CreateUserProps } from "./user.types";
+import { AuthProviderDto, CreateUserDto } from "./user.types";
 import bcryptjs from "bcryptjs";
 import env from "../../configurations/env";
 import { Request } from "express";
 import { JwtPayload } from "jsonwebtoken";
 
-const createUser = async (payload: Partial<CreateUserProps>) => {
-  const { email, password, ...rest } = payload as CreateUserProps;
+const createUser = async (payload: Partial<CreateUserDto>) => {
+  const { email, password, ...rest } = payload as CreateUserDto;
 
   if (["ADMIN", "SUPERADMIN"].includes(rest.role)) {
     throw new AppError(
@@ -18,8 +18,8 @@ const createUser = async (payload: Partial<CreateUserProps>) => {
     );
   }
 
-  const isUserExist = await Users.findOne({ email });
-  if (isUserExist) {
+  const user = await Users.findOne({ email });
+  if (user) {
     throw new AppError(
       message("alreadyExists", "user"),
       StatusCodes.BAD_REQUEST
@@ -31,7 +31,7 @@ const createUser = async (payload: Partial<CreateUserProps>) => {
     env.bcrypt_salt_round
   );
 
-  const authProvider: AuthProviderProps = {
+  const authProvider: AuthProviderDto = {
     provider: "CREDENTIAL",
     providerId: email,
   };
@@ -62,8 +62,8 @@ const updateUser = async (req: Request) => {
     body,
   } = req as Request & { user: { role: string } };
 
-  const isUserExist = await Users.findById(userId);
-  if (!isUserExist) {
+  const user = await Users.findById(userId);
+  if (!user) {
     throw new AppError(message("notFound", "user"), StatusCodes.NOT_FOUND);
   }
 

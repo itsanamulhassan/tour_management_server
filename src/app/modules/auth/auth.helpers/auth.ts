@@ -2,14 +2,14 @@ import { NextFunction, Request, Response } from "express";
 
 import { jwt } from "./jwt";
 import { StatusCodes } from "http-status-codes";
-import { UserRoleStatusEnumProps } from "../../user/user.types";
+import { UserRoleStatusEnumDto } from "../../user/user.types";
 import safeAsync from "../../../utils/safeAsync";
 import AppError from "../../../utils/helpers/error/appError";
 import message from "../../../utils/message";
 import { Users } from "../../user/user.models";
 import { validateUser } from "../../user/user.helpers/validateUser";
 
-const authorizeRole = (...roles: UserRoleStatusEnumProps[]) =>
+const authorizeRole = (...roles: UserRoleStatusEnumDto[]) =>
   safeAsync(async (req: Request, _res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
 

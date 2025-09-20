@@ -37,6 +37,7 @@ guideRouter.patch(
 );
 guideRouter.patch(
   "/update/status/:id",
+  schemaValidator(guideSchema.updateGuideStatusSchema),
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
   guideControllers.updateGuideStatus
 );

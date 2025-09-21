@@ -3,7 +3,7 @@ import { Request } from "express";
 import { TourDocument, Tours } from "./tour.models";
 import AppError from "../../utils/helpers/error/appError";
 import message from "../../utils/message";
-import { FileSchemaProps } from "../../types/global.types";
+import { FileProps } from "../../types/global.types";
 import { deleteCloudinaryFile } from "../../configurations/cloudinary";
 import { TourTypes } from "./type/tour.type.models";
 
@@ -70,28 +70,26 @@ const updateTour = async (req: Request) => {
 
   if (selectedThumbnails.size) {
     const results = await Promise.all(
-      thumbnails.map(
-        async (thumbnail): Promise<FileSchemaProps | undefined> => {
-          if (selectedThumbnails.has(thumbnail.public_id)) {
-            try {
-              await deleteCloudinaryFile(thumbnail.public_id);
-            } catch (error) {
-              if (error instanceof Error) {
-                throw new AppError(
-                  message("fail", "cloudinary delete", error.message),
-                  StatusCodes.BAD_REQUEST
-                );
-              }
+      thumbnails.map(async (thumbnail): Promise<FileProps | undefined> => {
+        if (selectedThumbnails.has(thumbnail.public_id)) {
+          try {
+            await deleteCloudinaryFile(thumbnail.public_id);
+          } catch (error) {
+            if (error instanceof Error) {
+              throw new AppError(
+                message("fail", "cloudinary delete", error.message),
+                StatusCodes.BAD_REQUEST
+              );
             }
-            return undefined;
           }
-          return thumbnail;
+          return undefined;
         }
-      )
+        return thumbnail;
+      })
     );
 
     thumbnails = results.filter(
-      (thumbnail): thumbnail is FileSchemaProps => thumbnail !== undefined
+      (thumbnail): thumbnail is FileProps => thumbnail !== undefined
     );
   }
 

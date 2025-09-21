@@ -1,9 +1,9 @@
 import { InferSchemaType, model, Schema } from "mongoose";
 import { CreateTourDto } from "./tour.types";
 import { generateSlug } from "../../utils/slug";
-import { FileSchemaProps, MergeDocument } from "../../types/global.types";
+import { FileProps, MergeDocument } from "../../types/global.types";
 
-export const fileSchema = new Schema<FileSchemaProps>(
+export const fileSchema = new Schema<FileProps>(
   {
     public_id: {
       type: String,

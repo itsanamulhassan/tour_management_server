@@ -40,7 +40,7 @@ const retrieveGuide = safeAsync(async (req: Request, res: Response) => {
   });
 });
 const updateGuide = safeAsync(async (req: Request, res: Response) => {
-  await guideServices.retrieveGuide(req);
+  await guideServices.updateGuide(req);
   resHandler(res, {
     success: true,
     message: message("update", "guide"),

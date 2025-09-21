@@ -6,6 +6,8 @@ import AppError from "../../utils/helpers/error/appError";
 import message from "../../utils/message";
 import { StatusCodes } from "http-status-codes";
 import { withTransaction } from "../../database/transaction";
+import { deleteCloudinaryFile } from "../../configurations/cloudinary";
+import { FileProps } from "../../types/global.types";
 
 const createGuide = async (req: Request) => {
   const data = req.body as CreateGuideDto;
@@ -37,24 +39,38 @@ const createGuide = async (req: Request) => {
 };
 
 const deleteGuide = async (req: Request) => {
-  const guideId = req.params.id;
+  return withTransaction(async (session) => {
+    const guideId = req.params.id;
 
-  const guide = await Guides.findById(guideId);
-  if (!guide) {
-    throw new AppError(message("notFound", "guide"), StatusCodes.BAD_REQUEST);
-  }
+    const guide = await Guides.findById(guideId);
+    if (!guide) {
+      throw new AppError(message("notFound", "guide"), StatusCodes.BAD_REQUEST);
+    }
 
-  await Guides.findByIdAndUpdate(
-    { _id: guideId },
-    {
-      status: "ARCHIVED",
-    },
-    { runValidators: true }
-  );
+    await Users.findByIdAndUpdate(
+      {
+        _id: guide.user,
+      },
+      { isDeleted: true },
+      { runValidators: true, session }
+    );
+
+    await Guides.findByIdAndUpdate(
+      { _id: guideId },
+      {
+        status: "ARCHIVED",
+      },
+      { runValidators: true, session }
+    );
+  });
 };
 const updateGuide = async (req: Request) => {
+  const nid = {
+    public_id: (req.file as Express.Multer.File)?.filename,
+    url: req.file?.path,
+  };
   const guideId = req.params.id;
-  const payload = req.body;
+  const payload = nid ? { ...req.body, nid } : req.body;
 
   const guide = await Guides.findById(guideId);
 
@@ -65,6 +81,9 @@ const updateGuide = async (req: Request) => {
     runValidators: true,
     new: true,
   });
+  if (nid && guide.nid) {
+    await deleteCloudinaryFile((guide.nid as FileProps).public_id);
+  }
   return latestGuide;
 };
 const updateGuideStatus = async (req: Request) => {
@@ -105,6 +124,7 @@ const retrieveGuide = async (req: Request) => {
   if (!guide) {
     throw new AppError(message("notFound", "guide"), StatusCodes.NOT_FOUND);
   }
+
   return guide;
 };
 export const guideServices = {

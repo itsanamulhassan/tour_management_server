@@ -24,19 +24,21 @@ const deleteGuide = safeAsync(async (req: Request, res: Response) => {
   });
 });
 const retrieveGuides = safeAsync(async (req: Request, res: Response) => {
-  await guideServices.retrieveGuides();
+  const guides = await guideServices.retrieveGuides();
   resHandler(res, {
     success: true,
     message: message("get", "guides"),
     status: StatusCodes.OK,
+    data: guides,
   });
 });
 const retrieveGuide = safeAsync(async (req: Request, res: Response) => {
-  await guideServices.retrieveGuide(req);
+  const guide = await guideServices.retrieveGuide(req);
   resHandler(res, {
     success: true,
     message: message("get", "guide"),
     status: StatusCodes.OK,
+    data: guide,
   });
 });
 const updateGuide = safeAsync(async (req: Request, res: Response) => {

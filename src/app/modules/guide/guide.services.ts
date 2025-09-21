@@ -114,13 +114,17 @@ const updateGuideStatus = async (req: Request) => {
 };
 
 const retrieveGuides = async () => {
-  const guides = await Guides.find();
+  const guides = await Guides.find()
+    .populate("user", ["name"])
+    .populate("division");
   return guides;
 };
 const retrieveGuide = async (req: Request) => {
   const guideId = req.params.id;
 
-  const guide = await Guides.findById(guideId);
+  const guide = await Guides.findById(guideId)
+    .populate("user", ["name"])
+    .populate("division");
   if (!guide) {
     throw new AppError(message("notFound", "guide"), StatusCodes.NOT_FOUND);
   }

@@ -30,5 +30,11 @@ userRouter.patch(
   auth.authorizeRole(...userRoleStatusEnum),
   userControllers.updateUser
 );
+// ✅ Delete user by ID
+userRouter.delete(
+  "/delete/:id",
+  auth.authorizeRole(...userRoleStatusEnum),
+  userControllers.updateUser
+);
 
 export default userRouter;

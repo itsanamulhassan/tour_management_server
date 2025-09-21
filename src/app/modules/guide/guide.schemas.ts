@@ -16,6 +16,7 @@ const createGuideSchema = z.object({
     .min(1, { error: "Division ID is required." }),
   status: z.enum(guideStatusEnum).default("PENDING").optional(),
 });
+const updateGuideSchema = z.clone(createGuideSchema);
 const updateGuideStatusSchema = z.object({
   status: z.enum(guideStatusEnum),
 });
@@ -23,4 +24,5 @@ const updateGuideStatusSchema = z.object({
 export const guideSchema = {
   createGuideSchema,
   updateGuideStatusSchema,
+  updateGuideSchema,
 };

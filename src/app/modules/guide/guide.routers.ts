@@ -32,7 +32,9 @@ guideRouter.delete(
 );
 guideRouter.patch(
   "/update/:id",
-  auth.authorizeRole(...userRoleStatusEnum),
+  multerUpload("guide_nid").single("file"),
+  schemaValidator(guideSchema.updateGuideSchema),
+  auth.authorizeRole("ADMIN", "SUPERADMIN", "GUIDE"),
   guideControllers.updateGuide
 );
 guideRouter.patch(

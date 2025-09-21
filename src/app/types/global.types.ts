@@ -1,6 +1,6 @@
 export type MergeDocument<T> = Document & T;
 
-export interface FileSchemaProps {
+export interface FileProps {
   url: string;
   public_id: string;
 }

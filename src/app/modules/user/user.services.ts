@@ -7,6 +7,8 @@ import bcryptjs from "bcryptjs";
 import env from "../../configurations/env";
 import { Request } from "express";
 import { JwtPayload } from "jsonwebtoken";
+import { withTransaction } from "../../database/transaction";
+import { Guides } from "../guide/guide.model";
 
 const createUser = async (payload: Partial<CreateUserDto>) => {
   const { email, password, ...rest } = payload as CreateUserDto;
@@ -47,6 +49,27 @@ const retrieveUsers = async () => {
   const users = await Users.find();
 
   return users;
+};
+const deleteUser = async (req: Request) => {
+  return withTransaction(async (session) => {
+    const userId = req.params.id;
+    const user = await Users.findById(userId);
+    if (!user) {
+      throw new AppError(message("notFound", "user"), StatusCodes.NOT_FOUND);
+    }
+    const guide = await Guides.findOne({ user: userId });
+    if (user.role === "GUIDE" && !guide) {
+      throw new AppError(message("notFound", "guide"), StatusCodes.NOT_FOUND);
+    }
+
+    if (guide && user.role === "GUIDE") {
+      guide.status = "ARCHIVED";
+      await guide.save({ session });
+    }
+
+    user.isDeleted = true;
+    await user.save({ session });
+  });
 };
 const retrieveMe = async (req: Request) => {
   const credential = (req.user as JwtPayload).credentialId;
@@ -102,4 +125,5 @@ export const userServices = {
   retrieveUsers,
   updateUser,
   retrieveMe,
+  deleteUser,
 };

@@ -45,10 +45,19 @@ const updateUser = safeAsync(async (req: Request, res: Response) => {
     data: users,
   });
 });
+const deleteUser = safeAsync(async (req: Request, res: Response) => {
+  await userServices.deleteUser(req);
+  resHandler(res, {
+    status: StatusCodes.OK,
+    success: true,
+    message: message("delete", "user"),
+  });
+});
 
 export const userControllers = {
   createUser,
   retrieveUsers,
   updateUser,
   retrieveMe,
+  deleteUser,
 };

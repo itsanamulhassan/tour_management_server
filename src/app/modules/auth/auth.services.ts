@@ -14,6 +14,7 @@ import JWT from "jsonwebtoken";
 import { CreateAccessRefreshTokenProps } from "../../types/utils.types";
 import { validateUser } from "../user/user.helpers/validateUser";
 import sendMail from "../../utils/sendEmail";
+import { Types } from "mongoose";
 
 const retrieveLatestAccessToken = async (refreshToken: string) => {
   const accessToken = await token.createAccessTokenWithRefreshToken(
@@ -68,7 +69,7 @@ const setPassword = async (req: Request) => {
       provider: "CREDENTIAL",
       providerId: user?.email,
     },
-  ] as AuthProviderDto[];
+  ] as Types.DocumentArray<AuthProviderDto>;
 
   const hash = await bcrypt.hash(payload.password, env.bcrypt_salt_round);
 

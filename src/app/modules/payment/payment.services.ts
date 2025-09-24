@@ -1,7 +1,7 @@
 import { Request } from "express";
 import { withTransaction } from "../../database/transaction";
 import { Payments } from "./payment.models";
-import { Bookings } from "../booking/booking.models";
+import { Booking, Bookings } from "../booking/booking.models";
 import { CreatePaymentDto } from "./payment.types";
 import message from "../../utils/message";
 import AppError from "../../utils/helpers/error/appError";
@@ -9,9 +9,14 @@ import { StatusCodes } from "http-status-codes";
 import { CreateUserDto } from "../user/user.types";
 import { sslServices } from "../sslCommerz/sslCommerz.services";
 import { MergeDocument } from "../../types/global.types";
+import { User } from "../user/user.models";
+import { Tour } from "../tour/tour.models";
+import bookingInvoice from "../../utils/pdf/bookingInvoice";
+import sendMail from "../../utils/sendEmail";
 
 const successPayment = async (req: Request) => {
   const transactionId = req.query.transaction_id;
+
   // Update booking status --> CONFIRM
   // Update payment status --> PAID
   return withTransaction(async (session) => {
@@ -26,13 +31,46 @@ const successPayment = async (req: Request) => {
         new: true,
       }
     )) as MergeDocument<CreatePaymentDto>;
-    await Bookings.findByIdAndUpdate(
+    const booking = (await Bookings.findByIdAndUpdate(
       updatePayment.booking,
       {
         status: "COMPLETE",
       },
       { session, runValidators: true, new: true }
-    );
+    )
+      .populate("user", ["name", "email", "phone"])
+      .populate("tour", ["title"])) as unknown as Booking & {
+      user: User;
+      tour: Tour;
+    };
+
+    const invoiceData = {
+      bookingAmount: updatePayment.amount,
+      bookingDate: booking?.createdAt,
+      clientEmail: booking.user.email,
+      clientName: booking.user.name,
+      clientPhone: booking.user.phone as string,
+      guestCount: booking.guestCount,
+      tourTitle: booking.tour.title,
+      transactionID: updatePayment.transactionId,
+    };
+
+    const invoicePdf = await bookingInvoice(invoiceData);
+
+    await sendMail({
+      subject: "Booking Confirmation",
+      template: "invoice",
+      to: "tuhincloud665@gmail.com",
+      data: invoiceData,
+      attachments: [
+        {
+          content: invoicePdf as Buffer<ArrayBufferLike>,
+          contentType: "application/pdf",
+          filename: "invoice.pdf",
+        },
+      ],
+    });
+
     return {
       success: true,
       message: message("success", "payment"),

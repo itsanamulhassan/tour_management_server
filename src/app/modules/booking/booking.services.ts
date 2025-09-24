@@ -17,7 +17,10 @@ const createBooking = async (payload: CreateBookingProps) => {
   return withTransaction(async (session) => {
     const user = (await Users.findById(payload.user)) as Partial<CreateUserDto>;
     if (!user?.phone) {
-      throw new AppError(message("notFound", "phone"), StatusCodes.NOT_FOUND);
+      throw new AppError(
+        message("notFound", "phone number"),
+        StatusCodes.NOT_FOUND
+      );
     }
     if (!user?.address) {
       throw new AppError(message("notFound", "address"), StatusCodes.NOT_FOUND);
@@ -26,6 +29,9 @@ const createBooking = async (payload: CreateBookingProps) => {
     const tour = (await Tours.findById(payload.tour).select(
       "costFrom"
     )) as Partial<CreateTourDto>;
+    if (!tour) {
+      throw new AppError(message("notFound", "tour"), StatusCodes.NOT_FOUND);
+    }
 
     if (!tour?.costFrom) {
       throw new AppError(

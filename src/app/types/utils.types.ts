@@ -16,14 +16,14 @@ export interface CreateAccessRefreshTokenProps {
   role: UserRoleStatusEnumDto;
 }
 
-export interface SendMailProps {
+export interface SendMailProps<T> {
   subject: string;
   to: string;
   template: string;
-  data?: Record<string, unknown>;
+  data?: T;
   attachments?: {
     filename: string;
-    content: Buffer | string;
+    content: string | Buffer<ArrayBufferLike>;
     contentType: string;
   }[];
 }

@@ -6,7 +6,7 @@ const transporter = nodemailer.createTransport({
     pass: env.smtp.pass,
     user: env.smtp.user,
   },
-  port: Number(env.smtp.port),
+  port: env.smtp.port,
   host: env.smtp.host,
 });
 

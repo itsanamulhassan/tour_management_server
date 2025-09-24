@@ -4,6 +4,7 @@ import app from "./app";
 import { Server } from "http";
 import env from "./app/configurations/env";
 import initializeDefaultUser from "./app/modules/user/user.helpers/initializeDefaultUser";
+import { client } from "./app/configurations/redis";
 
 let server: Server;
 
@@ -21,6 +22,9 @@ const main = async () => {
 };
 
 (async () => {
+  if (!client.isOpen) {
+    await client.connect();
+  }
   await main();
   await initializeDefaultUser();
 })();

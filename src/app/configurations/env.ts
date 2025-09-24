@@ -28,7 +28,7 @@ interface LoadEnvVariableProps {
   };
   smtp: {
     user: string;
-    port: string;
+    port: number;
     host: string;
     pass: string;
     from: string;
@@ -49,6 +49,12 @@ interface LoadEnvVariableProps {
       fail_url: string;
       cancel_url: string;
     };
+  };
+  redis: {
+    host: string;
+    port: number;
+    user: string;
+    password: string;
   };
 }
 
@@ -91,6 +97,10 @@ const loadEnvVariables = (): LoadEnvVariableProps => {
     "SMTP_FROM",
     "SMTP_USER",
     "SMTP_PASS",
+    "REDIS_HOST",
+    "REDIS_PORT",
+    "REDIS_PASSWORD",
+    "REDIS_USER",
   ];
   requiredEnvVariables.forEach((key: string) => {
     if (!process.env[key]) {
@@ -142,7 +152,13 @@ const loadEnvVariables = (): LoadEnvVariableProps => {
       user: process.env.SMTP_USER as string,
       host: process.env.SMTP_HOST as string,
       pass: process.env.SMTP_PASS as string,
-      port: process.env.SMTP_PORT as string,
+      port: Number(process.env.SMTP_PORT) as number,
+    },
+    redis: {
+      host: process.env.REDIS_HOST as string,
+      port: Number(process.env.REDIS_PORT) as number,
+      password: process.env.REDIS_PASSWORD as string,
+      user: process.env.REDIS_USER as string,
     },
   };
 };

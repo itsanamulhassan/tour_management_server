@@ -1,6 +1,5 @@
-import { InferSchemaType, model, Schema } from "mongoose";
+import { HydratedDocument, InferSchemaType, model, Schema } from "mongoose";
 import { bookingStatusEnum } from "./booking.schemas";
-import { MergeDocument } from "../../types/global.types";
 
 const bookingSchema = new Schema(
   {
@@ -34,6 +33,6 @@ const bookingSchema = new Schema(
 );
 
 export type Booking = InferSchemaType<typeof bookingSchema>;
-export type BookingDocument = MergeDocument<Booking>;
+export type BookingDocument = HydratedDocument<Booking>;
 
 export const Bookings = model<Booking>("Bookings", bookingSchema);

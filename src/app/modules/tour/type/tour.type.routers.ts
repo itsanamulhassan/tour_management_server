@@ -1,5 +1,5 @@
 import { Router } from "express";
-import schemaValidator from "../../../middlewares/validateRequest";
+import schemaValidator from "../../../middlewares/schemaValidator";
 import { tourTypeSchemas } from "./tour.type.schemas";
 import { tourTypeControllers } from "./tour.type.controllers";
 import { auth } from "../../auth/auth.helpers/auth";

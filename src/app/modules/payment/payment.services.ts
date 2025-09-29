@@ -2,13 +2,11 @@ import { Request } from "express";
 import { withTransaction } from "../../database/transaction";
 import { Payment, Payments } from "./payment.models";
 import { Booking, Bookings } from "../booking/booking.models";
-import { CreatePaymentDto } from "./payment.types";
 import message from "../../utils/message";
 import AppError from "../../utils/helpers/error/appError";
 import { StatusCodes } from "http-status-codes";
 import { CreateUserDto } from "../user/user.types";
 import { sslServices } from "../sslCommerz/sslCommerz.services";
-import { MergeDocument } from "../../types/global.types";
 import { User } from "../user/user.models";
 import { Tour } from "../tour/tour.models";
 import bookingInvoice from "../../utils/pdf/bookingInvoice";
@@ -114,7 +112,7 @@ const failPayment = async (req: Request) => {
         runValidators: true,
         new: true,
       }
-    )) as MergeDocument<CreatePaymentDto>;
+    )) as Payment;
     await Bookings.findByIdAndUpdate(
       updatePayment.booking,
       {
@@ -146,7 +144,7 @@ const cancelPayment = async (req: Request) => {
         runValidators: true,
         new: true,
       }
-    )) as MergeDocument<CreatePaymentDto>;
+    )) as Payment;
     await Bookings.findByIdAndUpdate(
       updatePayment.booking,
       {

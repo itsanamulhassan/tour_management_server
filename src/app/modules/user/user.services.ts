@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import AppError from "../../utils/helpers/error/appError";
 import message from "../../utils/message";
-import { Users } from "./user.models";
+import { User, Users } from "./user.models";
 import { AuthProviderDto, CreateUserDto } from "./user.types";
 import bcryptjs from "bcryptjs";
 import env from "../../configurations/env";
@@ -9,6 +9,7 @@ import { Request } from "express";
 import { JwtPayload } from "jsonwebtoken";
 import { withTransaction } from "../../database/transaction";
 import { Guides } from "../guide/guide.model";
+import { validateUser } from "./user.helpers/validateUser";
 
 const createUser = async (payload: Partial<CreateUserDto>) => {
   const { email, password, ...rest } = payload as CreateUserDto;
@@ -50,6 +51,14 @@ const retrieveUsers = async () => {
 
   return users;
 };
+const retrieveUser = async (req: Request) => {
+  const user = await Users.findById(req.params.id);
+  if (!user) {
+    throw new AppError(message("notFound", "user"), StatusCodes.NOT_FOUND);
+  }
+
+  return user;
+};
 const deleteUser = async (req: Request) => {
   return withTransaction(async (session) => {
     const userId = req.params.id;
@@ -81,24 +90,29 @@ const retrieveMe = async (req: Request) => {
 const updateUser = async (req: Request) => {
   const {
     params: { id: userId },
-    user: { role },
+    user: { role, credentialId },
     body,
-  } = req as Request & { user: { role: string } };
+  } = req as Request;
 
-  const user = await Users.findById(userId);
-  if (!user) {
-    throw new AppError(message("notFound", "user"), StatusCodes.NOT_FOUND);
+  const user = (await Users.findById(userId)) as User;
+  validateUser(user);
+
+  if (role === "ADMIN" && user.role === "SUPERADMIN") {
+    throw new AppError(
+      message("unauthorized", "user"),
+      StatusCodes.BAD_REQUEST
+    );
   }
 
   // USER or GUIDE restrictions
   if (["USER", "GUIDE"].includes(role)) {
-    const forbidden =
-      (body.role && body.role !== role) ||
-      ["INACTIVE", "BLOCKED"].includes(body.activityStatus) ||
-      body.isDeleted === true ||
-      body.isVerified === false;
-
-    if (forbidden) {
+    if (userId !== credentialId) {
+      throw new AppError(
+        message("unauthorized", "user"),
+        StatusCodes.BAD_REQUEST
+      );
+    }
+    if (body.role && body.role !== role) {
       throw new AppError(message("forbidden", role), StatusCodes.FORBIDDEN);
     }
   }
@@ -109,9 +123,6 @@ const updateUser = async (req: Request) => {
       message("forbidden", "ADMIN (cannot assign SUPERADMIN)"),
       StatusCodes.FORBIDDEN
     );
-  }
-  if (body.password) {
-    body.password = await bcryptjs.hash(body.password, env.bcrypt_salt_round);
   }
   const updateUser = await Users.findByIdAndUpdate(userId, body, {
     new: true,
@@ -126,4 +137,5 @@ export const userServices = {
   updateUser,
   retrieveMe,
   deleteUser,
+  retrieveUser,
 };

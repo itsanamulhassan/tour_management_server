@@ -1,11 +1,10 @@
-import { InferSchemaType, model, Schema } from "mongoose";
+import { HydratedDocument, InferSchemaType, model, Schema } from "mongoose";
 import { AddressDto, AuthProviderDto } from "./user.types";
 import {
   authProviderEnum,
   userActivityStatusEnum,
   userRoleStatusEnum,
 } from "./user.schemas";
-import { MergeDocument } from "../../types/global.types";
 
 const addressSchema = new Schema<AddressDto>(
   {
@@ -101,5 +100,5 @@ const userSchema = new Schema(
 );
 
 export type User = InferSchemaType<typeof userSchema>;
-export type UserDocument = MergeDocument<User>;
+export type UserDocument = HydratedDocument<User>;
 export const Users = model<User>("Users", userSchema);

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import schemaValidator from "../../middlewares/validateRequest";
+import schemaValidator from "../../middlewares/schemaValidator";
 import { divisionSchema } from "./division.schemas";
 import { divisionControllers } from "./division.controllers";
 import { auth } from "../auth/auth.helpers/auth";

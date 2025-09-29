@@ -73,7 +73,9 @@ passport.use(
         if (!isMatch) {
           return done(message("badRequest", "sign in"));
         }
-        return done(null, user);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { password: unusedProperty, ...rest } = user;
+        return done(null, rest);
       } catch (error) {
         done(error);
       }

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { authControllers } from "./auth.controllers";
-import schemaValidator from "../../middlewares/validateRequest";
+import schemaValidator from "../../middlewares/schemaValidator";
 import { authSchemas } from "./auth.schemas";
 import { userRoleStatusEnum } from "../user/user.schemas";
 import passport from "passport";

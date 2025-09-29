@@ -11,7 +11,6 @@ import { Request } from "express";
 import { JwtPayload } from "jsonwebtoken";
 import { AuthProviderDto } from "../user/user.types";
 import JWT from "jsonwebtoken";
-import { CreateAccessRefreshTokenProps } from "../../types/utils.types";
 import { validateUser } from "../user/user.helpers/validateUser";
 import sendMail from "../../utils/sendEmail";
 import { Types } from "mongoose";
@@ -95,13 +94,8 @@ const forgetPassword = async (req: Request) => {
     throw new AppError(message("notFound", "user"), StatusCodes.BAD_REQUEST);
   }
   validateUser(user);
-  const payload = {
-    credentialId: user?._id,
-    email,
-    role: user!.role,
-  } as CreateAccessRefreshTokenProps;
 
-  const token = JWT.sign(payload, env.jwt_access_secret, {
+  const token = JWT.sign(req.user, env.jwt_access_secret, {
     expiresIn: "10m",
   });
   const link = `${env.frontend_base_url}/forget_password?id=${

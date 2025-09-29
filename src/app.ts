@@ -26,7 +26,12 @@ app.use(cookieParser());
 app.use(express.json());
 
 // Enable CORS
-app.use(cors());
+app.use(
+  cors({
+    origin: [env.frontend_base_url],
+    credentials: true,
+  })
+);
 
 // Root route
 app.get("/", (_req: Request, res: Response) => {

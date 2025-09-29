@@ -48,9 +48,30 @@ const updatePayment = safeAsync(async (req: Request, res: Response) => {
   }
 });
 
+const retrievePayments = safeAsync(async (req: Request, res: Response) => {
+  const payments = await paymentServices.retrievePayments(req);
+  resHandler(res, {
+    success: true,
+    status: StatusCodes.OK,
+    message: message("get", "payments"),
+    data: payments,
+  });
+});
+const retrievePayment = safeAsync(async (req: Request, res: Response) => {
+  const payment = await paymentServices.retrievePayment(req);
+  resHandler(res, {
+    success: true,
+    status: StatusCodes.OK,
+    message: message("get", "payment"),
+    data: payment,
+  });
+});
+
 export const paymentControllers = {
   successPayment,
   failPayment,
   cancelPayment,
   updatePayment,
+  retrievePayments,
+  retrievePayment,
 };

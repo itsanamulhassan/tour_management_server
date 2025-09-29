@@ -12,7 +12,14 @@ paymentRouter.post("/cancel", paymentControllers.cancelPayment);
 
 paymentRouter.post("/update/:id", paymentControllers.updatePayment);
 
-paymentRouter.get("/all", auth.authorizeRole("ADMIN", "SUPERADMIN"));
-paymentRouter.get("/:id", auth.authorizeRole(...userRoleStatusEnum));
-paymentRouter.get("/my_bookings", auth.authorizeRole("ADMIN", "SUPERADMIN"));
+paymentRouter.get(
+  "/all",
+  auth.authorizeRole("ADMIN", "SUPERADMIN"),
+  paymentControllers.retrievePayments
+);
+paymentRouter.get(
+  "/:id",
+  auth.authorizeRole(...userRoleStatusEnum),
+  paymentControllers.retrievePayment
+);
 export default paymentRouter;

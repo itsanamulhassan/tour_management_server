@@ -203,9 +203,27 @@ const updatePayment = async (req: Request) => {
 
   return { success: false };
 };
+const retrievePayments = async (req: Request) => {
+  const payments = await Payments.find({});
+  if (payments.length) {
+    throw new AppError(message("notFound", "payments"), StatusCodes.NOT_FOUND);
+  }
+  return payments;
+};
+const retrievePayment = async (req: Request) => {
+  const id = req.params.id;
+  const payment = await Payments.findById(id);
+
+  if (payment) {
+    throw new AppError(message("notFound", "payments"), StatusCodes.NOT_FOUND);
+  }
+  return payment;
+};
 export const paymentServices = {
   successPayment,
   failPayment,
   cancelPayment,
   updatePayment,
+  retrievePayments,
+  retrievePayment,
 };

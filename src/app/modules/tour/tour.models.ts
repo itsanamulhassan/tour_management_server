@@ -1,7 +1,7 @@
-import { InferSchemaType, model, Schema } from "mongoose";
+import { HydratedDocument, InferSchemaType, model, Schema } from "mongoose";
 import { CreateTourDto } from "./tour.types";
 import { generateSlug } from "../../utils/slug";
-import { FileProps, MergeDocument } from "../../types/global.types";
+import { FileProps } from "../../types/global.types";
 
 export const fileSchema = new Schema<FileProps>(
   {
@@ -105,5 +105,5 @@ tourSchema.pre("findOneAndUpdate", async function (next) {
 });
 
 export type Tour = InferSchemaType<typeof tourSchema>;
-export type TourDocument = MergeDocument<Tour>;
+export type TourDocument = HydratedDocument<Tour>;
 export const Tours = model<CreateTourDto>("Tours", tourSchema);

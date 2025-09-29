@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { userRoleStatusEnum } from "../user/user.schemas";
-import schemaValidator from "../../middlewares/validateRequest";
+import schemaValidator from "../../middlewares/schemaValidator";
 import { bookingSchemas } from "./booking.schemas";
 import { bookingControllers } from "./booking.controllers";
 import { auth } from "../auth/auth.helpers/auth";

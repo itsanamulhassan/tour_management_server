@@ -2,6 +2,7 @@ import JWT, { JwtPayload, SignOptions } from "jsonwebtoken";
 import env from "../../../configurations/env";
 
 const signAccessToken = (payload: JwtPayload): string => {
+  console.log(payload);
   return JWT.sign(payload, env.jwt_access_secret, {
     expiresIn: env.jwt_access_expires_in,
   } as SignOptions);

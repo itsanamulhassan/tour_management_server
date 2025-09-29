@@ -1,5 +1,3 @@
-export type MergeDocument<T> = Document & T;
-
 export interface FileProps {
   url: string;
   public_id: string;

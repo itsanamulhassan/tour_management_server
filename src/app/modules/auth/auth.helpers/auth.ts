@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-
 import { jwt } from "./jwt";
 import { StatusCodes } from "http-status-codes";
 import { UserRoleStatusEnumDto } from "../../user/user.types";
 import safeAsync from "../../../utils/safeAsync";
 import AppError from "../../../utils/helpers/error/appError";
 import message from "../../../utils/message";
-import { Users } from "../../user/user.models";
+import { User, Users } from "../../user/user.models";
 import { validateUser } from "../../user/user.helpers/validateUser";
+import { JWTCredentialProps } from "../../../types/express";
 
 const authorizeRole = (...roles: UserRoleStatusEnumDto[]) =>
   safeAsync(async (req: Request, _res: Response, next: NextFunction) => {
@@ -21,7 +21,7 @@ const authorizeRole = (...roles: UserRoleStatusEnumDto[]) =>
       );
     }
 
-    const verify = jwt.verifyAccessToken(token);
+    const verify = jwt.verifyAccessToken(token) as JWTCredentialProps;
 
     // 401 Unauthorized → Invalid or expired token
     if (!verify) {
@@ -36,7 +36,7 @@ const authorizeRole = (...roles: UserRoleStatusEnumDto[]) =>
       );
     }
 
-    const user = await Users.findOne({ email: verify?.email });
+    const user = (await Users.findOne({ email: verify?.email })) as User;
 
     validateUser(user);
 

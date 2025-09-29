@@ -1,5 +1,5 @@
 import { Router } from "express";
-import schemaValidator from "../../middlewares/validateRequest";
+import schemaValidator from "../../middlewares/schemaValidator";
 import { userRoleStatusEnum, userSchemas } from "./user.schemas";
 import { auth } from "../auth/auth.helpers/auth";
 import { userControllers } from "./user.controllers";
@@ -16,6 +16,11 @@ userRouter.get(
   "/all",
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
   userControllers.retrieveUsers
+);
+userRouter.get(
+  "/single/:id",
+  auth.authorizeRole("ADMIN", "SUPERADMIN"),
+  userControllers.retrieveUser
 );
 // ✅  User information by Access Token
 userRouter.get(

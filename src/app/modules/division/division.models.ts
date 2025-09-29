@@ -1,8 +1,7 @@
-import { Schema, model, InferSchemaType } from "mongoose";
+import { Schema, model, InferSchemaType, HydratedDocument } from "mongoose";
 import { fileSchema } from "../tour/tour.models";
 import { generateSlug } from "../../utils/slug";
 import { CreateDivisionDto } from "./division.types";
-import { MergeDocument } from "../../types/global.types";
 
 const divisionSchema = new Schema(
   {
@@ -49,6 +48,6 @@ divisionSchema.pre("findOneAndUpdate", function (next) {
 });
 
 export type Division = InferSchemaType<typeof divisionSchema>;
-export type DivisionDocument = MergeDocument<Division>;
+export type DivisionDocument = HydratedDocument<Division>;
 
 export const Divisions = model<DivisionDocument>("Divisions", divisionSchema);

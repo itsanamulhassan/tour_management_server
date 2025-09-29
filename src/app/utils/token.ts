@@ -7,8 +7,8 @@ import {
 import { StatusCodes } from "http-status-codes";
 import message, { MessageType } from "./message";
 import AppError from "./helpers/error/appError";
-import { CreateAccessRefreshTokenProps } from "../types/utils.types";
 import { jwt } from "../modules/auth/auth.helpers/jwt";
+import { JWTCredentialProps } from "../types/express";
 
 const createAccessTokenWithRefreshToken = async (refreshToken: string) => {
   const { email } = jwt.verifyRefreshToken(refreshToken);
@@ -45,7 +45,7 @@ const createAccessTokenWithRefreshToken = async (refreshToken: string) => {
   return accessToken;
 };
 const createAccessRefreshToken = (
-  payload: CreateAccessRefreshTokenProps
+  payload: JWTCredentialProps
 ): { accessToken: string; refreshToken: string } => {
   const accessToken = jwt.signAccessToken(payload);
   const refreshToken = jwt.signRefreshToken(payload);

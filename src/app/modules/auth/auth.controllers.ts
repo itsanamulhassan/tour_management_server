@@ -6,12 +6,11 @@ import message from "../../utils/message";
 import { authServices } from "./auth.services";
 import AppError from "../../utils/helpers/error/appError";
 import { cookies } from "../../utils/cookies";
-import { CreateUserDto } from "../user/user.types";
 import env from "../../configurations/env";
 import passport from "passport";
 import { token } from "../../utils/token";
-import { Types } from "mongoose";
 import { validateUser } from "../user/user.helpers/validateUser";
+import { UserDocument } from "../user/user.models";
 
 const credentialSignIn = safeAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -19,7 +18,7 @@ const credentialSignIn = safeAsync(
       "local",
       async (
         error: string,
-        user: CreateUserDto & { _id: Types.ObjectId },
+        user: UserDocument,
         info: Record<string, string>
       ) => {
         try {
@@ -32,7 +31,7 @@ const credentialSignIn = safeAsync(
           validateUser(user);
 
           const payload = {
-            credentialId: user._id,
+            credentialId: user._id.toString(),
             email: user.email,
             role: user.role,
           };
@@ -135,14 +134,17 @@ const forgetPassword = safeAsync(async (req: Request, res: Response) => {
 
 const googleStrategyCallback = safeAsync(
   async (req: Request, res: Response) => {
-    const user = req.user as CreateUserDto & { _id: Types.ObjectId };
+    // EXCEPTION: In this project, req.user usually contains only the JWT payload.
+    // However, Google strategy attaches the full User document to req.user.
+    // This is the ONLY case where req.user holds the entire user object.
+    const user = req.user as unknown as UserDocument;
     let redirect = (req.query.state || "") as string;
     if (redirect.startsWith("/")) {
       redirect = redirect.slice(1);
     }
 
     const payload = {
-      credentialId: user._id,
+      credentialId: user?._id.toString(),
       email: user.email,
       role: user.role,
     };

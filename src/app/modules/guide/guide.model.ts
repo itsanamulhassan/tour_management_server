@@ -1,6 +1,5 @@
-import { InferSchemaType, model, Schema } from "mongoose";
+import { HydratedDocument, InferSchemaType, model, Schema } from "mongoose";
 import { guideStatusEnum } from "./guide.schemas";
-import { MergeDocument } from "../../types/global.types";
 import { fileSchema } from "../tour/tour.models";
 
 const guideSchema = new Schema(
@@ -30,5 +29,5 @@ const guideSchema = new Schema(
 );
 
 export type Guide = InferSchemaType<typeof guideSchema>;
-export type GuideDocument = MergeDocument<Guide>;
+export type GuideDocument = HydratedDocument<Guide>;
 export const Guides = model("Guides", guideSchema);

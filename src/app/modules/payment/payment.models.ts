@@ -1,7 +1,6 @@
-import { InferSchemaType, model, Schema } from "mongoose";
+import { HydratedDocument, InferSchemaType, model, Schema } from "mongoose";
 import { paymentStatusEnum } from "./payment.schemas";
 import { fileSchema } from "../tour/tour.models";
-import { MergeDocument } from "../../types/global.types";
 
 const paymentSchema = new Schema(
   {
@@ -34,5 +33,5 @@ const paymentSchema = new Schema(
 );
 
 export type Payment = InferSchemaType<typeof paymentSchema>;
-export type PaymentDocument = MergeDocument<Payment>;
+export type PaymentDocument = HydratedDocument<Payment>;
 export const Payments = model<Payment>("Payments", paymentSchema);

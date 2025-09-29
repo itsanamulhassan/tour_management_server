@@ -95,6 +95,7 @@ const createUser = z.object({
 });
 const updateUser = createUser.omit({
   email: true,
+  password: true,
 });
 export const userSchemas = {
   createUser,

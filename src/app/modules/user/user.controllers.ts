@@ -22,8 +22,17 @@ const retrieveUsers = safeAsync(async (_req: Request, res: Response) => {
   resHandler(res, {
     status: StatusCodes.OK,
     success: true,
-    message: message("get", "user"),
+    message: message("get", "users"),
     data: users,
+  });
+});
+const retrieveUser = safeAsync(async (req: Request, res: Response) => {
+  const user = await userServices.retrieveUser(req);
+  resHandler(res, {
+    status: StatusCodes.OK,
+    success: true,
+    message: message("get", "user"),
+    data: user,
   });
 });
 const retrieveMe = safeAsync(async (req: Request, res: Response) => {
@@ -60,4 +69,5 @@ export const userControllers = {
   updateUser,
   retrieveMe,
   deleteUser,
+  retrieveUser,
 };

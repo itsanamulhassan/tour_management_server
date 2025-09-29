@@ -3,7 +3,7 @@ import { User } from "../user.models";
 import AppError from "../../../utils/helpers/error/appError";
 import message, { MessageType } from "../../../utils/message";
 import { UserActivityStatusEnumDto } from "../user.types";
-export const validateUser = (user: User | null) => {
+export const validateUser = (user: User) => {
   // 404 Not Found → User doesn't exist
   if (!user) {
     throw new AppError(message("notFound", "user"), StatusCodes.NOT_FOUND);

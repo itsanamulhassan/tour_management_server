@@ -203,7 +203,7 @@ const updatePayment = async (req: Request) => {
 
   return { success: false };
 };
-const retrievePayments = async (req: Request) => {
+const retrievePayments = async (_req: Request) => {
   const payments = await Payments.find({});
   if (payments.length) {
     throw new AppError(message("notFound", "payments"), StatusCodes.NOT_FOUND);

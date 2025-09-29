@@ -22,12 +22,39 @@ import env from "./env";
 import AppError from "../utils/helpers/error/appError";
 import message from "../utils/message";
 import { StatusCodes } from "http-status-codes";
+import { ChildFolderProps } from "../types/global.types";
+import crypto from "crypto";
+import stream from "stream";
+import { UploadApiResponse } from "cloudinary";
 
 cloudinary.config({
   api_key: env.cloudinary.api_key,
   api_secret: env.cloudinary.api_secret,
   cloud_name: env.cloudinary.cloud_name,
 });
+
+export const fileUploader = (
+  folderName: ChildFolderProps,
+  buffer: Buffer<ArrayBufferLike>
+): Promise<UploadApiResponse> => {
+  const uniqueId = crypto.randomUUID();
+
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: `tour-management-system/${folderName}`,
+        public_id: `${folderName}-${uniqueId}`,
+        resource_type: "auto",
+      },
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result as unknown as UploadApiResponse);
+      }
+    );
+
+    stream.Readable.from(buffer).pipe(uploadStream);
+  });
+};
 
 export const deleteCloudinaryFile = async (public_id: string) => {
   try {

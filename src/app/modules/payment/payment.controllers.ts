@@ -52,5 +52,5 @@ export const paymentControllers = {
   successPayment,
   failPayment,
   cancelPayment,
-  createPayment: updatePayment,
+  updatePayment,
 };

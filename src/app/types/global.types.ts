@@ -9,4 +9,5 @@ export type ChildFolderProps =
   | "avatars"
   | "divisions"
   | "tour_thumbnails"
-  | "guide_nid";
+  | "guide_nid"
+  | "booking_invoices";

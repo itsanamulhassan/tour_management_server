@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { withTransaction } from "../../database/transaction";
-import { Payments } from "./payment.models";
+import { Payment, Payments } from "./payment.models";
 import { Booking, Bookings } from "../booking/booking.models";
 import { CreatePaymentDto } from "./payment.types";
 import message from "../../utils/message";
@@ -13,6 +13,7 @@ import { User } from "../user/user.models";
 import { Tour } from "../tour/tour.models";
 import bookingInvoice from "../../utils/pdf/bookingInvoice";
 import sendMail from "../../utils/sendEmail";
+import { fileUploader } from "../../configurations/cloudinary";
 
 const successPayment = async (req: Request) => {
   const transactionId = req.query.transaction_id;
@@ -30,7 +31,7 @@ const successPayment = async (req: Request) => {
         runValidators: true,
         new: true,
       }
-    )) as MergeDocument<CreatePaymentDto>;
+    )) as Payment;
     const booking = (await Bookings.findByIdAndUpdate(
       updatePayment.booking,
       {
@@ -55,12 +56,30 @@ const successPayment = async (req: Request) => {
       transactionID: updatePayment.transactionId,
     };
 
-    const invoicePdf = await bookingInvoice(invoiceData);
+    const invoicePdf = (await bookingInvoice(
+      invoiceData
+    )) as Buffer<ArrayBufferLike>;
+
+    const file = await fileUploader("booking_invoices", invoicePdf);
+    await Payments.findOneAndUpdate(
+      { transactionId },
+      {
+        invoice: {
+          public_id: file.public_id,
+          url: file.secure_url,
+        },
+      },
+      {
+        session,
+        runValidators: true,
+        new: true,
+      }
+    );
 
     await sendMail({
       subject: "Booking Confirmation",
       template: "invoice",
-      to: "tuhincloud665@gmail.com",
+      to: "imransakib104@gmail.com",
       data: invoiceData,
       attachments: [
         {

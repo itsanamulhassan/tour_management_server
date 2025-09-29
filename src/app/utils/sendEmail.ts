@@ -7,17 +7,17 @@ import AppError from "./helpers/error/appError";
 import { StatusCodes } from "http-status-codes";
 import message from "./message";
 
-const sendMail = async ({
+const sendMail = async <T>({
   subject,
   to,
   attachments,
   template,
   data,
-}: SendMailProps) => {
+}: SendMailProps<T>) => {
   try {
     const file = path.join(__dirname, "..", "templates", `${template}.ejs`);
 
-    const html = await ejs.renderFile(file, data);
+    const html = await ejs.renderFile(file, data && data);
     await transporter.sendMail({
       from: env.smtp.from,
       to,

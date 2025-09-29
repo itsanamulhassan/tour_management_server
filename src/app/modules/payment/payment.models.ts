@@ -1,8 +1,9 @@
-import { model, Schema } from "mongoose";
-import { CreatePaymentDto } from "./payment.types";
+import { InferSchemaType, model, Schema } from "mongoose";
 import { paymentStatusEnum } from "./payment.schemas";
+import { fileSchema } from "../tour/tour.models";
+import { MergeDocument } from "../../types/global.types";
 
-const paymentSchema = new Schema<CreatePaymentDto>(
+const paymentSchema = new Schema(
   {
     amount: {
       type: Number,
@@ -14,9 +15,7 @@ const paymentSchema = new Schema<CreatePaymentDto>(
       ref: "Bookings",
       required: [true, "Booking ID is required."],
     },
-    invoiceUrl: {
-      type: String,
-    },
+    invoice: fileSchema,
     status: {
       type: String,
       enum: paymentStatusEnum,
@@ -34,4 +33,6 @@ const paymentSchema = new Schema<CreatePaymentDto>(
   { timestamps: true, versionKey: false }
 );
 
-export const Payments = model<CreatePaymentDto>("Payments", paymentSchema);
+export type Payment = InferSchemaType<typeof paymentSchema>;
+export type PaymentDocument = MergeDocument<Payment>;
+export const Payments = model<Payment>("Payments", paymentSchema);

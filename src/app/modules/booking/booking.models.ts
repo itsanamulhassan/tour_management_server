@@ -1,8 +1,8 @@
-import { model, Schema } from "mongoose";
+import { InferSchemaType, model, Schema } from "mongoose";
 import { bookingStatusEnum } from "./booking.schemas";
-import { CreateBookingProps } from "./booking.types";
+import { MergeDocument } from "../../types/global.types";
 
-const bookingSchema = new Schema<CreateBookingProps>(
+const bookingSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -33,4 +33,7 @@ const bookingSchema = new Schema<CreateBookingProps>(
   { timestamps: true, versionKey: false }
 );
 
-export const Bookings = model<CreateBookingProps>("Bookings", bookingSchema);
+export type Booking = InferSchemaType<typeof bookingSchema>;
+export type BookingDocument = MergeDocument<Booking>;
+
+export const Bookings = model<Booking>("Bookings", bookingSchema);

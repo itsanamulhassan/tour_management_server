@@ -5,13 +5,8 @@ import resHandler from "../../utils/resHandler";
 import message from "../../utils/message";
 import { StatusCodes } from "http-status-codes";
 
-const now = new Date();
-const weekAgo = new Date(now).setDate(now.getDate() - 7);
-const monthAgo = new Date(now).setDate(now.getDate() - 30);
-const yearAgo = new Date(now).setDate(now.getDate() - 365);
-
 const userStatistics = safeAsync(async (req: Request, res: Response) => {
-  const statistics = await statisticServices.userStatistics(req);
+  const statistics = await statisticServices.userStatistics();
   resHandler(res, {
     message: message("get", "user statistics"),
     status: StatusCodes.OK,

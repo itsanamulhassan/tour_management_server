@@ -5,7 +5,7 @@ import resHandler from "../../utils/resHandler";
 import message from "../../utils/message";
 import { StatusCodes } from "http-status-codes";
 
-const userStatistics = safeAsync(async (req: Request, res: Response) => {
+const userStatistics = safeAsync(async (_req: Request, res: Response) => {
   const statistics = await statisticServices.userStatistics();
   resHandler(res, {
     message: message("get", "user statistics"),
@@ -15,7 +15,7 @@ const userStatistics = safeAsync(async (req: Request, res: Response) => {
   });
 });
 const tourStatistics = safeAsync(async (req: Request, res: Response) => {
-  const statistics = await statisticServices.tourStatistics(req);
+  const statistics = await statisticServices.tourStatistics();
   resHandler(res, {
     message: message("get", "tour statistics"),
     status: StatusCodes.OK,

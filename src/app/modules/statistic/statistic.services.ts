@@ -1,6 +1,7 @@
 import { Request } from "express";
 import { Users } from "../user/user.models";
 import { userActivityStatusEnum } from "../user/user.schemas";
+import { Tours } from "../tour/tour.models";
 const now = new Date();
 const sevenDaysAgo = new Date(now).setDate(now.getDate() - 7);
 const thirtyDaysAgo = new Date(now).setDate(now.getDate() - 30);
@@ -70,7 +71,67 @@ const userStatistics = async () => {
 };
 const bookingStatistics = async (req: Request) => {};
 const paymentStatistics = async (req: Request) => {};
-const tourStatistics = async (req: Request) => {};
+const tourStatistics = async () => {
+  const totalToursPromise = Tours.countDocuments();
+  const totalToursByTourTypesPromise = await Tours.aggregate([
+    {
+      $lookup: {
+        from: "tourtypes",
+        foreignField: "_id",
+        localField: "tourType",
+        as: "type",
+      },
+    },
+    {
+      $unwind: "$type",
+    },
+    {
+      $group: {
+        _id: "$type.name",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+
+  const totalToursByDivisionPromise = Tours.aggregate([
+    {
+      $lookup: {
+        from: "divisions",
+        foreignField: "_id",
+        localField: "division",
+        as: "division",
+      },
+    },
+    { $unwind: "$division" },
+    {
+      $group: {
+        _id: "$division.name",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+  const avgTourCostPromise = Tours.aggregate([
+    {
+      $group: {
+        _id: null,
+        avgCostFrom: { $avg: "$costFrom" },
+      },
+    },
+  ]);
+  const [totalTours, totalToursByTourTypes, totalToursByDivision, avgTourCost] =
+    await Promise.all([
+      totalToursPromise,
+      totalToursByTourTypesPromise,
+      totalToursByDivisionPromise,
+      avgTourCostPromise,
+    ]);
+  return {
+    totalTours,
+    totalToursByTourTypes,
+    totalToursByDivision,
+    avgTourCost,
+  };
+};
 
 export const statisticServices = {
   userStatistics,

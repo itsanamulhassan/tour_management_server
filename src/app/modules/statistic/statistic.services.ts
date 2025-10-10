@@ -2,6 +2,7 @@ import { Request } from "express";
 import { Users } from "../user/user.models";
 import { userActivityStatusEnum } from "../user/user.schemas";
 import { Tours } from "../tour/tour.models";
+import { Bookings } from "../booking/booking.models";
 const now = new Date();
 const sevenDaysAgo = new Date(now).setDate(now.getDate() - 7);
 const thirtyDaysAgo = new Date(now).setDate(now.getDate() - 30);
@@ -118,18 +119,60 @@ const tourStatistics = async () => {
       },
     },
   ]);
-  const [totalTours, totalToursByTourTypes, totalToursByDivision, avgTourCost] =
-    await Promise.all([
-      totalToursPromise,
-      totalToursByTourTypesPromise,
-      totalToursByDivisionPromise,
-      avgTourCostPromise,
-    ]);
+  const totalHighestBookedTourPromise = Bookings.aggregate([
+    {
+      $group: {
+        _id: "$tour",
+        bookingCount: { $sum: 1 },
+      },
+    },
+    {
+      $sort: {
+        bookingCount: -1,
+      },
+    },
+    {
+      $limit: 5,
+    },
+
+    {
+      $lookup: {
+        from: "tours",
+        localField: "_id",
+        foreignField: "_id",
+        as: "tour",
+      },
+    },
+    { $unwind: "$tour" },
+    {
+      $project: {
+        _id: 0,
+        tourId: "$tour._id",
+        title: "$tour.title",
+        slug: "$tour.slug",
+        bookingCount: 1,
+      },
+    },
+  ]);
+  const [
+    totalTours,
+    totalToursByTourTypes,
+    totalToursByDivision,
+    avgTourCost,
+    totalHighestBookedTour,
+  ] = await Promise.all([
+    totalToursPromise,
+    totalToursByTourTypesPromise,
+    totalToursByDivisionPromise,
+    avgTourCostPromise,
+    totalHighestBookedTourPromise,
+  ]);
   return {
     totalTours,
     totalToursByTourTypes,
     totalToursByDivision,
     avgTourCost,
+    totalHighestBookedTour,
   };
 };
 

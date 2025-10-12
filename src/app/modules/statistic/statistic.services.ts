@@ -1,9 +1,8 @@
-import { Request } from "express";
-import { User, Users } from "../user/user.models";
+import { Users } from "../user/user.models";
 import { userActivityStatusEnum } from "../user/user.schemas";
 import { Tours } from "../tour/tour.models";
 import { Bookings } from "../booking/booking.models";
-import { Payment, Payments } from "../payment/payment.models";
+import { Payments } from "../payment/payment.models";
 const now = new Date();
 const sevenDaysAgo = new Date(now).setDate(now.getDate() - 7);
 const thirtyDaysAgo = new Date(now).setDate(now.getDate() - 30);
@@ -224,18 +223,34 @@ const paymentStatistics = async () => {
     },
   ]);
 
-  const [totalPayment, totalPaymentByStatus, totalRevenue, avgPaymentAmount] =
-    await Promise.all([
-      totalPaymentPromise,
-      totalPaymentByStatusPromise,
-      totalRevenuePromise,
-      avgPaymentAmountPromise,
-    ]);
+  const paymentGateWayDataPromise = Payments.aggregate([
+    {
+      $group: {
+        _id: { $ifNull: ["$paymentGatewayData.status", "UNKNOWN"] },
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+
+  const [
+    totalPayment,
+    totalPaymentByStatus,
+    totalRevenue,
+    avgPaymentAmount,
+    paymentGateWayData,
+  ] = await Promise.all([
+    totalPaymentPromise,
+    totalPaymentByStatusPromise,
+    totalRevenuePromise,
+    avgPaymentAmountPromise,
+    paymentGateWayDataPromise,
+  ]);
   return {
     totalPayment,
     totalPaymentByStatus,
     totalRevenue,
     avgPaymentAmount,
+    paymentGateWayData,
   };
 };
 const tourStatistics = async () => {

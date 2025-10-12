@@ -2,8 +2,8 @@ import * as z from "zod";
 import { tourTypeSchemas } from "./tour.type.schemas";
 
 export type CreateTourTypeProps = z.infer<
-  typeof tourTypeSchemas.createTourTypeSchema
+  typeof tourTypeSchemas.createTourType
 >;
 export type UpdateTourTypeProps = z.infer<
-  typeof tourTypeSchemas.updateTourTypeSchema
+  typeof tourTypeSchemas.updateTourType
 >;

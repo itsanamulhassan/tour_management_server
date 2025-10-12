@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-console */
 import { StatusCodes } from "http-status-codes";
 import AppError from "../../utils/helpers/error/appError";
 import { Users } from "../user/user.models";

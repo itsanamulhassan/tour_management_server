@@ -3,6 +3,8 @@ import env from "../../configurations/env";
 import AppError from "../../utils/helpers/error/appError";
 import { SSLCommerzPaymentInitializationProps } from "./sslCommerz.types";
 import axios from "axios";
+import { Payments } from "../payment/payment.models";
+import message from "../../utils/message";
 
 const sslCommerzPaymentInitialization = async (
   payload: SSLCommerzPaymentInitializationProps
@@ -15,7 +17,7 @@ const sslCommerzPaymentInitialization = async (
         payment_api,
         store_id,
         store_pass,
-        backend: { success_url, fail_url, cancel_url },
+        backend: { success_url, fail_url, cancel_url, ipn_url },
       },
     } = env;
     const query = "?transaction_id=" + transactionId;
@@ -28,7 +30,7 @@ const sslCommerzPaymentInitialization = async (
       success_url: success_url + query,
       fail_url: fail_url + query,
       cancel_url: cancel_url + query,
-      // ipn_url: "http://localhost:3030/ipn",
+      ipn_url,
       shipping_method: "N/A",
       product_name: "Tour",
       product_category: "Service",
@@ -75,7 +77,33 @@ const sslCommerzPaymentInitialization = async (
     throw new AppError(message, StatusCodes.BAD_REQUEST);
   }
 };
+const validatePayment = async (payload: Record<string, string>) => {
+  try {
+    console.log("validate payload", payload);
+    const response = await axios({
+      method: "GET",
+      url: `${env.ssl.validation_api}?val_id=${payload.val_id}&store_id=${env.ssl.store_id}&store_passwd=${env.ssl.store_pass}`,
+    });
+    console.log("validate response", response);
+
+    await Payments.updateOne(
+      { transactionId: payload.tran_id },
+      { paymentGatewayData: response.data },
+      {
+        runValidators: true,
+      }
+    );
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new AppError(
+        message("badRequest", "payment validation", error.message),
+        StatusCodes.BAD_REQUEST
+      );
+    }
+  }
+};
 
 export const sslServices = {
   sslCommerzPaymentInitialization,
+  validatePayment,
 };

@@ -8,6 +8,7 @@ import env from "../../configurations/env";
 import resHandler from "../../utils/resHandler";
 import message from "../../utils/message";
 import { StatusCodes } from "http-status-codes";
+import { sslServices } from "../sslCommerz/sslCommerz.services";
 
 // Steps for failure payment.
 // Frontend -> User -> Tour -> Booking (Pending) -> Payment (Unpaid) -> SSLCommerz page -> (if Payment Failed / Cancel) -> Backend -> Update Payment (Fail) & Booking (Fail) -> Redirect to frontend failure page
@@ -49,7 +50,7 @@ const updatePayment = safeAsync(async (req: Request, res: Response) => {
 });
 
 const retrievePayments = safeAsync(async (req: Request, res: Response) => {
-  const payments = await paymentServices.retrievePayments(req);
+  const payments = await paymentServices.retrievePayments();
   resHandler(res, {
     success: true,
     status: StatusCodes.OK,
@@ -67,6 +68,28 @@ const retrievePayment = safeAsync(async (req: Request, res: Response) => {
   });
 });
 
+const retrievePaymentInvoice = safeAsync(
+  async (req: Request, res: Response) => {
+    const invoice = await paymentServices.retrievePaymentInvoice(req);
+    resHandler(res, {
+      success: true,
+      status: StatusCodes.OK,
+      message: message("get", "payment invoice"),
+      data: invoice,
+    });
+  }
+);
+
+const validatePayment = safeAsync(async (req: Request, res: Response) => {
+  console.log("validate", req.body);
+  await sslServices.validatePayment(req.body);
+  resHandler(res, {
+    success: true,
+    status: StatusCodes.OK,
+    message: message("success", "payment validation"),
+  });
+});
+
 export const paymentControllers = {
   successPayment,
   failPayment,
@@ -74,4 +97,6 @@ export const paymentControllers = {
   updatePayment,
   retrievePayments,
   retrievePayment,
+  retrievePaymentInvoice,
+  validatePayment,
 };

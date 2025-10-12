@@ -24,6 +24,7 @@ app.use(cookieParser());
 
 // Parse incoming JSON requests
 app.use(express.json());
+app.set("trust proxy", 1);
 
 // Enable CORS
 app.use(

@@ -26,6 +26,6 @@ paymentRouter.get(
   auth.authorizeRole(...userRoleStatusEnum),
   paymentControllers.retrievePaymentInvoice
 );
-paymentRouter.post("/validate-payment", paymentControllers.validatePayment);
+paymentRouter.post("/validate", paymentControllers.validatePayment);
 
 export default paymentRouter;

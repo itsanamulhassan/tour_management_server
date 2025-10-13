@@ -81,7 +81,6 @@ const retrievePaymentInvoice = safeAsync(
 );
 
 const validatePayment = safeAsync(async (req: Request, res: Response) => {
-  console.log("validate", req.body);
   await sslServices.validatePayment(req.body);
   resHandler(res, {
     success: true,

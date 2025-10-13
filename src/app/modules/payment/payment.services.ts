@@ -77,7 +77,7 @@ const successPayment = async (req: Request) => {
     await sendMail({
       subject: "Booking Confirmation",
       template: "invoice",
-      to: "imransakib104@gmail.com",
+      to: "tuhincloud665@gmail.com",
       data: invoiceData,
       attachments: [
         {

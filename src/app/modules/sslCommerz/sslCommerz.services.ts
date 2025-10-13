@@ -79,12 +79,10 @@ const sslCommerzPaymentInitialization = async (
 };
 const validatePayment = async (payload: Record<string, string>) => {
   try {
-    console.log("validate payload", payload);
     const response = await axios({
       method: "GET",
       url: `${env.ssl.validation_api}?val_id=${payload.val_id}&store_id=${env.ssl.store_id}&store_passwd=${env.ssl.store_pass}`,
     });
-    console.log("validate response", response);
 
     await Payments.updateOne(
       { transactionId: payload.tran_id },

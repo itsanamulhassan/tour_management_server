@@ -144,6 +144,8 @@ npm install
 touch .env.example
 ```
 
+## Environment Variables
+
 Add the following:
 
 ```
@@ -193,8 +195,12 @@ CLOUDINARY_URL=your_cloudinary_url_here
 
 ### 4. Run the server (dev)
 
+```base
 npm run dev
-📘 API Documentation
+```
+
+## 📘 API Documentation
+
 All APIs are prefixed with /api/v1
 
 ---
@@ -326,7 +332,7 @@ All APIs are prefixed with /api/v1
 
 ---
 
-🎯 Use Case: Booking a Tour
+## 🎯 Use Case: Booking a Tour
 
     User registers and verifies OTP
 
@@ -340,11 +346,11 @@ All APIs are prefixed with /api/v1
 
     On success → Booking confirmed, Payment paid
 
-📋 Functional Requirements
+## 📋 Functional Requirements
 
     FR1–FR20 (See detailed list in project spec)
 
-🛡️ Non-Functional Requirements
+## 🛡️ Non-Functional Requirements
 
     NFR1: 500ms response for 95% requests
 
@@ -358,14 +364,14 @@ All APIs are prefixed with /api/v1
 
     NFR6: 99.5% uptime SLA
 
-🚀 Deployment
+## 🚀 Deployment
 
 Recommended Platforms:
 
     Vercel
     MongoDB Atlas & Redis Cloud
 
-🤝 Contributing
+## 🤝 Contributing
 
 We welcome contributions! Follow these steps:
 
@@ -379,9 +385,9 @@ We welcome contributions! Follow these steps:
 
     Open a Pull Request
 
-📧 Contact
+## 📧 Contact
 
-Md Anamul Hassan
+Md Anamul Hassan  
 📩 Email
 
 ```base

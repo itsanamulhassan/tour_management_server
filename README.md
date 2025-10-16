@@ -74,39 +74,52 @@ The **Tour Management System** is a robust backend service built to support a fu
 
 ## 📂 Folder Structure
 
-tour-management-backend/  
-├── src/  
-| └── app/  
-│ ├── configurations/  
-│ ├── database/  
-│ ├── middlewares/  
-│ ├── modules/  
-| | ├── auth/  
-| | | └── auth.helpers/  
-| | ├── booking/  
-| | ├── division/  
-| | ├── guide/  
-| | ├── otp/  
-| | ├── payment/  
-| | | └── payment.helpers/  
-| | ├── sslCommerz/  
-| | ├── tour/  
-| | | └── type/  
-| | └── user/  
-| | └── user.helpers/  
-│ ├── routes/  
-| ├── templates/  
-│ ├── types/  
-| | └── express/  
-│ └── utils/  
-| ├── helpers.error/  
-| └── pdf
+```
+tour-management-backend/
+├── dist/
+├── node_modules/
+├── src/
+│	└── app/
+│ 	│	├── configurations/
+│ 	│	├── database/
+│ 	│	├── middlewares/
+│	│	├── modules/
+│ 	│	├── auth/
+│ 	│	│	└── auth.helpers/
+│	│	├── booking/
+│ 	│	├── division/
+│	│	├── guide/
+│	│	├── otp/
+│	│	├── payment/
+│	│	│	└── payment.helpers/
+│	│	├── sslCommerz/
+│	│	├── tour/
+│	│	│	└── type/
+│	│	├── user/
+│	│	│	└── user.helpers/
+│	│	├──  routes/
+│	│	├── templates/
+│	│	├── types/
+│	│	│	└── express/
+│	│	└── utils/
+│	│	│	├── helpers.error/
+│	│	│	└── pdf
+│	│	├── app.ts
+│	│	├── jest.setup.ts
+│	│	└── server.ts
+├── .env
+├── .env.dev
+├── .env.example
+├── eslint.config.mjs
+├── jest.config.js
+├── package-lock.json
+├── package.json
+├── .gitignore
+├── README.md
+├──  tsconfig.json
+└── vercel.json
 
-├── .env  
-├── .gitignore  
-├── README.md  
-├── package.json  
-└── tsconfig.json
+```
 
 ---
 

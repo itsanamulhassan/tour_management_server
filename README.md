@@ -363,13 +363,6 @@ All APIs are prefixed with /api/v1
 Recommended Platforms:
 
     Vercel
-
-    Render
-
-    DigitalOcean
-
-    AWS EC2
-
     MongoDB Atlas & Redis Cloud
 
 🤝 Contributing
@@ -388,18 +381,10 @@ We welcome contributions! Follow these steps:
 
 📧 Contact
 
-Next Level Team
-📩 Email: support@nextlevelteam.com
-🌐 Website: nextlevelteam.com (placeholder)
+Md Anamul Hassan
+📩 Email: itsanamulhassan@gmail.com
+🌐 Website: https://anamul-hassan-web.web.app (placeholder)
 
 ---
 
 Let me know if you'd like this README exported as a **`.md` file**, a **PDF**, or want to tailor it to **TypeScript**, **Docker**, or CI/CD pipelines.
-
-```
-
-```
-
-```
-
-```

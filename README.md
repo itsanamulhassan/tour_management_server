@@ -74,38 +74,38 @@ The **Tour Management System** is a robust backend service built to support a fu
 
 ## 📂 Folder Structure
 
-tour-management-backend/
-├── src/
-| └── app/
-│ ├── configurations/
-│ ├── database/
-│ ├── middlewares/
-│ ├── modules/
-| | ├── auth/
-| | | └── auth.helpers/
-| | ├── booking/
-| | ├── division/
-| | ├── guide/
-| | ├── otp/
-| | ├── payment/
-| | | └── payment.helpers/
-| | ├── sslCommerz/
-| | ├── tour/
-| | | └── type/
-| | └── user/
-| | └── user.helpers/
-│ ├── routes/
-| ├── templates/
-│ ├── types/
-| | └── express/
-│ └── utils/
-| ├── helpers.error/
+tour-management-backend/  
+├── src/  
+| └── app/  
+│ ├── configurations/  
+│ ├── database/  
+│ ├── middlewares/  
+│ ├── modules/  
+| | ├── auth/  
+| | | └── auth.helpers/  
+| | ├── booking/  
+| | ├── division/  
+| | ├── guide/  
+| | ├── otp/  
+| | ├── payment/  
+| | | └── payment.helpers/  
+| | ├── sslCommerz/  
+| | ├── tour/  
+| | | └── type/  
+| | └── user/  
+| | └── user.helpers/  
+│ ├── routes/  
+| ├── templates/  
+│ ├── types/  
+| | └── express/  
+│ └── utils/  
+| ├── helpers.error/  
 | └── pdf
 
-├── .env
-├── .gitignore
-├── README.md
-├── package.json
+├── .env  
+├── .gitignore  
+├── README.md  
+├── package.json  
 └── tsconfig.json
 
 ---

@@ -382,8 +382,17 @@ We welcome contributions! Follow these steps:
 📧 Contact
 
 Md Anamul Hassan
-📩 Email: itsanamulhassan@gmail.com
-🌐 Website: https://anamul-hassan-web.web.app (placeholder)
+📩 Email
+
+```base
+ itsanamulhassan@gmail.com
+```
+
+🌐 Website
+
+```base
+ https://anamul-hassan-web.web.app
+```
 
 ---
 

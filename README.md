@@ -40,7 +40,7 @@ The **Tour Management System** is a robust backend service built to support a fu
 - 📅 Secure tour booking system with payment
 - 💳 SSLCommerz payment gateway integration
 - 📈 RESTful API design (versioned under `/api/v1`)
-- 🚀 Scalable, modular, and MVC-based architecture
+- 🚀 Scalable, modular-based architecture
 
 ---
 
@@ -49,26 +49,26 @@ The **Tour Management System** is a robust backend service built to support a fu
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB (Cloud - Atlas)
 - **Cache/OTP Storage:** Redis
-- **Authentication:** JWT, OTP via Email/SMS
+- **Authentication:** JWT, OTP via Email
 - **Payments:** SSLCommerz
-- **Frontend (separate):** React or Next.js
-- **Deployment:** Vercel / AWS / DigitalOcean
+- **Frontend (separate):** React
+- **Deployment:** Vercel
 
 ---
 
 ## 🧰 Tech Stack
 
-| Category     | Technology                |
-| ------------ | ------------------------- |
-| Language     | JavaScript (ES6+)         |
-| Framework    | Express.js                |
-| Database     | MongoDB (Mongoose)        |
-| Caching      | Redis                     |
-| Auth         | JWT, OTP                  |
-| Payment      | SSLCommerz                |
-| Architecture | MVC                       |
-| Dev Tools    | Nodemon, ESLint, Prettier |
-| Deployment   | Vercel, Docker optional   |
+| Category           | Technology                      |
+| ------------------ | ------------------------------- |
+| Language           | TypeScript                      |
+| Framework          | Express.js                      |
+| Database           | MongoDB (Mongoose)              |
+| Caching            | Redis                           |
+| Auth               | JWT, OTP                        |
+| Payment            | SSLCommerz                      |
+| Architecture       | Modular                         |
+| Dev Tools/ Testing | Nodemon, ESLint, Prettier, Jest |
+| Deployment         | Vercel                          |
 
 ---
 
@@ -76,19 +76,37 @@ The **Tour Management System** is a robust backend service built to support a fu
 
 tour-management-backend/
 ├── src/
-│ ├── controllers/
-│ ├── models/
-│ ├── routes/
-│ ├── services/
+| └── app/
+│ ├── configurations/
+│ ├── database/
 │ ├── middlewares/
-│ ├── utils/
-│ └── config/
-├── tests/
+│ ├── modules/
+| | ├── auth/
+| | | └── auth.helpers/
+| | ├── booking/
+| | ├── division/
+| | ├── guide/
+| | ├── otp/
+| | ├── payment/
+| | | └── payment.helpers/
+| | ├── sslCommerz/
+| | ├── tour/
+| | | └── type/
+| | └── user/
+| | └── user.helpers/
+│ ├── routes/
+| ├── templates/
+│ ├── types/
+| | └── express/
+│ └── utils/
+| ├── helpers.error/
+| └── pdf
+
 ├── .env
 ├── .gitignore
 ├── README.md
 ├── package.json
-└── tsconfig.json (if using TypeScript)
+└── tsconfig.json
 
 ---
 

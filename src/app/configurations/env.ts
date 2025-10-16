@@ -43,6 +43,7 @@ interface LoadEnvVariableProps {
       success_url: string;
       fail_url: string;
       cancel_url: string;
+      ipn_url: string;
     };
     frontend: {
       success_url: string;
@@ -88,6 +89,7 @@ const loadEnvVariables = (): LoadEnvVariableProps => {
     "SSL_SUCCESS_FRONTEND_URL",
     "SSL_FAIL_FRONTEND_URL",
     "SSL_CANCEL_FRONTEND_URL",
+    "SSL_IPN_URL",
     "CLOUDINARY_URL",
     "CLOUDINARY_API_SECRET",
     "CLOUDINARY_API_KEY",
@@ -134,6 +136,7 @@ const loadEnvVariables = (): LoadEnvVariableProps => {
         success_url: process.env.SSL_SUCCESS_BACKEND_URL as string,
         fail_url: process.env.SSL_FAIL_BACKEND_URL as string,
         cancel_url: process.env.SSL_CANCEL_BACKEND_URL as string,
+        ipn_url: process.env.SSL_IPN_URL as string,
       },
       frontend: {
         success_url: process.env.SSL_SUCCESS_FRONTEND_URL as string,

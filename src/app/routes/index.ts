@@ -8,6 +8,7 @@ import bookingRouter from "../modules/booking/booking.routers";
 import paymentRouter from "../modules/payment/payment.routers";
 import guideRouter from "../modules/guide/guide.routers";
 import otpRouter from "../modules/otp/otp.routers";
+import statisticRouter from "../modules/statistic/statistic.routers";
 
 // Initialize the main router
 const appRouter = Router();
@@ -49,6 +50,10 @@ const routes = [
   {
     path: "/otp",
     router: otpRouter,
+  },
+  {
+    path: "/statistics",
+    router: statisticRouter,
   },
 ];
 

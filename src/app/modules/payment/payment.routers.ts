@@ -6,11 +6,10 @@ import { paymentControllers } from "./payment.controllers";
 
 const paymentRouter = Router();
 
+paymentRouter.post("/update/:id", paymentControllers.updatePayment);
 paymentRouter.post("/success", paymentControllers.successPayment);
 paymentRouter.post("/fail", paymentControllers.failPayment);
 paymentRouter.post("/cancel", paymentControllers.cancelPayment);
-
-paymentRouter.post("/update/:id", paymentControllers.updatePayment);
 
 paymentRouter.get(
   "/all",
@@ -22,4 +21,11 @@ paymentRouter.get(
   auth.authorizeRole(...userRoleStatusEnum),
   paymentControllers.retrievePayment
 );
+paymentRouter.get(
+  "/invoice/:id",
+  auth.authorizeRole(...userRoleStatusEnum),
+  paymentControllers.retrievePaymentInvoice
+);
+paymentRouter.post("/validate", paymentControllers.validatePayment);
+
 export default paymentRouter;

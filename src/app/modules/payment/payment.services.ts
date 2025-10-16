@@ -77,7 +77,7 @@ const successPayment = async (req: Request) => {
     await sendMail({
       subject: "Booking Confirmation",
       template: "invoice",
-      to: "imransakib104@gmail.com",
+      to: "tuhincloud665@gmail.com",
       data: invoiceData,
       attachments: [
         {
@@ -201,7 +201,7 @@ const updatePayment = async (req: Request) => {
 
   return { success: false };
 };
-const retrievePayments = async (_req: Request) => {
+const retrievePayments = async () => {
   const payments = await Payments.find({});
   if (payments.length) {
     throw new AppError(message("notFound", "payments"), StatusCodes.NOT_FOUND);
@@ -217,6 +217,18 @@ const retrievePayment = async (req: Request) => {
   }
   return payment;
 };
+
+const retrievePaymentInvoice = async (req: Request) => {
+  const id = req.params.id;
+
+  const payment = await Payments.findById(id);
+  if (!payment) {
+    throw new AppError(message("notFound", "payment"), StatusCodes.NOT_FOUND);
+  }
+  return {
+    invoice: payment.invoice,
+  };
+};
 export const paymentServices = {
   successPayment,
   failPayment,
@@ -224,4 +236,5 @@ export const paymentServices = {
   updatePayment,
   retrievePayments,
   retrievePayment,
+  retrievePaymentInvoice,
 };

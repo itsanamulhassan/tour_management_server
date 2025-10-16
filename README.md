@@ -144,7 +144,7 @@ npm install
 touch .env.example
 ```
 
-## Environment Variables
+## 🔐 Environment Variables
 
 Add the following:
 
@@ -205,7 +205,7 @@ All APIs are prefixed with /api/v1
 
 ---
 
-## 🔐 Auth Routes
+### 🔐 Auth Routes
 
 | Method   | Endpoint                             | Description                                                                |
 | -------- | ------------------------------------ | -------------------------------------------------------------------------- |
@@ -221,7 +221,7 @@ All APIs are prefixed with /api/v1
 
 ---
 
-## 🧑‍💼 Guide Endpoints
+### 🧑‍💼 Guide Endpoints
 
 | Method     | Endpoint                           | Description                                  | Authorization                             |
 | ---------- | ---------------------------------- | -------------------------------------------- | ----------------------------------------- |
@@ -234,7 +234,7 @@ All APIs are prefixed with /api/v1
 
 ---
 
-## 🔢 OTP Endpoints
+### 🔢 OTP Endpoints
 
 | Method   | Endpoint             | Description                            | Authorization             |
 | -------- | -------------------- | -------------------------------------- | ------------------------- |
@@ -243,7 +243,7 @@ All APIs are prefixed with /api/v1
 
 ---
 
-## 💳 Payment Endpoints
+### 💳 Payment Endpoints
 
 | Method   | Endpoint                       | Description                        | Authorization                             |
 | -------- | ------------------------------ | ---------------------------------- | ----------------------------------------- |
@@ -258,7 +258,7 @@ All APIs are prefixed with /api/v1
 
 ---
 
-## 📊 Statistics Endpoints
+### 📊 Statistics Endpoints
 
 | Method  | Endpoint                     | Description                 | Authorization                      |
 | ------- | ---------------------------- | --------------------------- | ---------------------------------- |
@@ -269,7 +269,7 @@ All APIs are prefixed with /api/v1
 
 ---
 
-## 🏞️ Tour Endpoints
+### 🏞️ Tour Endpoints
 
 | Method     | Endpoint                   | Description                                              | Authorization                      |
 | ---------- | -------------------------- | -------------------------------------------------------- | ---------------------------------- |
@@ -281,7 +281,7 @@ All APIs are prefixed with /api/v1
 
 ---
 
-## 🏷️ Tour Type Endpoints
+### 🏷️ Tour Type Endpoints
 
 | Method     | Endpoint                        | Description                       | Authorization                      |
 | ---------- | ------------------------------- | --------------------------------- | ---------------------------------- |
@@ -293,7 +293,7 @@ All APIs are prefixed with /api/v1
 
 ---
 
-## 👤 User Routes
+### 👤 User Routes
 
 | Method     | Endpoint                   | Description                                          | Authorization                             |
 | ---------- | -------------------------- | ---------------------------------------------------- | ----------------------------------------- |
@@ -306,7 +306,7 @@ All APIs are prefixed with /api/v1
 
 ---
 
-## 🗂 Division Endpoints
+### 🗂 Division Endpoints
 
 | Method     | Endpoint                      | Description                                     | Authorization                      |
 | ---------- | ----------------------------- | ----------------------------------------------- | ---------------------------------- |
@@ -318,7 +318,7 @@ All APIs are prefixed with /api/v1
 
 ---
 
-## 📅 Booking Routes
+### 📅 Booking Routes
 
 | Method     | Endpoint                            | Description                                       | Authorization                             |
 | ---------- | ----------------------------------- | ------------------------------------------------- | ----------------------------------------- |

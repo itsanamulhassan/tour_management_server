@@ -139,46 +139,46 @@ touch .env.example
 Add the following:
 ```
 
-PORT=5000
-DB_URL=your_mongodb_connection_uri_here
-NODE_ENV=development
-JWT_ACCESS_SECRET=your_access_secret_here
-JWT_ACCESS_SECRET_EXPIRES_IN=1h
-JWT_REFRESH_SECRET=your_refresh_secret_here
-JWT_REFRESH_SECRET_EXPIRES_IN=7d
-BCRYPT_SALT_ROUND=10
-SUPER_ADMIN_EMAIL= admin@example.com
-SUPER_ADMIN_PASSWORD=your_admin_password_here
-REDIS_USER=your_redis_username
-REDIS_PASSWORD=your_redis_password
-REDIS_PORT=6379
-REDIS_HOST=your_redis_host_url
-GOOGLE_CLIENT_ID=your_google_client_id_here
-GOOGLE_CLIENT_SECRET=your_google_client_secret_here
-GOOGLE_CALLBACK_URL=http://localhost:5000/api/v1/auth/google/callback
-SMTP_USER=your_email@example.com
-SMTP_PASS=your_email_password_here
-SMTP_FROM="Tour Management <your_email@example.com>"
-SMTP_HOST=smtp.example.com
-SMTP_PORT=587
-EXPRESS_SESSION_SECRET=your_session_secret_here
-FRONTEND_BASE_URL=http://localhost:3000
-ACCESS_COOKIE_NAME=access_token
-REFRESH_COOKIE_NAME=refresh_token
-SSL_STORE_ID=your_ssl_store_id_here
+PORT=5000  
+DB_URL=your_mongodb_connection_uri_here  
+NODE_ENV=development  
+JWT_ACCESS_SECRET=your_access_secret_here  
+JWT_ACCESS_SECRET_EXPIRES_IN=1h  
+JWT_REFRESH_SECRET=your_refresh_secret_here  
+JWT_REFRESH_SECRET_EXPIRES_IN=7d  
+BCRYPT_SALT_ROUND=10  
+SUPER_ADMIN_EMAIL= admin@example.com  
+SUPER_ADMIN_PASSWORD=your_admin_password_here  
+REDIS_USER=your_redis_username  
+REDIS_PASSWORD=your_redis_password  
+REDIS_PORT=6379  
+REDIS_HOST=your_redis_host_url  
+GOOGLE_CLIENT_ID=your_google_client_id_here  
+GOOGLE_CLIENT_SECRET=your_google_client_secret_here  
+GOOGLE_CALLBACK_URL=http://localhost:5000/api/v1/auth/google/callback  
+SMTP_USER=your_email@example.com  
+SMTP_PASS=your_email_password_here  
+SMTP_FROM="Tour Management <your_email@example.com>"  
+SMTP_HOST=smtp.example.com  
+SMTP_PORT=587  
+EXPRESS_SESSION_SECRET=your_session_secret_here  
+FRONTEND_BASE_URL=http://localhost:3000  
+ACCESS_COOKIE_NAME=access_token  
+REFRESH_COOKIE_NAME=refresh_token  
+SSL_STORE_ID=your_ssl_store_id_here  
 SSL_STORE_PASS=your_ssl_store_password_here
-SSL_PAYMENT_API=https://sandbox.sslcommerz.com/gwprocess/v4/api.php
-SSL_VALIDATION_API=https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php
-SSL_IPN_URL=http://localhost:5000/api/v1/payment/ipn
-SSL_SUCCESS_BACKEND_URL=http://localhost:5000/api/v1/payment/success
-SSL_FAIL_BACKEND_URL=http://localhost:5000/api/v1/payment/fail
-SSL_CANCEL_BACKEND_URL=http://localhost:5000/api/v1/payment/cancel
-SSL_SUCCESS_FRONTEND_URL=http://localhost:3000/payment/success
-SSL_FAIL_FRONTEND_URL=http://localhost:3000/payment/fail
-SSL_CANCEL_FRONTEND_URL=http://localhost:3000/payment/cancel
-CLOUDINARY_CLOUD_NAME=your_cloud_name_here
-CLOUDINARY_API_KEY=your_cloudinary_api_key_here
-CLOUDINARY_API_SECRET=your_cloudinary_api_secret_here
+SSL_PAYMENT_API=https://sandbox.sslcommerz.com/gwprocess/v4/api.php  
+SSL_VALIDATION_API=https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php  
+SSL_IPN_URL=http://localhost:5000/api/v1/payment/ipn  
+SSL_SUCCESS_BACKEND_URL=http://localhost:5000/api/v1/payment/success  
+SSL_FAIL_BACKEND_URL=http://localhost:5000/api/v1/payment/fail  
+SSL_CANCEL_BACKEND_URL=http://localhost:5000/api/v1/payment/cancel  
+SSL_SUCCESS_FRONTEND_URL=http://localhost:3000/payment/success  
+SSL_FAIL_FRONTEND_URL=http://localhost:3000/payment/fail  
+SSL_CANCEL_FRONTEND_URL=http://localhost:3000/payment/cancel  
+CLOUDINARY_CLOUD_NAME=your_cloud_name_here  
+CLOUDINARY_API_KEY=your_cloudinary_api_key_here  
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret_here  
 CLOUDINARY_URL=your_cloudinary_url_here
 
 ```
@@ -188,18 +188,23 @@ CLOUDINARY_URL=your_cloudinary_url_here
    📘 API Documentation
    All APIs are prefixed with /api/v1
 
-🔐 Auth Routes
-| Method| Endpoint | Description |
-| -------- | ----------------------------------- | -------------------------------------------------------------------------- |
-| **POST** | `/api/v1/auths/signin` | Sign in using email and password |
-| **POST** | `/api/v1/auths/refresh_access_token` | Retrieve a new access token using a refresh token |
-| **POST** | `/api/v1/auths/signout` | Sign out and invalidate the current session |
-| **POST** | `/api/v1/auths/forget_password` | Send a password reset link or OTP to user’s email |
-| **POST** | `/api/v1/auths/reset_password` | Reset password after verification _(Requires authorization)_ |
-| **POST** | `/api/v1/auths/change_password` | Change password for logged-in user _(Requires authorization)_ |
-| **POST** | `/api/v1/auths/set_password` | Set a new password for a newly verified account _(Requires authorization)_ |
-| **GET** | `/api/v1/auths/google` | Initiate Google OAuth login flow |
-| **GET** | `/api/v1/auths/google/callback` | Google OAuth callback URL for handling login success or failure |
+---
+
+## 🔐 Auth Routes
+
+| Method    | Endpoint                              | Description                                                                |
+| ----------| ------------------------------------- | -------------------------------------------------------------------------- |
+| **POST**  | `/api/v1/auths/signin`                | Sign in using email and password                                           |
+| **POST**  | `/api/v1/auths/refresh_access_token`  | Retrieve a new access token using a refresh token                          |
+| **POST**  | `/api/v1/auths/signout`               | Sign out and invalidate the current session                                |
+| **POST**  | `/api/v1/auths/forget_password`       | Send a password reset link or OTP to user’s email                          |
+| **POST**  | `/api/v1/auths/reset_password`        | Reset password after verification _(Requires authorization)_               |
+| **POST**  | `/api/v1/auths/change_password`       | Change password for logged-in user _(Requires authorization)_              |
+| **POST**  | `/api/v1/auths/set_password`          | Set a new password for a newly verified account _(Requires authorization)_ |
+| **GET**   | `/api/v1/auths/google`                | Initiate Google OAuth login flow                                           |
+| **GET**   | `/api/v1/auths/google/callback`       | Google OAuth callback URL for handling login success or failure            |
+
+---
 
 🧑‍💼 Guide Endpoints
 
@@ -350,6 +355,7 @@ CLOUDINARY_URL=your_cloudinary_url_here
 | **DELETE** | `/api/v1/booking/update/:id` | Update booking information by ID | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
 
 | **PATCH** | `/api/v1/booking/update/status/:id` | Update booking status (e.g., confirmed, canceled) | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
+
 
 🎯 Use Case: Booking a Tour
 

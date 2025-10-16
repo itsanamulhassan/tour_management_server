@@ -132,13 +132,13 @@ git clone https://github.com/itsanamulhassan/tour_management_server.git
 cd tour-management-system
 ```
 
-2. Install dependencies
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-3. Create a .env file in the root directory
+### 3. Create a .env file in the root directory
 
 ```bash
 touch .env.example
@@ -191,10 +191,11 @@ CLOUDINARY_URL=your_cloudinary_url_here
 
 ```
 
-4. Run the server (dev)
-   npm run dev
-   📘 API Documentation
-   All APIs are prefixed with /api/v1
+### 4. Run the server (dev)
+
+npm run dev
+📘 API Documentation
+All APIs are prefixed with /api/v1
 
 ---
 
@@ -214,155 +215,116 @@ CLOUDINARY_URL=your_cloudinary_url_here
 
 ---
 
-🧑‍💼 Guide Endpoints
+## 🧑‍💼 Guide Endpoints
 
-| Method | Endpoint | Description | Authorization |
+| Method     | Endpoint                           | Description                                  | Authorization                             |
+| ---------- | ---------------------------------- | -------------------------------------------- | ----------------------------------------- |
+| **POST**   | `/api/v1/guides/create`            | Create a new guide (file upload supported)   | User role: `USER`                         |
+| **GET**    | `/api/v1/guides/all`               | Retrieve all guides                          | Admin roles: `ADMIN`, `SUPERADMIN`        |
+| **GET**    | `/api/v1/guides/:id`               | Retrieve a single guide by ID                | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
+| **DELETE** | `/api/v1/guides/delete/:id`        | Delete a guide by ID                         | Admin roles: `ADMIN`, `SUPERADMIN`        |
+| **PATCH**  | `/api/v1/guides/update/:id`        | Update a guide by ID (file upload supported) | Roles: `ADMIN`, `SUPERADMIN`, `GUIDE`     |
+| **PATCH**  | `/api/v1/guides/update/status/:id` | Update guide status (e.g., active/inactive)  | Admin roles: `ADMIN`, `SUPERADMIN`        |
 
-| ---------- | --------------------------------- | -------------------------------------------- | ----------------------------------------- |
+---
 
-| **POST** | `/api/v1/guides/create` | Create a new guide (file upload supported) | User role: `USER` |
+## 🔢 OTP Endpoints
 
-| **GET** | `/api/v1/guides/all` | Retrieve all guides | Admin roles: `ADMIN`, `SUPERADMIN` |
-
-| **GET** | `/api/v1/guides/:id` | Retrieve a single guide by ID | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
-
-| **DELETE** | `/api/v1/guides/delete/:id` | Delete a guide by ID | Admin roles: `ADMIN`, `SUPERADMIN` |
-
-| **PATCH** | `/api/v1/guides/update/:id` | Update a guide by ID (file upload supported) | Roles: `ADMIN`, `SUPERADMIN`, `GUIDE` |
-
-| **PATCH** | `/api/v1/guides/update/status/:id` | Update guide status (e.g., active/inactive) | Admin roles: `ADMIN`, `SUPERADMIN` |
-
-🔢 OTP Endpoints
-
-| Method | Endpoint | Description | Authorization |
-
+| Method   | Endpoint             | Description                            | Authorization             |
 | -------- | -------------------- | -------------------------------------- | ------------------------- |
+| **POST** | `/api/v1/otp/send`   | Send an OTP to a user’s email or phone | Public (no auth required) |
+| **POST** | `/api/v1/otp/verify` | Verify the OTP code                    | Public (no auth required) |
 
-| **POST** | `/api/v1/otp/send` | Send an OTP to a user’s email or phone | Public (no auth required) |
+---
 
-| **POST** | `/api/v1/otp/verify` | Verify the OTP code | Public (no auth required) |
+## 💳 Payment Endpoints
 
-💳 Payment Endpoints
+| Method   | Endpoint                       | Description                        | Authorization                             |
+| -------- | ------------------------------ | ---------------------------------- | ----------------------------------------- |
+| **POST** | `/api/v1/payments/update/:id`  | Update payment details by ID       | Public (or role-based if implemented)     |
+| **POST** | `/api/v1/payments/success`     | Handle successful payment callback | Public (from payment gateway)             |
+| **POST** | `/api/v1/payments/fail`        | Handle failed payment callback     | Public (from payment gateway)             |
+| **POST** | `/api/v1/payments/cancel`      | Handle canceled payment callback   | Public (from payment gateway)             |
+| **GET**  | `/api/v1/payments/all`         | Retrieve all payments              | Admin roles: `ADMIN`, `SUPERADMIN`        |
+| **GET**  | `/api/v1/payments/:id`         | Retrieve payment details by ID     | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
+| **GET**  | `/api/v1/payments/invoice/:id` | Retrieve payment invoice by ID     | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
+| **POST** | `/api/v1/payments/validate`    | Validate payment information       | Public (from payment gateway or client)   |
 
-| Method | Endpoint | Description | Authorization |
+---
 
-| -------- | ----------------------------- | ---------------------------------- | ----------------------------------------- |
+## 📊 Statistics Endpoints
 
-| **POST** | `/api/v1/payments/update/:id` | Update payment details by ID | Public (or role-based if implemented) |
-
-| **POST** | `/api/v1/payments/success` | Handle successful payment callback | Public (from payment gateway) |
-
-| **POST** | `/api/v1/payments/fail` | Handle failed payment callback | Public (from payment gateway) |
-
-| **POST** | `/api/v1/payments/cancel` | Handle canceled payment callback | Public (from payment gateway) |
-
-| **GET** | `/api/v1/payments/all` | Retrieve all payments | Admin roles: `ADMIN`, `SUPERADMIN` |
-
-| **GET** | `/api/v1/payments/:id` | Retrieve payment details by ID | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
-
-| **GET** | `/api/v1/payments/invoice/:id` | Retrieve payment invoice by ID | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
-
-| **POST** | `/api/v1/payments/validate` | Validate payment information | Public (from payment gateway or client) |
-
-📊 Statistics Endpoints
-
-| Method | Endpoint | Description | Authorization |
-
+| Method  | Endpoint                     | Description                 | Authorization                      |
 | ------- | ---------------------------- | --------------------------- | ---------------------------------- |
-
-| **GET** | `/api/v1/statistics/user` | Retrieve user statistics | Admin roles: `ADMIN`, `SUPERADMIN` |
-
-| **GET** | `/api/v1/statistics/tour` | Retrieve tour statistics | Admin roles: `ADMIN`, `SUPERADMIN` |
-
+| **GET** | `/api/v1/statistics/user`    | Retrieve user statistics    | Admin roles: `ADMIN`, `SUPERADMIN` |
+| **GET** | `/api/v1/statistics/tour`    | Retrieve tour statistics    | Admin roles: `ADMIN`, `SUPERADMIN` |
 | **GET** | `/api/v1/statistics/booking` | Retrieve booking statistics | Admin roles: `ADMIN`, `SUPERADMIN` |
-
 | **GET** | `/api/v1/statistics/payment` | Retrieve payment statistics | Admin roles: `ADMIN`, `SUPERADMIN` |
 
-🏞️ Tour Endpoints
+---
 
-| Method | Endpoint | Description | Authorization |
+## 🏞️ Tour Endpoints
 
-| ---------- | ------------------------- | -------------------------------------------------------- | ---------------------------------- |
+| Method     | Endpoint                   | Description                                              | Authorization                      |
+| ---------- | -------------------------- | -------------------------------------------------------- | ---------------------------------- |
+| **POST**   | `/api/v1/tours/create`     | Create a new tour (file upload supported for thumbnails) | Admin roles: `ADMIN`, `SUPERADMIN` |
+| **GET**    | `/api/v1/tours/all`        | Retrieve all tours                                       | Admin roles: `ADMIN`, `SUPERADMIN` |
+| **PATCH**  | `/api/v1/tours/update/:id` | Update a tour by ID (file upload supported)              | Admin roles: `ADMIN`, `SUPERADMIN` |
+| **GET**    | `/api/v1/tours/single/:id` | Retrieve a single tour by ID                             | Admin roles: `ADMIN`, `SUPERADMIN` |
+| **DELETE** | `/api/v1/tours/delete/:id` | Delete a tour by ID                                      | Admin roles: `ADMIN`, `SUPERADMIN` |
 
-| **POST** | `/api/v1/tours/create` | Create a new tour (file upload supported for thumbnails) | Admin roles: `ADMIN`, `SUPERADMIN` |
+---
 
-| **GET** | `/api/v1/tours/all` | Retrieve all tours | Admin roles: `ADMIN`, `SUPERADMIN` |
+## 🏷️ Tour Type Endpoints
 
-| **PATCH** | `/api/v1/tours/update/:id` | Update a tour by ID (file upload supported) | Admin roles: `ADMIN`, `SUPERADMIN` |
+| Method     | Endpoint                        | Description                       | Authorization                      |
+| ---------- | ------------------------------- | --------------------------------- | ---------------------------------- |
+| **POST**   | `/api/v1/tour_types/create`     | Create a new tour type            | Admin roles: `ADMIN`, `SUPERADMIN` |
+| **GET**    | `/api/v1/tour_types/all`        | Retrieve all tour types           | Admin roles: `ADMIN`, `SUPERADMIN` |
+| **PATCH**  | `/api/v1/tour_types/update/:id` | Update a tour type by ID          | Admin roles: `ADMIN`, `SUPERADMIN` |
+| **GET**    | `/api/v1/tour_types/single/:id` | Retrieve a single tour type by ID | Admin roles: `ADMIN`, `SUPERADMIN` |
+| **DELETE** | `/api/v1/tour_types/delete/:id` | Delete a tour type by ID          | Admin roles: `ADMIN`, `SUPERADMIN` |
 
-| **GET** | `/api/v1/tours/single/:id` | Retrieve a single tour by ID | Admin roles: `ADMIN`, `SUPERADMIN` |
+---
 
-| **DELETE** | `/api/v1/tours/delete/:id` | Delete a tour by ID | Admin roles: `ADMIN`, `SUPERADMIN` |
+## 👤 User Routes
 
-🏷️ Tour Type Endpoints
+| Method     | Endpoint                   | Description                                          | Authorization                             |
+| ---------- | -------------------------- | ---------------------------------------------------- | ----------------------------------------- |
+| **POST**   | `/api/v1/users/register`   | Create a new user                                    | Public                                    |
+| **GET**    | `/api/v1/users/all`        | Retrieve all users                                   | Admin roles: `ADMIN`, `SUPERADMIN`        |
+| **GET**    | `/api/v1/users/single/:id` | Retrieve a single user by ID                         | Admin roles: `ADMIN`, `SUPERADMIN`        |
+| **GET**    | `/api/v1/users/me`         | Retrieve current logged-in user info by access token | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
+| **PATCH**  | `/api/v1/users/update/:id` | Update a user by ID                                  | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
+| **DELETE** | `/api/v1/users/delete/:id` | Delete a user by ID                                  | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
 
-| Method | Endpoint | Description | Authorization |
+---
 
-| ---------- | ------------------------------ | --------------------------------- | ---------------------------------- |
+## 🗂 Division Endpoints
 
-| **POST** | `/api/v1/tour_types/create` | Create a new tour type | Admin roles: `ADMIN`, `SUPERADMIN` |
-
-| **GET** | `/api/v1/tour_types/all` | Retrieve all tour types | Admin roles: `ADMIN`, `SUPERADMIN` |
-
-| **PATCH** | `/api/v1/tour_types/update/:id` | Update a tour type by ID | Admin roles: `ADMIN`, `SUPERADMIN` |
-
-| **GET** | `/api/v1/tour_types/single/:id` | Retrieve a single tour type by ID | Admin roles: `ADMIN`, `SUPERADMIN` |
-
-| **DELETE** | `/api/v1/tour_types/delete/:id` | Delete a tour type by ID | Admin roles: `ADMIN`, `SUPERADMIN` |
-
-👤 User Routes
-
-| Method | Endpoint | Description | Authorization |
-
-| ---------- | ------------------------- | ---------------------------------------------------- | ----------------------------------------- |
-
-| **POST** | `/api/v1/users/register` | Create a new user | Public |
-
-| **GET** | `/api/v1/users/all` | Retrieve all users | Admin roles: `ADMIN`, `SUPERADMIN` |
-
-| **GET** | `/api/v1/users/single/:id` | Retrieve a single user by ID | Admin roles: `ADMIN`, `SUPERADMIN` |
-
-| **GET** | `/api/v1/users/me` | Retrieve current logged-in user info by access token | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
-
-| **PATCH** | `/api/v1/users/update/:id` | Update a user by ID | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
-
-| **DELETE** | `/api/v1/users/delete/:id` | Delete a user by ID | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
-
-🗂 Division Endpoints
-
-| Method | Endpoint | Description | Authorization |
-
+| Method     | Endpoint                      | Description                                     | Authorization                      |
 | ---------- | ----------------------------- | ----------------------------------------------- | ---------------------------------- |
+| **POST**   | `/api/v1/division/create`     | Create a new division (file upload supported)   | Admin roles: `ADMIN`, `SUPERADMIN` |
+| **GET**    | `/api/v1/division/all`        | Retrieve all divisions                          | Admin roles: `ADMIN`, `SUPERADMIN` |
+| **PATCH**  | `/api/v1/division/update/:id` | Update a division by ID (file upload supported) | Admin roles: `ADMIN`, `SUPERADMIN` |
+| **GET**    | `/api/v1/division/single/:id` | Retrieve a single division by ID                | Admin roles: `ADMIN`, `SUPERADMIN` |
+| **DELETE** | `/api/v1/division/delete/:id` | Delete a division by ID                         | Admin roles: `ADMIN`, `SUPERADMIN` |
 
-| **POST** | `/api/v1/division/create` | Create a new division (file upload supported) | Admin roles: `ADMIN`, `SUPERADMIN` |
+---
 
-| **GET** | `/api/v1/division/all` | Retrieve all divisions | Admin roles: `ADMIN`, `SUPERADMIN` |
+## 📅 Booking Routes
 
-| **PATCH** | `/api/v1/division/update/:id` | Update a division by ID (file upload supported) | Admin roles: `ADMIN`, `SUPERADMIN` |
-
-| **GET** | `/api/v1/division/single/:id` | Retrieve a single division by ID | Admin roles: `ADMIN`, `SUPERADMIN` |
-
-| **DELETE** | `/api/v1/division/delete/:id` | Delete a division by ID | Admin roles: `ADMIN`, `SUPERADMIN` |
-
-📅 Booking Routes
-
-| Method | Endpoint | Description | Authorization |
-
+| Method     | Endpoint                            | Description                                       | Authorization                             |
 | ---------- | ----------------------------------- | ------------------------------------------------- | ----------------------------------------- |
+| **POST**   | `/api/v1/booking/create`            | Create a new booking                              | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
+| **GET**    | `/api/v1/booking/all`               | Retrieve all bookings                             | Admin roles: `ADMIN`, `SUPERADMIN`        |
+| **GET**    | `/api/v1/booking/me`                | Retrieve bookings for logged-in user              | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
+| **GET**    | `/api/v1/booking/:id`               | Retrieve booking details by ID                    | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
+| **DELETE** | `/api/v1/booking/delete/:id`        | Delete a booking by ID                            | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
+| **DELETE** | `/api/v1/booking/update/:id`        | Update booking information by ID                  | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
+| **PATCH**  | `/api/v1/booking/update/status/:id` | Update booking status (e.g., confirmed, canceled) | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
 
-| **POST** | `/api/v1/booking/create` | Create a new booking | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
-
-| **GET** | `/api/v1/booking/all` | Retrieve all bookings | Admin roles: `ADMIN`, `SUPERADMIN` |
-
-| **GET** | `/api/v1/booking/me` | Retrieve bookings for logged-in user | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
-
-| **GET** | `/api/v1/booking/:id` | Retrieve booking details by ID | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
-
-| **DELETE** | `/api/v1/booking/delete/:id` | Delete a booking by ID | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
-
-| **DELETE** | `/api/v1/booking/update/:id` | Update booking information by ID | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
-
-| **PATCH** | `/api/v1/booking/update/status/:id` | Update booking status (e.g., confirmed, canceled) | User roles: `USER`, `ADMIN`, `SUPERADMIN` |
+---
 
 🎯 Use Case: Booking a Tour
 

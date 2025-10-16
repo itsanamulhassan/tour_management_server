@@ -20,6 +20,8 @@
 - [Functional Requirements](#-functional-requirements)
 - [Non-Functional Requirements](#-non-functional-requirements)
 - [Deployment](#-deployment)
+- [Contributing](#-contributing)
+- [Contact](#-contact)
 
 ---
 

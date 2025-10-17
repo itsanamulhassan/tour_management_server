@@ -31,6 +31,13 @@ The **Tour Management System** is a robust backend service built to support a fu
 
 ---
 
+### 🔗 Live Demo
+
+- **Frontend:** [tour-management-client.vercel.app](https://tour-management-client.vercel.app)
+- **Backend API:** [tourmanagementsystemv1.vercel.app/api/v1](https://tourmanagementsystemv1.vercel.app)
+
+---
+
 ## ✅ Features
 
 - 🔐 User registration & OTP-based verification

@@ -43,12 +43,6 @@ authRouter.post(
   schemaValidator(authSchemas.forgetPasswordSchema),
   authControllers.forgetPassword
 );
-authRouter.post(
-  "/reset_password",
-  schemaValidator(authSchemas.resetPasswordSchema),
-  auth.authorizeRole(...userRoleStatusEnum),
-  authControllers.resetPassword
-);
 
 authRouter.get(
   "/google",

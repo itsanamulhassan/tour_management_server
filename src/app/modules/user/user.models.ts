@@ -32,7 +32,7 @@ const authProviderSchema = new Schema<AuthProviderDto>(
   {
     provider: {
       type: String,
-      value: authProviderEnum,
+      enum: authProviderEnum,
       default: "CREDENTIAL",
     },
     providerId: {

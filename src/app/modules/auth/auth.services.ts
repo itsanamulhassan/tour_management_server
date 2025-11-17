@@ -32,7 +32,7 @@ const changePassword = async (req: Request) => {
   );
   if (!isMatch) {
     throw new AppError(
-      message("badRequest", "reset password"),
+      message("badRequest", "change password"),
       StatusCodes.BAD_REQUEST
     );
   }

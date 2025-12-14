@@ -23,11 +23,12 @@ const credentialSignIn = safeAsync(
       ) => {
         try {
           if (error) {
-            return next(new AppError(error, StatusCodes.BAD_REQUEST));
+            return next(new AppError(error, StatusCodes.UNAUTHORIZED));
           }
           if (!user) {
             return next(new AppError(info.message, StatusCodes.BAD_REQUEST));
           }
+
           validateUser(user);
 
           const payload = {

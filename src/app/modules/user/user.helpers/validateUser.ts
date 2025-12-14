@@ -36,7 +36,7 @@ export const validateUser = (user: User) => {
   if (!user.isVerified) {
     throw new AppError(
       "This account has not been verified. Please verify your account or request a new verification link.",
-      StatusCodes.GONE
+      StatusCodes.UNAUTHORIZED
     );
   }
   return user;

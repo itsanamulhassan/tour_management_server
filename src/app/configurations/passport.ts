@@ -30,40 +30,34 @@ passport.use(
           await Users.findOne({ email }).select("+password")
         )?.toObject() as User;
         if (!user) {
-          return done(null, false, { message: message("notFound", "user") });
+          return done(message("notFound", "user"));
         }
         if (
           ["BLOCKED", "INACTIVE"].includes(
             user.activityStatus as UserActivityStatusEnumDto
           )
         ) {
-          return done(null, false, {
-            message: message(
-              user.activityStatus?.toLowerCase() as MessageType,
-              email
-            ),
-          });
+          return done(
+            message(user.activityStatus?.toLowerCase() as MessageType, email)
+          );
         }
         if (user.isDeleted) {
-          return done(null, false, {
-            message:
-              "This account has been deleted. Please create a new account or try again later.",
-          });
+          return done(
+            "This account has been deleted. Please create a new account or try again later."
+          );
         }
         if (!user.isVerified) {
-          return done(null, false, {
-            message:
-              "This account has not been verified. Please verify your account or request a new verification link.",
-          });
+          return done(
+            "This account has not been verified. Please verify your account or request a new verification link."
+          );
         }
         const withoutCredential = user.auths.some(
           (provider: AuthProviderDto) => provider.provider !== "CREDENTIAL"
         );
         if (withoutCredential && !user.password) {
-          return done(null, false, {
-            message:
-              "Your account is currently signed in using a social login. If you want to sign in using your email and password, you first need to set a password for your account. Once the password is created, you can use your email and password to log in directly without using the social option.",
-          });
+          return done(
+            "Your account is currently signed in using a social login. If you want to sign in using your email and password, you first need to set a password for your account. Once the password is created, you can use your email and password to log in directly without using the social option."
+          );
         }
 
         const isMatch = await bcrypt.compare(
@@ -117,16 +111,15 @@ passport.use(
           });
         }
         if (user.isDeleted) {
-          return done(null, false, {
-            message:
-              "This account has been deleted. Please create a new account or try again later.",
-          });
+          return done(
+            "This account has been deleted. Please create a new account or try again later."
+          );
         }
+
         if (!user.isVerified) {
-          return done(null, false, {
-            message:
-              "This account has not been verified. Please verify your account or request a new verification link.",
-          });
+          return done(
+            "This account has not been verified. Please verify your account or request a new verification link."
+          );
         }
         if (!user) {
           user = await Users.create({

@@ -14,13 +14,6 @@ import { validateUser } from "./user.helpers/validateUser";
 const createUser = async (payload: Partial<CreateUserDto>) => {
   const { email, password, ...rest } = payload as CreateUserDto;
 
-  if (["ADMIN", "SUPERADMIN"].includes(rest.role)) {
-    throw new AppError(
-      message("unauthorized", rest.role),
-      StatusCodes.FORBIDDEN
-    );
-  }
-
   const user = await Users.findOne({ email });
   if (user) {
     throw new AppError(

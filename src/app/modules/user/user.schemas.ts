@@ -53,45 +53,10 @@ const createUser = z.object({
     .lowercase(),
 
   // Password is optional (e.g. social login), but if provided, must match regex
-  password: z
-    .string()
-    .regex(passwordRegex, {
-      error:
-        "Password must be 6 - 32 characters long, include at least 1 uppercase letter and 1 special character.",
-    })
-    .optional(),
-
-  phone: z.string({ error: "Phone must be a string." }).optional(),
-  avatar: z.url({ error: "Avatar must be a valid URL." }).optional(),
-
-  // Embedded address object
-  address: addressSchema.optional(),
-
-  // Status flags
-  isDeleted: z
-    .boolean({ error: "Verify status must be a boolean." })
-    .default(false)
-    .optional(),
-  activityStatus: z.enum(userActivityStatusEnum).default("ACTIVE"),
-  isVerified: z
-    .boolean({ error: "Verify status must be a boolean." })
-    .default(true)
-    .optional(),
-
-  // Linked authentication providers
-  auths: z
-    .array(authProviderSchema)
-    .min(1, { error: "At least one auth provider is required." })
-    .default([]),
-
-  // User role
-  role: z.enum(userRoleStatusEnum).default("USER"),
-
-  // References to bookings or guides
-  booking: z
-    .array(z.string({ error: "Booking id must be a string" }))
-    .optional(),
-  guides: z.array(z.string({ error: "Guide id must be a string" })).optional(),
+  password: z.string().regex(passwordRegex, {
+    error:
+      "Password must be 6 - 32 characters long, include at least 1 uppercase letter and 1 special character.",
+  }),
 });
 const updateUser = createUser.omit({
   email: true,

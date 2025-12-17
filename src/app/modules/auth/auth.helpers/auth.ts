@@ -8,10 +8,12 @@ import message from "../../../utils/message";
 import { User, Users } from "../../user/user.models";
 import { validateUser } from "../../user/user.helpers/validateUser";
 import { JWTCredentialProps } from "../../../types/express";
+import env from "../../../configurations/env";
 
 const authorizeRole = (...roles: UserRoleStatusEnumDto[]) =>
   safeAsync(async (req: Request, _res: Response, next: NextFunction) => {
-    const token = req.headers.authorization;
+    const token =
+      req.headers.authorization || req.cookies[env.access_cookie_name];
 
     // 401 Unauthorized → No token provided
     if (!token) {

@@ -4,7 +4,8 @@ import env from "../configurations/env";
 
 const defaultCookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production", // secure only in production
+  // secure: process.env.NODE_ENV === "production", // secure only in production
+  secure: true,
   sameSite: "lax" as const,
 };
 

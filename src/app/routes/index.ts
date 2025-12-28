@@ -28,7 +28,7 @@ const routes = [
     router: divisionRouter,
   },
   {
-    path: "/tour_types",
+    path: "/tour-types",
     router: tourTypeRouter,
   },
   {

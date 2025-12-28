@@ -19,7 +19,7 @@ const createTourType = async (payload: CreateTourTypeProps) => {
 };
 const updateTourType = async (req: Request) => {
   const {
-    params: { id: tourTypeId },
+    params: { tourTypeId },
     body: payload,
   } = req as Request;
   const isTourTypeExist = await TourTypes.exists({ _id: tourTypeId });
@@ -44,7 +44,7 @@ const updateTourType = async (req: Request) => {
   return latestTourType;
 };
 const deleteTourType = async (req: Request) => {
-  const tourTypeId = req.params.id;
+  const { tourTypeId } = req.params;
   const isTourTypeExist = await TourTypes.exists({ _id: tourTypeId });
   if (!isTourTypeExist) {
     throw new AppError(message("notFound", "tour type"), StatusCodes.NOT_FOUND);
@@ -61,7 +61,7 @@ const retrieveTourTypes = async (_req: Request) => {
   return tourType;
 };
 const retrieveTourType = async (req: Request) => {
-  const tourTypeId = req.params.id;
+  const { tourTypeId } = req.params;
   const isTourTypeExist = await TourTypes.findById(tourTypeId);
   if (!isTourTypeExist) {
     throw new AppError(message("notFound", "tour type"), StatusCodes.NOT_FOUND);

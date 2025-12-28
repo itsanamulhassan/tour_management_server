@@ -94,33 +94,26 @@ passport.use(
         const email = profile?.emails?.[0].value;
 
         if (!email) {
-          return done(null, false, { message: message("notFound", "email") });
+          return done(message("notFound", "email"));
         }
+
         let user = (await Users.findOne({ email })) as User;
 
         if (
           ["BLOCKED", "INACTIVE"].includes(
-            user.activityStatus as UserActivityStatusEnumDto
+            user?.activityStatus as UserActivityStatusEnumDto
           )
         ) {
-          return done(null, false, {
-            message: message(
-              user.activityStatus?.toLowerCase() as MessageType,
-              email
-            ),
-          });
+          return done(
+            message(user?.activityStatus?.toLowerCase() as MessageType, email)
+          );
         }
-        if (user.isDeleted) {
+        if (user?.isDeleted) {
           return done(
             "This account has been deleted. Please create a new account or try again later."
           );
         }
 
-        if (!user.isVerified) {
-          return done(
-            "This account has not been verified. Please verify your account or request a new verification link."
-          );
-        }
         if (!user) {
           user = await Users.create({
             email,

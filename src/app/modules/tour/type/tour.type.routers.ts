@@ -7,29 +7,29 @@ import { auth } from "../../auth/auth.helpers/auth";
 const tourTypeRouter = Router();
 
 tourTypeRouter.post(
-  "/create",
+  "",
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
   schemaValidator(tourTypeSchemas.createTourType),
   tourTypeControllers.createTourType
 );
 tourTypeRouter.get(
-  "/all",
+  "/",
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
   tourTypeControllers.retrieveTourTypes
 );
 tourTypeRouter.patch(
-  "/update/:id",
+  "/:tourTypeId",
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
   schemaValidator(tourTypeSchemas.updateTourType),
   tourTypeControllers.updateTourType
 );
 tourTypeRouter.get(
-  "/single/:id",
+  "/:tourTypeId",
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
   tourTypeControllers.retrieveTourType
 );
 tourTypeRouter.delete(
-  "/delete/:id",
+  "/:tourTypeId",
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
   tourTypeControllers.deleteTourType
 );

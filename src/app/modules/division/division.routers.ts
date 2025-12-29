@@ -8,31 +8,31 @@ import { multerUpload } from "../../configurations/multer";
 const divisionRouter = Router();
 
 divisionRouter.post(
-  "/create",
+  "/",
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
   multerUpload("divisions").single("file"),
   schemaValidator(divisionSchema.createDivision),
   divisionControllers.createDivision
 );
 divisionRouter.get(
-  "/all",
+  "/",
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
   divisionControllers.retrieveDivisions
 );
 divisionRouter.patch(
-  "/update/:id",
+  "/:divisionId",
   multerUpload("divisions").single("file"),
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
   schemaValidator(divisionSchema.updateDivision),
   divisionControllers.updateDivision
 );
 divisionRouter.get(
-  "/single/:id",
+  "/:divisionId",
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
   divisionControllers.retrieveDivision
 );
 divisionRouter.delete(
-  "/delete/:id",
+  "/:divisionId",
   auth.authorizeRole("ADMIN", "SUPERADMIN"),
   divisionControllers.deleteDivision
 );

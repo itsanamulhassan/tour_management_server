@@ -25,7 +25,7 @@ const createDivision = async (req: Request) => {
 };
 const updateDivision = async (req: Request) => {
   const {
-    params: { id: divisionId },
+    params: { divisionId },
     body,
     file,
   } = req as Request;
@@ -69,7 +69,7 @@ const updateDivision = async (req: Request) => {
   return latestDivision;
 };
 const deleteDivision = async (req: Request) => {
-  const divisionId = req.params.id;
+  const { divisionId } = req.params;
   const division = (await Divisions.exists({ _id: divisionId }).select(
     "thumbnail"
   )) as Partial<DivisionDocument>;
@@ -92,7 +92,7 @@ const retrieveDivisions = async (_req: Request) => {
   return divisions;
 };
 const retrieveDivision = async (req: Request) => {
-  const divisionId = req.params.id;
+  const { divisionId } = req.params;
   const isDivisionExist = await Divisions.findById(divisionId);
   if (!isDivisionExist) {
     throw new AppError(message("notFound", "division"), StatusCodes.NOT_FOUND);

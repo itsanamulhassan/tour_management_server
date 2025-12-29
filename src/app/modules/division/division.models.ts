@@ -1,7 +1,6 @@
 import { Schema, model, InferSchemaType, HydratedDocument } from "mongoose";
 import { fileSchema } from "../tour/tour.models";
 import { generateSlug } from "../../utils/slug";
-import { CreateDivisionDto } from "./division.types";
 
 const divisionSchema = new Schema(
   {
@@ -37,7 +36,7 @@ divisionSchema.pre("validate", function (next) {
 
 // ✅  Update slug automatically on findOneAndUpdate
 divisionSchema.pre("findOneAndUpdate", function (next) {
-  const division = this.getUpdate() as Partial<CreateDivisionDto>;
+  const division = this.getUpdate() as InferSchemaType<typeof divisionSchema>;
 
   if (division.name) {
     division.slug = generateSlug(division.name, { suffix: "division" });
